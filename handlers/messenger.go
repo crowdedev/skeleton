@@ -182,7 +182,7 @@ func (m *Messenger) UnsafePush(data []byte) error {
 		return errors.New("not connected to a server")
 	}
 
-	m.logger.Info(fmt.Sprintf("Send to queue: %+v", json))
+	m.logger.Info(fmt.Sprintf("Send to queue: %+v", data))
 
 	return m.channel.Publish(
 		"",          // Exchange
