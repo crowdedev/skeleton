@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package grpcs;
+
+option go_package = ".;grpcs";
+
+message PaginationMetadata {
+    int32 page = 1;
+    int32 previous = 2;
+    int32 next = 3;
+    int32 limit = 4;
+    int32 record = 5;
+    int32 total = 6;
+}
+
+message Pagination {
+    int32 page = 1;
+    int32 limit = 2;
+    repeated string fields = 3;
+    repeated string values = 4;
+}

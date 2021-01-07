@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package grpcs;
+
+import "google/api/annotations.proto";
+import "pagination.proto";
+
+option go_package = ".;grpcs";
+
+message Todo {
+    int32 id = 1;
+    string name = 3;
+}
+
+message Response {
+    int32 code = 1;
+    Todo data = 2;
+    string message = 3;
+}
+
+message PaginatedResponse {
+    int32 code = 1;
+    repeated Todo data = 2;
+    PaginationMetadata meta = 3;
+}
+
+service Todos {
+    rpc GetPaginated (Pagination) returns (PaginatedResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/todos"
+        };
+    }
+
+    rpc Create (Todo) returns (Response) {
+        option (google.api.http) = {
+            post: "/api/v1/todos"
+            body: "*"
+        };
+    }
+
+    rpc Update (Todo) returns (Response) {
+        option (google.api.http) = {
+            put: "/api/v1/todos/{id}"
+            body: "*"
+
+            additional_bindings {
+                patch: "/api/v1/todos/{id}"
+                body: "*"
+            }
+        };
+    }
+
+    rpc Get (Todo) returns (Response) {
+        option (google.api.http) = {
+            get: "/api/v1/todos/{id}"
+        };
+    }
+
+    rpc Delete (Todo) returns (Response) {
+        option (google.api.http) = {
+            delete: "/api/v1/todos/{id}"
+        };
+    }
+}
