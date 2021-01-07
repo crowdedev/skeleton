@@ -193,7 +193,7 @@ func (t *Todo) Delete(c context.Context, r *grpcs.Todo) (*grpcs.Response, error)
 }
 
 func (t *Todo) Consume() {
-	time.Sleep(time.Second * 2) // waiting for connection
+	time.Sleep(time.Second * 5) // waiting for connection
 
 	logger := handlers.NewLogger()
 	messege, err := t.messenger.Consume()
