@@ -1,6 +1,8 @@
 package interfaces
 
 import (
+	"log"
+
 	configs "github.com/crowdeco/skeleton/configs"
 	todos "github.com/crowdeco/skeleton/todos"
 )
@@ -14,5 +16,7 @@ func NewQueue() configs.Application {
 }
 
 func (q *Queue) Run() {
+	log.Printf("Starting Queue Consumer")
+
 	todos.NewTodo().Consume()
 }

@@ -3,6 +3,7 @@ package interfaces
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 
 	configs "github.com/crowdeco/skeleton/configs"
@@ -37,5 +38,6 @@ func (g *Rest) Run() {
 		panic(err)
 	}
 
+	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
 	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), handlers.NewServer(mux).Serve())
 }
