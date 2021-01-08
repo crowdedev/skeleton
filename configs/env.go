@@ -30,6 +30,9 @@ type (
 		AmqpPort           int
 		AmqpUser           string
 		AmqpPassword       string
+		HeaderUserId       string
+		HeaderUserEmail    string
+		HeaderUserRole     string
 		User               *User
 	}
 )
@@ -49,16 +52,23 @@ func _LoadEnv() {
 	Env.DbPassword = os.Getenv("DB_PASSWORD")
 	Env.DbName = os.Getenv("DB_NAME")
 	Env.DbAutoMigrate, _ = strconv.ParseBool(os.Getenv("DB_AUTO_CREATE"))
+
 	Env.ElasticsearchHost = os.Getenv("ELASTICSEARCH_HOST")
 	Env.ElasticsearchPort, _ = strconv.Atoi(os.Getenv("ELASTICSEARCH_PORT"))
 	Env.ElasticsearchIndex = Env.DbName
+
 	Env.MongoDbHost = os.Getenv("MONGODB_HOST")
 	Env.MongoDbPort, _ = strconv.Atoi(os.Getenv("MONGODB_PORT"))
 	Env.MongoDbName = os.Getenv("MONGODB_NAME")
+
 	Env.AmqpHost = os.Getenv("AMQP_HOST")
 	Env.AmqpPort, _ = strconv.Atoi(os.Getenv("AMQP_PORT"))
 	Env.AmqpUser = os.Getenv("AMQP_USER")
 	Env.AmqpPassword = os.Getenv("AMQP_PASSWORD")
+
+	Env.HeaderUserId = os.Getenv("HEADER_USER_ID")
+	Env.HeaderUserEmail = os.Getenv("HEADER_USER_EMAIL")
+	Env.HeaderUserRole = os.Getenv("HEADER_USER_ROLE")
 
 	Env.User = &User{}
 }

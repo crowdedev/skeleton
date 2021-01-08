@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	configs "github.com/crowdeco/todo-service/configs"
@@ -20,9 +21,11 @@ func NewServer(handler http.Handler) *Server {
 
 func (s *Server) Serve() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		configs.Env.User.ID = r.Header.Get("Crowde-User-Id")
-		configs.Env.User.Email = r.Header.Get("Crowde-User-Email")
-		configs.Env.User.Type = r.Header.Get("Crowde-User-Type")
+		configs.Env.User.ID = r.Header.Get(configs.Env.HeaderUserId)
+		configs.Env.User.Email = r.Header.Get(configs.Env.HeaderUserEmail)
+		configs.Env.User.Role = r.Header.Get(configs.Env.HeaderUserRole)
+
+		fmt.Println(configs.Env.User)
 
 		s.handler.ServeHTTP(w, r)
 	})
