@@ -50,19 +50,23 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 }
 
 func (h *Handler) Create() configs.Model {
-	data, _ := json.Marshal(h.service.Model())
+	model := h.service.Create()
+
+	data, _ := json.Marshal(model)
 	configs.Elasticsearch.Index().Index(h.service.Model().TableName()).BodyJson(string(data)).Do(context.Background())
 
-	return h.service.Create()
+	return model
 }
 
 func (h *Handler) Update() configs.Model {
 	h.elasticsearchDelete()
 
-	data, _ := json.Marshal(h.service.Model())
+	model := h.service.Update()
+
+	data, _ := json.Marshal(model)
 	configs.Elasticsearch.Index().Index(h.service.Model().TableName()).BodyJson(string(data)).Do(context.Background())
 
-	return h.service.Update()
+	return model
 }
 
 func (h *Handler) Delete() {
