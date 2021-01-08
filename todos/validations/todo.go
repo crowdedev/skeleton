@@ -3,9 +3,9 @@ package validations
 import (
 	"fmt"
 
-	handlers "github.com/crowdeco/todo-service/handlers"
-	grpcs "github.com/crowdeco/todo-service/protos/builds"
-	models "github.com/crowdeco/todo-service/todos/models"
+	handlers "github.com/crowdeco/skeleton/handlers"
+	grpcs "github.com/crowdeco/skeleton/protos/builds"
+	models "github.com/crowdeco/skeleton/todos/models"
 	validator "github.com/go-ozzo/ozzo-validation/v4"
 )
 

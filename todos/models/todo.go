@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
-	configs "github.com/crowdeco/todo-service/configs"
+	configs "github.com/crowdeco/skeleton/configs"
 )
 
 type Todo struct {

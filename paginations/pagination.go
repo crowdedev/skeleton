@@ -1,7 +1,7 @@
 package paginations
 
 import (
-	grpcs "github.com/crowdeco/todo-service/protos/builds"
+	grpcs "github.com/crowdeco/skeleton/protos/builds"
 	paginator "github.com/vcraescu/go-paginator/v2"
 )
 

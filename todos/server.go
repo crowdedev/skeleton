@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	configs "github.com/crowdeco/todo-service/configs"
-	grpcs "github.com/crowdeco/todo-service/protos/builds"
-	models "github.com/crowdeco/todo-service/todos/models"
+	configs "github.com/crowdeco/skeleton/configs"
+	grpcs "github.com/crowdeco/skeleton/protos/builds"
+	models "github.com/crowdeco/skeleton/todos/models"
 	runtime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 )

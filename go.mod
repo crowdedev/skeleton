@@ -1,4 +1,4 @@
-module github.com/crowdeco/todo-service
+module github.com/crowdeco/skeleton
 
 go 1.14
 

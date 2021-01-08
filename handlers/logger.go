@@ -3,7 +3,7 @@ package handlers
 import (
 	"fmt"
 
-	configs "github.com/crowdeco/todo-service/configs"
+	configs "github.com/crowdeco/skeleton/configs"
 	logrus "github.com/sirupsen/logrus"
 	mongodb "github.com/weekface/mgorus"
 )

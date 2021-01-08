@@ -1,13 +1,13 @@
 package main
 
 import (
-	configs "github.com/crowdeco/todo-service/configs"
-	interfaces "github.com/crowdeco/todo-service/interfaces"
+	configs "github.com/crowdeco/skeleton/configs"
+	interfaces "github.com/crowdeco/skeleton/interfaces"
 )
 
 func init() {
 	configs.LoadConfigs()
-	configs.Env.ServiceName = "todo-service"
+	configs.Env.ServiceName = "skeleton"
 	configs.Env.Version = "v2.0@dev"
 }
 

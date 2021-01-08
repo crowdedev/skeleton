@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	configs "github.com/crowdeco/todo-service/configs"
+	configs "github.com/crowdeco/skeleton/configs"
 )
 
 type (

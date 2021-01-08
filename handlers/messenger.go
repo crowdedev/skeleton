@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	configs "github.com/crowdeco/todo-service/configs"
+	configs "github.com/crowdeco/skeleton/configs"
 	amqp "github.com/streadway/amqp"
 )
 

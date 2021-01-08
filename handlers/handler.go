@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 
-	configs "github.com/crowdeco/todo-service/configs"
-	paginations "github.com/crowdeco/todo-service/paginations"
-	adapter "github.com/crowdeco/todo-service/paginations/adapter"
+	configs "github.com/crowdeco/skeleton/configs"
+	paginations "github.com/crowdeco/skeleton/paginations"
+	adapter "github.com/crowdeco/skeleton/paginations/adapter"
 	elastic "github.com/olivere/elastic/v7"
 )
 

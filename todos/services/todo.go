@@ -4,9 +4,9 @@ import (
 	"errors"
 	"fmt"
 
-	configs "github.com/crowdeco/todo-service/configs"
-	handlers "github.com/crowdeco/todo-service/handlers"
-	models "github.com/crowdeco/todo-service/todos/models"
+	configs "github.com/crowdeco/skeleton/configs"
+	handlers "github.com/crowdeco/skeleton/handlers"
+	models "github.com/crowdeco/skeleton/todos/models"
 	"gorm.io/gorm"
 )
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
-	configs "github.com/crowdeco/todo-service/configs"
+	configs "github.com/crowdeco/skeleton/configs"
 	elastic "github.com/olivere/elastic/v7"
 	paginator "github.com/vcraescu/go-paginator/v2"
 )

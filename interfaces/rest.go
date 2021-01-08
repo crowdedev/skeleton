@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	configs "github.com/crowdeco/todo-service/configs"
-	handlers "github.com/crowdeco/todo-service/handlers"
-	todos "github.com/crowdeco/todo-service/todos"
+	configs "github.com/crowdeco/skeleton/configs"
+	handlers "github.com/crowdeco/skeleton/handlers"
+	todos "github.com/crowdeco/skeleton/todos"
 
 	runtime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 )
