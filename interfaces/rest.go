@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	configs "github.com/crowdeco/todo-service/configs"
+	handlers "github.com/crowdeco/todo-service/handlers"
 	todos "github.com/crowdeco/todo-service/todos"
 
 	runtime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -36,5 +37,5 @@ func (g *Rest) Run() {
 		panic(err)
 	}
 
-	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), mux)
+	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), handlers.NewServer(mux).Serve())
 }

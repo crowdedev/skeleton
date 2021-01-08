@@ -30,6 +30,7 @@ type (
 		AmqpPort           int
 		AmqpUser           string
 		AmqpPassword       string
+		User               *User
 	}
 )
 
@@ -58,4 +59,6 @@ func _LoadEnv() {
 	Env.AmqpPort, _ = strconv.Atoi(os.Getenv("AMQP_PORT"))
 	Env.AmqpUser = os.Getenv("AMQP_USER")
 	Env.AmqpPassword = os.Getenv("AMQP_PASSWORD")
+
+	Env.User = &User{}
 }
