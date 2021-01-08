@@ -5,6 +5,10 @@ type (
 		TableName() string
 		Identifier() string
 		SetIdentifier(id string)
+		SetCreatedBy(user *User)
+		SetUpdatedBy(user *User)
+		SetDeletedBy(user *User)
+		IsSoftDelete() bool
 	}
 
 	Service interface {

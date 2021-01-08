@@ -27,19 +27,26 @@ func (s *Todo) Model() configs.Model {
 }
 
 func (s *Todo) Create() configs.Model {
+	s.model.SetCreatedBy(configs.Env.User)
 	configs.Database.Model(s.model).Create(&s.model)
 
 	return s.model
 }
 
 func (s *Todo) Update() configs.Model {
+	s.model.SetUpdatedBy(configs.Env.User)
 	configs.Database.Model(s.model).Save(&s.model)
 
 	return s.model
 }
 
 func (s *Todo) Delete() {
-	configs.Database.Model(s.model).Delete(&s.model)
+	s.model.SetDeletedBy(configs.Env.User)
+	if s.model.IsSoftDelete() {
+		configs.Database.Model(s.model).Save(&s.model)
+	} else {
+		configs.Database.Model(s.model).Delete(&s.model)
+	}
 }
 
 func (s *Todo) Bind() configs.Model {

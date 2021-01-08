@@ -3,6 +3,8 @@ package models
 import (
 	"fmt"
 	"strconv"
+
+	configs "github.com/crowdeco/todo-service/configs"
 )
 
 type Todo struct {
@@ -20,4 +22,17 @@ func (j Todo) Identifier() string {
 
 func (j Todo) SetIdentifier(id string) {
 	j.ID, _ = strconv.Atoi(id)
+}
+
+func (j Todo) SetCreatedBy(user *configs.User) {
+}
+
+func (j Todo) SetUpdatedBy(user *configs.User) {
+}
+
+func (j Todo) SetDeletedBy(user *configs.User) {
+}
+
+func (j Todo) IsSoftDelete() bool {
+	return false
 }
