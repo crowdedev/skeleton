@@ -39,5 +39,6 @@ func (g *Rest) Run() {
 	}
 
 	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
+
 	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), handlers.NewServer(mux).Serve())
 }
