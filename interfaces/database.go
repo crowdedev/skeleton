@@ -18,5 +18,5 @@ func NewDatabase() configs.Application {
 func (d *Database) Run() {
 	log.Printf("Starting DB Auto Migration")
 
-	todos.RegisterAutoMigration()
+	todos.NewServer().RegisterAutoMigrate()
 }

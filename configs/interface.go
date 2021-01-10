@@ -1,5 +1,12 @@
 package configs
 
+import (
+	"context"
+
+	runtime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"google.golang.org/grpc"
+)
+
 type (
 	Model interface {
 		TableName() string
@@ -17,6 +24,13 @@ type (
 		Update() Model
 		Bind() Model
 		Delete()
+	}
+
+	Server interface {
+		RegisterRest(context context.Context, runtime *runtime.ServeMux)
+		RegisterGRpc(server *grpc.Server)
+		RegisterAutoMigrate()
+		RegisterQueueConsumer()
 	}
 
 	Application interface {

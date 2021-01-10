@@ -11,20 +11,31 @@ import (
 	"google.golang.org/grpc"
 )
 
-func RegisterGrpcServer(s *grpc.Server) {
-	grpcs.RegisterTodosServer(s, NewTodo())
+type Server struct {
 }
 
-func RegisterRestServer(c context.Context, r *runtime.ServeMux) {
+func NewServer() configs.Server {
+	return &Server{}
+}
+
+func (s *Server) RegisterGRpc(server *grpc.Server) {
+	grpcs.RegisterTodosServer(server, NewTodo())
+}
+
+func (s *Server) RegisterRest(context context.Context, runtime *runtime.ServeMux) {
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := grpcs.RegisterTodosHandlerFromEndpoint(c, r, fmt.Sprintf("0.0.0.0:%d", configs.Env.RpcPort), opts)
+	err := grpcs.RegisterTodosHandlerFromEndpoint(context, runtime, fmt.Sprintf("0.0.0.0:%d", configs.Env.RpcPort), opts)
 	if err != nil {
 		panic(err)
 	}
 }
 
-func RegisterAutoMigration() {
+func (s *Server) RegisterAutoMigrate() {
 	if configs.Env.DbAutoMigrate {
 		configs.Database.AutoMigrate(&models.Todo{})
 	}
+}
+
+func (s *Server) RegisterQueueConsumer() {
+	NewTodo().Consume()
 }

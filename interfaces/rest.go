@@ -28,7 +28,7 @@ func (g *Rest) Run() {
 	defer cancel()
 
 	mux := runtime.NewServeMux()
-	todos.RegisterRestServer(ctx, mux)
+	todos.NewServer().RegisterRest(ctx, mux)
 
 	err := mux.HandlePath("GET", "/health", func(w http.ResponseWriter, r *http.Request, pathParams map[string]string) {
 		w.Write([]byte("OK"))

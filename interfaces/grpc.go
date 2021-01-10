@@ -25,7 +25,7 @@ func (g *GRpc) Run() {
 	}
 
 	app := grpc.NewServer()
-	todos.RegisterGrpcServer(app)
+	todos.NewServer().RegisterGRpc(app)
 
 	log.Printf("Starting gRPC Server on :%d", configs.Env.RpcPort)
 
