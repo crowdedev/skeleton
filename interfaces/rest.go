@@ -8,6 +8,7 @@ import (
 
 	configs "github.com/crowdeco/skeleton/configs"
 	handlers "github.com/crowdeco/skeleton/handlers"
+	middlewares "github.com/crowdeco/skeleton/middlewares"
 	todos "github.com/crowdeco/skeleton/todos"
 
 	runtime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -38,7 +39,10 @@ func (g *Rest) Run() {
 		panic(err)
 	}
 
+	middleware := handlers.NewMiddleware()
+	middleware.Add(middlewares.NewAuth())
+
 	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
 
-	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), handlers.NewServer(mux).Serve())
+	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(mux))
 }

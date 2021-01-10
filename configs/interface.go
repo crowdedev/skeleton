@@ -2,6 +2,7 @@ package configs
 
 import (
 	"context"
+	"net/http"
 
 	runtime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -31,6 +32,10 @@ type (
 		RegisterGRpc(server *grpc.Server)
 		RegisterAutoMigrate()
 		RegisterQueueConsumer()
+	}
+
+	Middleware interface {
+		Attach(request *http.Request, response http.ResponseWriter)
 	}
 
 	Application interface {
