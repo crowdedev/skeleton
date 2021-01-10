@@ -35,7 +35,7 @@ type (
 	}
 
 	Middleware interface {
-		Attach(request *http.Request, response http.ResponseWriter)
+		Attach(request *http.Request, response http.ResponseWriter) bool
 	}
 
 	Application interface {

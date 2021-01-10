@@ -27,7 +27,10 @@ func (m *Middleware) Add(middleware configs.Middleware) {
 func (m *Middleware) Attach(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
 		for _, middleware := range m.middlewares {
-			middleware.Attach(request, response)
+			stop := middleware.Attach(request, response)
+			if stop {
+				return
+			}
 		}
 
 		handler.ServeHTTP(response, request)
