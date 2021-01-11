@@ -27,7 +27,7 @@ func NewTodo() *Todo {
 	}
 }
 
-func (t *Todo) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.PaginatedResponse, error) {
+func (t *Todo) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.TodoPaginatedResponse, error) {
 	logger := handlers.NewLogger()
 
 	logger.Info(fmt.Sprintf("%+v", r))
@@ -50,7 +50,7 @@ func (t *Todo) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.Pagi
 		})
 	}
 
-	return &grpcs.PaginatedResponse{
+	return &grpcs.TodoPaginatedResponse{
 		Code: http.StatusOK,
 		Data: Todos,
 		Meta: &grpcs.PaginationMetadata{
@@ -64,7 +64,7 @@ func (t *Todo) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.Pagi
 	}, nil
 }
 
-func (t *Todo) Create(c context.Context, r *grpcs.Todo) (*grpcs.Response, error) {
+func (t *Todo) Create(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
 	logger := handlers.NewLogger()
 
 	logger.Info(fmt.Sprintf("%+v", r))
@@ -73,7 +73,7 @@ func (t *Todo) Create(c context.Context, r *grpcs.Todo) (*grpcs.Response, error)
 	validator := validations.Todo{}
 	result, err := validator.Validate(r, &model)
 	if result != true {
-		return &grpcs.Response{
+		return &grpcs.TodoResponse{
 			Code:    http.StatusBadRequest,
 			Data:    r,
 			Message: err.Error(),
@@ -88,13 +88,13 @@ func (t *Todo) Create(c context.Context, r *grpcs.Todo) (*grpcs.Response, error)
 
 	logger.Info(fmt.Sprintf("%+v", r))
 
-	return &grpcs.Response{
+	return &grpcs.TodoResponse{
 		Code: http.StatusCreated,
 		Data: r,
 	}, nil
 }
 
-func (t *Todo) Update(c context.Context, r *grpcs.Todo) (*grpcs.Response, error) {
+func (t *Todo) Update(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
 	logger := handlers.NewLogger()
 
 	logger.Info(fmt.Sprintf("%+v", r))
@@ -106,7 +106,7 @@ func (t *Todo) Update(c context.Context, r *grpcs.Todo) (*grpcs.Response, error)
 	if 0 == model.ID {
 		logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
 
-		return &grpcs.Response{
+		return &grpcs.TodoResponse{
 			Code: http.StatusNotFound,
 			Data: nil,
 		}, nil
@@ -117,7 +117,7 @@ func (t *Todo) Update(c context.Context, r *grpcs.Todo) (*grpcs.Response, error)
 	validator := validations.Todo{}
 	result, err := validator.Validate(r, &model)
 	if result != true {
-		return &grpcs.Response{
+		return &grpcs.TodoResponse{
 			Code:    http.StatusBadRequest,
 			Data:    r,
 			Message: err.Error(),
@@ -130,13 +130,13 @@ func (t *Todo) Update(c context.Context, r *grpcs.Todo) (*grpcs.Response, error)
 		logger.Error(fmt.Sprintf("%+v", err))
 	}
 
-	return &grpcs.Response{
+	return &grpcs.TodoResponse{
 		Code: http.StatusOK,
 		Data: r,
 	}, nil
 }
 
-func (t *Todo) Get(c context.Context, r *grpcs.Todo) (*grpcs.Response, error) {
+func (t *Todo) Get(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
 	logger := handlers.NewLogger()
 
 	logger.Info(fmt.Sprintf("%+v", r))
@@ -148,7 +148,7 @@ func (t *Todo) Get(c context.Context, r *grpcs.Todo) (*grpcs.Response, error) {
 	if 0 == model.ID {
 		logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
 
-		return &grpcs.Response{
+		return &grpcs.TodoResponse{
 			Code: http.StatusNotFound,
 			Data: nil,
 		}, nil
@@ -160,13 +160,13 @@ func (t *Todo) Get(c context.Context, r *grpcs.Todo) (*grpcs.Response, error) {
 
 	logger.Info(fmt.Sprintf("%+v", r))
 
-	return &grpcs.Response{
+	return &grpcs.TodoResponse{
 		Code: http.StatusOK,
 		Data: r,
 	}, nil
 }
 
-func (t *Todo) Delete(c context.Context, r *grpcs.Todo) (*grpcs.Response, error) {
+func (t *Todo) Delete(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
 	logger := handlers.NewLogger()
 
 	logger.Info(fmt.Sprintf("%+v", r))
@@ -178,7 +178,7 @@ func (t *Todo) Delete(c context.Context, r *grpcs.Todo) (*grpcs.Response, error)
 	if 0 == model.ID {
 		logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
 
-		return &grpcs.Response{
+		return &grpcs.TodoResponse{
 			Code: http.StatusNotFound,
 			Data: nil,
 		}, nil
@@ -186,7 +186,7 @@ func (t *Todo) Delete(c context.Context, r *grpcs.Todo) (*grpcs.Response, error)
 
 	handlers.NewHandler(services.NewTodo(model)).Delete()
 
-	return &grpcs.Response{
+	return &grpcs.TodoResponse{
 		Code: http.StatusNoContent,
 		Data: nil,
 	}, nil

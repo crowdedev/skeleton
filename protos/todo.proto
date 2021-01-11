@@ -12,33 +12,33 @@ message Todo {
     string name = 3;
 }
 
-message Response {
+message TodoResponse {
     int32 code = 1;
     Todo data = 2;
     string message = 3;
 }
 
-message PaginatedResponse {
+message TodoPaginatedResponse {
     int32 code = 1;
     repeated Todo data = 2;
     PaginationMetadata meta = 3;
 }
 
 service Todos {
-    rpc GetPaginated (Pagination) returns (PaginatedResponse) {
+    rpc GetPaginated (Pagination) returns (TodoPaginatedResponse) {
         option (google.api.http) = {
             get: "/api/v1/todos"
         };
     }
 
-    rpc Create (Todo) returns (Response) {
+    rpc Create (Todo) returns (TodoResponse) {
         option (google.api.http) = {
             post: "/api/v1/todos"
             body: "*"
         };
     }
 
-    rpc Update (Todo) returns (Response) {
+    rpc Update (Todo) returns (TodoResponse) {
         option (google.api.http) = {
             put: "/api/v1/todos/{id}"
             body: "*"
@@ -50,13 +50,13 @@ service Todos {
         };
     }
 
-    rpc Get (Todo) returns (Response) {
+    rpc Get (Todo) returns (TodoResponse) {
         option (google.api.http) = {
             get: "/api/v1/todos/{id}"
         };
     }
 
-    rpc Delete (Todo) returns (Response) {
+    rpc Delete (Todo) returns (TodoResponse) {
         option (google.api.http) = {
             delete: "/api/v1/todos/{id}"
         };
