@@ -3,6 +3,7 @@ module github.com/crowdeco/skeleton
 go 1.14
 
 require (
+	github.com/dustin/go-humanize v1.0.0
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.4 // indirect
