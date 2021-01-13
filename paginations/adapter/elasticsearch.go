@@ -35,7 +35,7 @@ func (es *ElasticsearchAdapter) Nums() (int64, error) {
 }
 
 func (es *ElasticsearchAdapter) Slice(offset, length int, data interface{}) error {
-	result, err := configs.Elasticsearch.Search().Index(es.index).Query(es.query).From(offset).Size(length).Do(es.context)
+	result, err := configs.Elasticsearch.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).From(offset).Size(length).Do(es.context)
 	if err != nil {
 		panic(err)
 	}
