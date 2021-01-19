@@ -22,3 +22,13 @@
 
 ![Get](assets/imgs/get.png)
 
+## Tools
+
+Saat ini masih menggunakan protoc-gen-go versi yang lama (v1.4.3)
+
+```
+$ go install \
+    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+    github.com/golang/protobuf/protoc-gen-go
+```

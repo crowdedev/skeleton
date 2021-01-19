@@ -26,7 +26,7 @@ func NewElasticsearchAdapter(context context.Context, index string, query elasti
 }
 
 func (es *ElasticsearchAdapter) Nums() (int64, error) {
-	result, err := configs.Elasticsearch.Search().Index(es.index).Query(es.query).Do(es.context)
+	result, err := configs.Elasticsearch.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).Do(es.context)
 	if err != nil {
 		panic(err)
 	}
