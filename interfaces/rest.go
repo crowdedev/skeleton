@@ -76,7 +76,7 @@ func (g *Rest) Run() {
 	middleware := handlers.NewMiddleware()
 	middleware.Add(middlewares.NewAuth())
 
-    log.Printf("API Documentation is ready at: http://localhost:%d/apidocs/ui", configs.Env.HtppPort)
+	log.Printf("API Documentation is ready at: http://localhost:%d/apidocs/ui", configs.Env.HtppPort)
 
-    http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(mux))
+	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(mux))
 }

@@ -17,11 +17,11 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     consumes: "application/json"
     produces: "application/json"
     security_definitions: {
-		security: {
-			key: "BasicAuth"
-			value: {
-				type: TYPE_BASIC
-			}
-		}
+        security: {
+            key: "BasicAuth"
+                value: {
+                type: TYPE_BASIC
+            }
+        }
     }
 };
