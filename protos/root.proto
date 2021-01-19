@@ -11,7 +11,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
         title: "Todo API"
         version: "1.0"
     }
-    host: "localhost:7777/apidocs/ui"
+    host: "localhost:7777"
     schemes: HTTP
     schemes: HTTPS
     consumes: "application/json"

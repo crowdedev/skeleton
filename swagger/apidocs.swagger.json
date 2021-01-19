@@ -4,7 +4,7 @@
     "title": "Todo API",
     "version": "1.0"
   },
-  "host": "localhost:7777/apidocs/ui",
+  "host": "localhost:7777",
   "schemes": [
     "http",
     "https"
