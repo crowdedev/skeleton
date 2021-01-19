@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package grpcs;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = ".;grpcs";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "Todo API"
+        version: "1.0"
+    }
+    host: "localhost:7777/apidocs/ui"
+    schemes: HTTP
+    schemes: HTTPS
+    consumes: "application/json"
+    produces: "application/json"
+    security_definitions: {
+		security: {
+			key: "BasicAuth"
+			value: {
+				type: TYPE_BASIC
+			}
+		}
+    }
+};
