@@ -18,5 +18,5 @@ func NewQueue() configs.Application {
 func (q *Queue) Run() {
 	log.Printf("Starting Queue Consumer")
 
-	todos.NewServer().RegisterQueueConsumer()
+	go todos.NewServer().RegisterQueueConsumer()
 }
