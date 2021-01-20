@@ -8,11 +8,9 @@ import (
 	mongodb "github.com/weekface/mgorus"
 )
 
-type (
-	Logger struct {
-		logger *logrus.Logger
-	}
-)
+type Logger struct {
+	logger *logrus.Logger
+}
 
 func NewLogger() *Logger {
 	logger := logrus.New()

@@ -1,18 +1,26 @@
 package configs
 
 import (
-	"context"
 	"net/http"
+	"time"
 
-	runtime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
+	"gorm.io/gorm"
 )
 
 type (
+	Base struct {
+		Id        int32          `gorm:"primary_key"`
+		CreatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP"`
+		UpdatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+		CreatedBy int32          `gorm:"default:null"`
+		UpdatedBy int32          `gorm:"default:null"`
+		DeletedAt gorm.DeletedAt `gorm:"default:null;index"`
+		DeletedBy int32          `gorm:"default:null"`
+	}
+
 	Model interface {
 		TableName() string
-		Identifier() string
-		SetIdentifier(id string)
 		SetCreatedBy(user *User)
 		SetUpdatedBy(user *User)
 		SetDeletedBy(user *User)
@@ -20,15 +28,18 @@ type (
 	}
 
 	Service interface {
-		Model() Model
-		Create() Model
-		Update() Model
-		Bind() Model
-		Delete()
+		Name() string
+		Create(value interface{}) error
+		Update(value interface{}, id int32) error
+		Bind(value interface{}, id int32) error
+		Delete(value interface{}, id int32) error
+	}
+
+	Module interface {
+		Consume()
 	}
 
 	Server interface {
-		RegisterRest(context context.Context, runtime *runtime.ServeMux)
 		RegisterGRpc(server *grpc.Server)
 		RegisterAutoMigrate()
 		RegisterQueueConsumer()

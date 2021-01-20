@@ -10,16 +10,12 @@ import (
 	elastic "github.com/olivere/elastic/v7"
 )
 
-type (
-	Handler struct {
-		service configs.Service
-	}
-)
+type Handler struct {
+	service configs.Service
+}
 
 func NewHandler(service configs.Service) *Handler {
-	return &Handler{
-		service: service,
-	}
+	return &Handler{service}
 }
 
 func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
@@ -29,7 +25,7 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 	}
 
 	var result []interface{}
-	adapter := adapter.NewElasticsearchAdapter(context.Background(), h.service.Model().TableName(), query)
+	adapter := adapter.NewElasticsearchAdapter(context.Background(), h.service.Name(), query)
 	paginator.Paginate(adapter)
 	paginator.Pager.Results(&result)
 	next := paginator.Page + 1
@@ -49,42 +45,53 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 	}, result
 }
 
-func (h *Handler) Create() configs.Model {
-	model := h.service.Create()
+func (h *Handler) Create(v interface{}) error {
+	err := h.service.Create(v)
+	if err != nil {
+		return err
+	}
 
-	data, _ := json.Marshal(model)
-	configs.Elasticsearch.Index().Index(h.service.Model().TableName()).BodyJson(string(data)).Do(context.Background())
+	data, _ := json.Marshal(v)
+	configs.Elasticsearch.Index().Index(h.service.Name()).BodyJson(string(data)).Do(context.Background())
 
-	return model
+	return nil
 }
 
-func (h *Handler) Update() configs.Model {
-	h.elasticsearchDelete()
+func (h *Handler) Update(v interface{}, id int32) error {
+	err := h.service.Update(v, id)
+	if err != nil {
+		return err
+	}
 
-	model := h.service.Update()
+	h.elasticsearchDelete(id)
+	data, _ := json.Marshal(v)
+	configs.Elasticsearch.Index().Index(h.service.Name()).BodyJson(string(data)).Do(context.Background())
 
-	data, _ := json.Marshal(model)
-	configs.Elasticsearch.Index().Index(h.service.Model().TableName()).BodyJson(string(data)).Do(context.Background())
-
-	return model
+	return nil
 }
 
-func (h *Handler) Delete() {
-	h.elasticsearchDelete()
-	h.service.Delete()
+func (h *Handler) Delete(v interface{}, id int32) error {
+	err := h.service.Delete(v, id)
+	if err != nil {
+		return err
+	}
+
+	h.elasticsearchDelete(id)
+
+	return nil
 }
 
-func (h *Handler) Bind() configs.Model {
-	return h.service.Bind()
+func (h *Handler) Bind(v interface{}, id int32) error {
+	return h.service.Bind(v, id)
 }
 
-func (h *Handler) elasticsearchDelete() {
+func (h *Handler) elasticsearchDelete(id interface{}) {
 	context := context.Background()
 
 	query := elastic.NewBoolQuery()
-	query.Must(elastic.NewTermQuery("id", h.service.Model().Identifier()))
-	result, _ := configs.Elasticsearch.Search().Index(h.service.Model().TableName()).Query(query).Do(context)
+	query.Must(elastic.NewTermQuery("id", id))
+	result, _ := configs.Elasticsearch.Search().Index(h.service.Name()).Query(query).Do(context)
 	for _, hit := range result.Hits.Hits {
-		configs.Elasticsearch.Delete().Index(h.service.Model().TableName()).Id(hit.Id).Do(context)
+		configs.Elasticsearch.Delete().Index(h.service.Name()).Id(hit.Id).Do(context)
 	}
 }
