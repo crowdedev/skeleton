@@ -9,7 +9,7 @@ option go_package = ".;grpcs";
 
 message Todo {
     string id = 1;
-    string name = 3;
+    string name = 2;
 }
 
 message TodoResponse {
