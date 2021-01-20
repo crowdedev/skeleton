@@ -8,7 +8,7 @@ import (
 )
 
 type (
-	_Env struct {
+	env struct {
 		Debug              bool
 		HtppPort           int
 		RpcPort            int
@@ -37,9 +37,9 @@ type (
 	}
 )
 
-var Env _Env
+var Env env
 
-func _LoadEnv() {
+func loadEnv() {
 	godotenv.Load()
 
 	Env.Debug, _ = strconv.ParseBool(os.Getenv("APP_DEBUG"))

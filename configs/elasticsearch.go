@@ -9,7 +9,7 @@ import (
 
 var Elasticsearch *elastic.Client
 
-func _LoadElasticsearch() {
+func loadElasticsearch() {
 	client, err := elastic.NewClient(elastic.SetURL(fmt.Sprintf("%s:%d", Env.ElasticsearchHost, Env.ElasticsearchPort)), elastic.SetSniff(false), elastic.SetHealthcheck(false))
 	if err != nil {
 		log.Printf("Elasticsearch: %+v \n", err)

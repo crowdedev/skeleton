@@ -11,7 +11,7 @@ import (
 
 var Database *gorm.DB
 
-func _LoadDatabase() {
+func loadDatabase() {
 	host := Env.DbHost
 	port := Env.DbPort
 	user := Env.DbUser
