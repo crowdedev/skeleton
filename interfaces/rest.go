@@ -63,5 +63,5 @@ func (g *Rest) Run() {
 
 	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(router.Handle(mux)))
 
-	log.Println("API Documentation is ready at /apidocs/ui")
+	log.Println("API Documentation is ready at /api/docs/ui")
 }
