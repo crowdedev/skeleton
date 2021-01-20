@@ -6,11 +6,10 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/crowdeco/skeleton/routes"
-
 	configs "github.com/crowdeco/skeleton/configs"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	middlewares "github.com/crowdeco/skeleton/middlewares"
+	routes "github.com/crowdeco/skeleton/routes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 )
