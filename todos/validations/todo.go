@@ -11,6 +11,7 @@ func (j *Todo) Validate(m *models.Todo) (bool, error) {
 	err := validator.ValidateStruct(m,
 		validator.Field(&m.Name, validator.Required, validator.Length(2, 50)),
 	)
+
 	if err != nil {
 		return false, err
 	}

@@ -94,6 +94,7 @@ func (m *module) Create(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, 
 			Message: err.Error(),
 		}, nil
 	}
+
 	r.Id = v.Id
 
 	return &grpcs.TodoResponse{
@@ -153,6 +154,7 @@ func (m *module) Get(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, err
 			Data: nil,
 		}, nil
 	}
+
 	copier.Copy(&r, &v)
 
 	return &grpcs.TodoResponse{
