@@ -1,63 +1,67 @@
 package services
 
 import (
-	"errors"
-	"fmt"
-
 	configs "github.com/crowdeco/skeleton/configs"
-	handlers "github.com/crowdeco/skeleton/handlers"
 	models "github.com/crowdeco/skeleton/todos/models"
 	"gorm.io/gorm"
 )
 
-type (
-	Todo struct {
-		model models.Todo
-	}
-)
-
-func NewTodo(model models.Todo) configs.Service {
-	return &Todo{
-		model: model,
-	}
+type service struct {
+	db   *gorm.DB
+	name string
 }
 
-func (s *Todo) Model() configs.Model {
-	return s.model
-}
-
-func (s *Todo) Create() configs.Model {
-	s.model.SetCreatedBy(configs.Env.User)
-	configs.Database.Model(s.model).Create(&s.model)
-
-	return s.model
-}
-
-func (s *Todo) Update() configs.Model {
-	s.model.SetUpdatedBy(configs.Env.User)
-	configs.Database.Model(s.model).Save(&s.model)
-
-	return s.model
-}
-
-func (s *Todo) Delete() {
-	s.model.SetDeletedBy(configs.Env.User)
-	if s.model.IsSoftDelete() {
-		configs.Database.Model(s.model).Save(&s.model)
-	} else {
-		configs.Database.Model(s.model).Delete(&s.model)
+func NewTodoService(db *gorm.DB) configs.Service {
+	return &service{
+		db:   db,
+		name: models.Todo{}.TableName(),
 	}
 }
 
-func (s *Todo) Bind() configs.Model {
-	result := configs.Database.Model(s.model).First(&s.model, s.model.ID)
-	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		logger := handlers.NewLogger()
+func (s *service) Name() string {
+	return s.name
+}
 
-		logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", s.model.ID))
-
-		s.model.ID = 0
+func (s *service) Create(v interface{}) error {
+	if m, ok := v.(*models.Todo); ok {
+		m.SetCreatedBy(configs.Env.User)
+		return s.db.Debug().Create(v).Error
 	}
+	return gorm.ErrModelValueRequired
+}
 
-	return s.model
+func (s *service) Update(v interface{}, id int32) error {
+	if m, ok := v.(*models.Todo); ok {
+		err := s.db.First(&models.Todo{}, id).Error
+		if err != nil {
+			return err
+		}
+		m.Id = id
+		m.SetUpdatedBy(configs.Env.User)
+		return s.db.Save(m).Error
+	}
+	return gorm.ErrModelValueRequired
+}
+
+func (s *service) Bind(v interface{}, id int32) error {
+	if _, ok := v.(*models.Todo); ok {
+		return s.db.First(v, id).Error
+	}
+	return gorm.ErrModelValueRequired
+}
+
+func (s *service) Delete(v interface{}, id int32) error {
+	if m, ok := v.(*models.Todo); ok {
+		err := s.db.First(&models.Todo{}, id).Error
+		if err != nil {
+			return err
+		}
+		m.SetDeletedBy(configs.Env.User)
+		if m.IsSoftDelete() {
+			return s.db.Delete(v, id).Error
+		} else {
+			return s.db.Unscoped().Delete(v, id).Error
+		}
+	}
+	return gorm.ErrModelValueRequired
 }

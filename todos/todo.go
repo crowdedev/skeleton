@@ -7,45 +7,51 @@ import (
 	"net/http"
 	"time"
 
+	configs "github.com/crowdeco/skeleton/configs"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	paginations "github.com/crowdeco/skeleton/paginations"
 	grpcs "github.com/crowdeco/skeleton/protos/builds"
 	models "github.com/crowdeco/skeleton/todos/models"
 	services "github.com/crowdeco/skeleton/todos/services"
 	validations "github.com/crowdeco/skeleton/todos/validations"
+	"github.com/jinzhu/copier"
 )
 
-type Todo struct {
+type TodoModule interface {
+	grpcs.TodosServer
+	configs.Module
+}
+
+type module struct {
+	handler   *handlers.Handler
+	logger    *handlers.Logger
 	messenger *handlers.Messenger
 }
 
-func NewTodo() *Todo {
-	model := models.Todo{}
-
-	return &Todo{
-		messenger: handlers.NewMessenger(model.TableName()),
+func NewTodoModule() TodoModule {
+	s := services.NewTodoService(configs.Database)
+	return &module{
+		handler:   handlers.NewHandler(s),
+		logger:    handlers.NewLogger(),
+		messenger: handlers.NewMessenger(s.Name()),
 	}
 }
 
-func (t *Todo) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.TodoPaginatedResponse, error) {
-	logger := handlers.NewLogger()
-
-	logger.Info(fmt.Sprintf("%+v", r))
+func (m *module) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.TodoPaginatedResponse, error) {
+	m.logger.Info(fmt.Sprintf("%+v", r))
 
 	paginator := paginations.Pagination{}
 	paginator.Handle(r)
 
-	metadata, result := handlers.NewHandler(services.NewTodo(models.Todo{})).Paginate(paginator)
+	metadata, result := m.handler.Paginate(paginator)
 	Todos := []*grpcs.Todo{}
-
-	logger.Info(fmt.Sprintf("%+v", r))
 
 	record := models.Todo{}
 	for _, v := range result {
 		data, _ := json.Marshal(v)
 		json.Unmarshal(data, &record)
 		Todos = append(Todos, &grpcs.Todo{
-			Id:   int32(record.ID),
+			Id:   int32(record.Id),
 			Name: record.Name,
 		})
 	}
@@ -64,15 +70,15 @@ func (t *Todo) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.Todo
 	}, nil
 }
 
-func (t *Todo) Create(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
-	logger := handlers.NewLogger()
+func (m *module) Create(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
+	m.logger.Info(fmt.Sprintf("%+v", r))
 
-	logger.Info(fmt.Sprintf("%+v", r))
+	v := models.Todo{}
+	copier.Copy(&v, &r)
 
-	model := models.Todo{}
 	validator := validations.Todo{}
-	result, err := validator.Validate(r, &model)
-	if result != true {
+	if ok, err := validator.Validate(&v); !ok {
+		m.logger.Info(fmt.Sprintf("%+v", err))
 		return &grpcs.TodoResponse{
 			Code:    http.StatusBadRequest,
 			Data:    r,
@@ -80,13 +86,15 @@ func (t *Todo) Create(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, er
 		}, nil
 	}
 
-	logger.Info(fmt.Sprintf("%+v", r))
-
-	model = handlers.NewHandler(services.NewTodo(model)).Create().(models.Todo)
-
-	r.Id = int32(model.ID)
-
-	logger.Info(fmt.Sprintf("%+v", r))
+	err := m.handler.Create(&v)
+	if err != nil {
+		return &grpcs.TodoResponse{
+			Code:    http.StatusBadRequest,
+			Data:    r,
+			Message: err.Error(),
+		}, nil
+	}
+	r.Id = v.Id
 
 	return &grpcs.TodoResponse{
 		Code: http.StatusCreated,
@@ -94,29 +102,15 @@ func (t *Todo) Create(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, er
 	}, nil
 }
 
-func (t *Todo) Update(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
-	logger := handlers.NewLogger()
+func (m *module) Update(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
+	m.logger.Info(fmt.Sprintf("%+v", r))
 
-	logger.Info(fmt.Sprintf("%+v", r))
-
-	model := models.Todo{}
-	model.ID = int(r.Id)
-
-	model = handlers.NewHandler(services.NewTodo(model)).Bind().(models.Todo)
-	if 0 == model.ID {
-		logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
-
-		return &grpcs.TodoResponse{
-			Code: http.StatusNotFound,
-			Data: nil,
-		}, nil
-	}
-
-	logger.Info(fmt.Sprintf("%+v", model))
+	v := models.Todo{}
+	copier.Copy(&v, &r)
 
 	validator := validations.Todo{}
-	result, err := validator.Validate(r, &model)
-	if result != true {
+	if ok, err := validator.Validate(&v); !ok {
+		m.logger.Info(fmt.Sprintf("%+v", err))
 		return &grpcs.TodoResponse{
 			Code:    http.StatusBadRequest,
 			Data:    r,
@@ -124,10 +118,20 @@ func (t *Todo) Update(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, er
 		}, nil
 	}
 
-	data, _ := json.Marshal(model)
-	err = t.messenger.Push(data)
+	err := m.handler.Bind(&models.Todo{}, r.Id)
 	if err != nil {
-		logger.Error(fmt.Sprintf("%+v", err))
+		m.logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
+
+		return &grpcs.TodoResponse{
+			Code: http.StatusNotFound,
+			Data: nil,
+		}, nil
+	}
+
+	data, _ := json.Marshal(v)
+	err = m.messenger.Push(data)
+	if err != nil {
+		m.logger.Error(fmt.Sprintf("%+v", err))
 	}
 
 	return &grpcs.TodoResponse{
@@ -136,29 +140,20 @@ func (t *Todo) Update(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, er
 	}, nil
 }
 
-func (t *Todo) Get(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
-	logger := handlers.NewLogger()
+func (m *module) Get(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
+	m.logger.Info(fmt.Sprintf("%+v", r))
 
-	logger.Info(fmt.Sprintf("%+v", r))
-
-	model := models.Todo{}
-	model.ID = int(r.Id)
-
-	model = handlers.NewHandler(services.NewTodo(model)).Bind().(models.Todo)
-	if 0 == model.ID {
-		logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
+	v := models.Todo{}
+	err := m.handler.Bind(&v, r.Id)
+	if err != nil {
+		m.logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
 
 		return &grpcs.TodoResponse{
 			Code: http.StatusNotFound,
 			Data: nil,
 		}, nil
 	}
-
-	logger.Info(fmt.Sprintf("%+v", model))
-
-	r.Name = model.Name
-
-	logger.Info(fmt.Sprintf("%+v", r))
+	copier.Copy(&r, &v)
 
 	return &grpcs.TodoResponse{
 		Code: http.StatusOK,
@@ -166,25 +161,20 @@ func (t *Todo) Get(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error
 	}, nil
 }
 
-func (t *Todo) Delete(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
-	logger := handlers.NewLogger()
+func (m *module) Delete(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, error) {
+	m.logger.Info(fmt.Sprintf("%+v", r))
 
-	logger.Info(fmt.Sprintf("%+v", r))
+	v := models.Todo{}
 
-	model := models.Todo{}
-	model.ID = int(r.Id)
-
-	handlers.NewHandler(services.NewTodo(model)).Bind()
-	if 0 == model.ID {
-		logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
+	err := m.handler.Delete(&v, r.Id)
+	if err != nil {
+		m.logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
 
 		return &grpcs.TodoResponse{
 			Code: http.StatusNotFound,
 			Data: nil,
 		}, nil
 	}
-
-	handlers.NewHandler(services.NewTodo(model)).Delete()
 
 	return &grpcs.TodoResponse{
 		Code: http.StatusNoContent,
@@ -192,22 +182,24 @@ func (t *Todo) Delete(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, er
 	}, nil
 }
 
-func (t *Todo) Consume() {
+func (m *module) Consume() {
 	time.Sleep(time.Second * 5) // waiting for connection
 
-	logger := handlers.NewLogger()
-	messege, err := t.messenger.Consume()
+	message, err := m.messenger.Consume()
 	if err != nil {
-		logger.Error(fmt.Sprintf("%+v", err))
+		m.logger.Error(fmt.Sprintf("%+v", err))
 	}
 
-	for d := range messege {
-		model := models.Todo{}
-		json.Unmarshal(d.Body, &model)
+	for d := range message {
+		v := models.Todo{}
+		json.Unmarshal(d.Body, &v)
 
-		logger.Info(fmt.Sprintf("%+v", model))
+		m.logger.Info(fmt.Sprintf("%+v", v))
 
-		handlers.NewHandler(services.NewTodo(model)).Update()
+		err := m.handler.Update(&v, v.Id)
+		if err != nil {
+			m.logger.Error(fmt.Sprintf("%+v", err))
+		}
 		d.Ack(false)
 	}
 }
