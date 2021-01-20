@@ -45,8 +45,8 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 	}, result
 }
 
-func (h *Handler) Create(v interface{}) error {
-	err := h.service.Create(v)
+func (h *Handler) Create(v interface{}, id string) error {
+	err := h.service.Create(v, id)
 	if err != nil {
 		return err
 	}
@@ -70,6 +70,10 @@ func (h *Handler) Update(v interface{}, id string) error {
 	return nil
 }
 
+func (h *Handler) Bind(v interface{}, id string) error {
+	return h.service.Bind(v, id)
+}
+
 func (h *Handler) Delete(v interface{}, id string) error {
 	err := h.service.Delete(v, id)
 	if err != nil {
@@ -79,10 +83,6 @@ func (h *Handler) Delete(v interface{}, id string) error {
 	h.elasticsearchDelete(id)
 
 	return nil
-}
-
-func (h *Handler) Bind(v interface{}, id string) error {
-	return h.service.Bind(v, id)
 }
 
 func (h *Handler) elasticsearchDelete(id interface{}) {

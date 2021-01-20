@@ -14,6 +14,7 @@ import (
 	models "github.com/crowdeco/skeleton/todos/models"
 	services "github.com/crowdeco/skeleton/todos/services"
 	validations "github.com/crowdeco/skeleton/todos/validations"
+	"github.com/google/uuid"
 	"github.com/jinzhu/copier"
 )
 
@@ -44,21 +45,20 @@ func (m *module) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.To
 	paginator.Handle(r)
 
 	metadata, result := m.handler.Paginate(paginator)
-	Todos := []*grpcs.Todo{}
+	todos := []*grpcs.Todo{}
 
 	record := models.Todo{}
 	for _, v := range result {
 		data, _ := json.Marshal(v)
 		json.Unmarshal(data, &record)
-		Todos = append(Todos, &grpcs.Todo{
-			Id:   record.Id,
-			Name: record.Name,
-		})
+		todo := &grpcs.Todo{}
+		copier.Copy(&todo, &record)
+		todos = append(todos, todo)
 	}
 
 	return &grpcs.TodoPaginatedResponse{
 		Code: http.StatusOK,
-		Data: Todos,
+		Data: todos,
 		Meta: &grpcs.PaginationMetadata{
 			Record:   int32(metadata.Record),
 			Page:     int32(metadata.Page),
@@ -86,7 +86,7 @@ func (m *module) Create(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, 
 		}, nil
 	}
 
-	err := m.handler.Create(&v)
+	err := m.handler.Create(&v, uuid.New().String())
 	if err != nil {
 		return &grpcs.TodoResponse{
 			Code:    http.StatusBadRequest,
@@ -121,11 +121,12 @@ func (m *module) Update(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, 
 
 	err := m.handler.Bind(&models.Todo{}, r.Id)
 	if err != nil {
-		m.logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
+		m.logger.Info(fmt.Sprintf("Data with ID '%s' Not found.", r.Id))
 
 		return &grpcs.TodoResponse{
-			Code: http.StatusNotFound,
-			Data: nil,
+			Code:    http.StatusNotFound,
+			Data:    nil,
+			Message: err.Error(),
 		}, nil
 	}
 
@@ -147,11 +148,12 @@ func (m *module) Get(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, err
 	v := models.Todo{}
 	err := m.handler.Bind(&v, r.Id)
 	if err != nil {
-		m.logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
+		m.logger.Info(fmt.Sprintf("Data with ID '%s' Not found.", r.Id))
 
 		return &grpcs.TodoResponse{
-			Code: http.StatusNotFound,
-			Data: nil,
+			Code:    http.StatusNotFound,
+			Data:    nil,
+			Message: err.Error(),
 		}, nil
 	}
 
@@ -170,11 +172,12 @@ func (m *module) Delete(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, 
 
 	err := m.handler.Delete(&v, r.Id)
 	if err != nil {
-		m.logger.Info(fmt.Sprintf("Data with ID '%d' Not found.", r.Id))
+		m.logger.Info(fmt.Sprintf("Data with ID '%s' Not found.", r.Id))
 
 		return &grpcs.TodoResponse{
-			Code: http.StatusNotFound,
-			Data: nil,
+			Code:    http.StatusNotFound,
+			Data:    nil,
+			Message: err.Error(),
 		}, nil
 	}
 

@@ -5,7 +5,8 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/crowdeco/skeleton/todos/models"
+	models "github.com/crowdeco/skeleton/todos/models"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"gorm.io/driver/mysql"
@@ -39,12 +40,13 @@ func TestInit(t *testing.T) {
 }
 
 func (s *Suite) TestCreate() {
-	s.mock.ExpectExec("INSERT INTO `todos` (`name`) VALUES (?)").
-		WithArgs("Todo 1").
+	id := uuid.New().String()
+	s.mock.ExpectExec("INSERT INTO `todos` (`id`,`name`) VALUES (?,?)").
+		WithArgs(id, "Todo 1").
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
 	service := NewTodoService(s.db)
-	service.Create(&models.Todo{Name: "Todo 1"})
+	service.Create(&models.Todo{Name: "Todo 1"}, id)
 
 	if err := s.mock.ExpectationsWereMet(); err != nil {
 		s.T().Errorf("there were unfulfilled expectations: %s", err)
