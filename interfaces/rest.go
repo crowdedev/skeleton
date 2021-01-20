@@ -5,14 +5,13 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"path"
-	"strings"
+
+	"github.com/crowdeco/skeleton/routes"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	middlewares "github.com/crowdeco/skeleton/middlewares"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/connectivity"
 	"google.golang.org/grpc/grpclog"
 )
 
@@ -37,6 +36,7 @@ func (g *Rest) Run() {
 	if err != nil {
 		log.Fatalf("Failed to dial: %v", err)
 	}
+
 	defer func() {
 		if err != nil {
 			if cerr := conn.Close(); cerr != nil {
@@ -53,30 +53,15 @@ func (g *Rest) Run() {
 	}()
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/apidocs/", func(w http.ResponseWriter, r *http.Request) {
-		p := strings.TrimPrefix(r.URL.Path, "/apidocs/")
-		p = path.Join("swagger", p)
-		http.ServeFile(w, r, p)
-	})
-	mux.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "text/plain")
-		if s := conn.GetState(); s != connectivity.Ready {
-			http.Error(w, fmt.Sprintf("grpc server is %s", s), http.StatusBadGateway)
-			return
-		}
-		fmt.Fprintln(w, "OK")
-	})
 
-	gw, err := newGateway(ctx, conn)
-	if err != nil {
-		log.Fatal(err)
-	}
-	mux.Handle("/", gw)
+	router := handlers.NewRouter()
+	router.Add(routes.NewMuxRouter(conn))
+	router.Add(routes.NewGRpcGateway(ctx, conn))
 
 	middleware := handlers.NewMiddleware()
 	middleware.Add(middlewares.NewAuth())
 
-	log.Printf("API Documentation is ready at: http://localhost:%d/apidocs/ui", configs.Env.HtppPort)
+	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(router.Handle(mux)))
 
-	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(mux))
+	log.Println("API Documentation is ready at /apidocs/ui")
 }

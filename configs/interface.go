@@ -45,6 +45,10 @@ type (
 		RegisterQueueConsumer()
 	}
 
+	Router interface {
+		Handle(server *http.ServeMux) *http.ServeMux
+	}
+
 	Middleware interface {
 		Attach(request *http.Request, response http.ResponseWriter) bool
 	}
