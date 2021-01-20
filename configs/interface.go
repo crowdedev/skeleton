@@ -10,13 +10,13 @@ import (
 
 type (
 	Base struct {
-		Id        string         `gorm:"primary_key;column:id;type:varchar(36)"`
+		Id        string         `gorm:"type:varchar(36);primary_key"`
 		CreatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP"`
 		UpdatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
-		CreatedBy int32          `gorm:"default:null"`
-		UpdatedBy int32          `gorm:"default:null"`
+		CreatedBy string         `gorm:"type:varchar(36);default:null"`
+		UpdatedBy string         `gorm:"type:varchar(36);default:null"`
 		DeletedAt gorm.DeletedAt `gorm:"default:null;index"`
-		DeletedBy int32          `gorm:"default:null"`
+		DeletedBy string         `gorm:"type:varchar(36);default:null"`
 	}
 
 	Model interface {
