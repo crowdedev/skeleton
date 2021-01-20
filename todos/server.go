@@ -17,8 +17,8 @@ func NewServer() configs.Server {
 	}
 }
 
-func (s *server) RegisterGRpc(d *grpc.Server) {
-	grpcs.RegisterTodosServer(d, s.module)
+func (s *server) RegisterGRpc(gs *grpc.Server) {
+	grpcs.RegisterTodosServer(gs, s.module)
 }
 
 func (s *server) RegisterAutoMigrate() {

@@ -10,7 +10,7 @@ import (
 
 type (
 	Base struct {
-		Id        string         `gorm:"primary_key"`
+		Id        string         `gorm:"primary_key;column:id;type:varchar(36)"`
 		CreatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP"`
 		UpdatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
 		CreatedBy int32          `gorm:"default:null"`
@@ -29,7 +29,7 @@ type (
 
 	Service interface {
 		Name() string
-		Create(value interface{}) error
+		Create(value interface{}, id string) error
 		Update(value interface{}, id string) error
 		Bind(value interface{}, id string) error
 		Delete(value interface{}, id string) error
