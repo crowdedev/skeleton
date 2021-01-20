@@ -51,7 +51,7 @@ func (m *module) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.To
 		data, _ := json.Marshal(v)
 		json.Unmarshal(data, &record)
 		Todos = append(Todos, &grpcs.Todo{
-			Id:   int32(record.Id),
+			Id:   record.Id,
 			Name: record.Name,
 		})
 	}

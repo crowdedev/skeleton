@@ -30,12 +30,13 @@ func (s *service) Create(v interface{}) error {
 	return gorm.ErrModelValueRequired
 }
 
-func (s *service) Update(v interface{}, id int32) error {
+func (s *service) Update(v interface{}, id string) error {
 	if m, ok := v.(*models.Todo); ok {
 		err := s.db.First(&models.Todo{}, id).Error
 		if err != nil {
 			return err
 		}
+
 		m.Id = id
 		m.SetUpdatedBy(configs.Env.User)
 		return s.db.Save(m).Error
@@ -43,14 +44,14 @@ func (s *service) Update(v interface{}, id int32) error {
 	return gorm.ErrModelValueRequired
 }
 
-func (s *service) Bind(v interface{}, id int32) error {
+func (s *service) Bind(v interface{}, id string) error {
 	if _, ok := v.(*models.Todo); ok {
 		return s.db.First(v, id).Error
 	}
 	return gorm.ErrModelValueRequired
 }
 
-func (s *service) Delete(v interface{}, id int32) error {
+func (s *service) Delete(v interface{}, id string) error {
 	if m, ok := v.(*models.Todo); ok {
 		err := s.db.First(&models.Todo{}, id).Error
 		if err != nil {

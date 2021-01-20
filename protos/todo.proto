@@ -8,7 +8,7 @@ import "pagination.proto";
 option go_package = ".;grpcs";
 
 message Todo {
-    int32 id = 1;
+    string id = 1;
     string name = 3;
 }
 

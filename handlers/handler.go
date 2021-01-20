@@ -57,7 +57,7 @@ func (h *Handler) Create(v interface{}) error {
 	return nil
 }
 
-func (h *Handler) Update(v interface{}, id int32) error {
+func (h *Handler) Update(v interface{}, id string) error {
 	err := h.service.Update(v, id)
 	if err != nil {
 		return err
@@ -70,7 +70,7 @@ func (h *Handler) Update(v interface{}, id int32) error {
 	return nil
 }
 
-func (h *Handler) Delete(v interface{}, id int32) error {
+func (h *Handler) Delete(v interface{}, id string) error {
 	err := h.service.Delete(v, id)
 	if err != nil {
 		return err
@@ -81,7 +81,7 @@ func (h *Handler) Delete(v interface{}, id int32) error {
 	return nil
 }
 
-func (h *Handler) Bind(v interface{}, id int32) error {
+func (h *Handler) Bind(v interface{}, id string) error {
 	return h.service.Bind(v, id)
 }
 
