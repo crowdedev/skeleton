@@ -3,8 +3,10 @@ package services
 import (
 	"database/sql"
 	"testing"
+	"time"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	configs "github.com/crowdeco/skeleton/configs"
 	models "github.com/crowdeco/skeleton/todos/models"
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
@@ -17,6 +19,7 @@ type Suite struct {
 	suite.Suite
 	db   *gorm.DB
 	mock sqlmock.Sqlmock
+	svc  configs.Service
 }
 
 func (s *Suite) SetupSuite() {
@@ -25,7 +28,7 @@ func (s *Suite) SetupSuite() {
 		err error
 	)
 
-	db, s.mock, err = sqlmock.New(sqlmock.QueryMatcherOption(sqlmock.QueryMatcherEqual))
+	db, s.mock, err = sqlmock.New()
 	require.NoError(s.T(), err)
 
 	s.db, err = gorm.Open(mysql.New(mysql.Config{
@@ -33,6 +36,8 @@ func (s *Suite) SetupSuite() {
 		SkipInitializeWithVersion: true,
 	}), &gorm.Config{})
 	require.NoError(s.T(), err)
+
+	s.svc = NewTodoService(s.db)
 }
 
 func TestInit(t *testing.T) {
@@ -41,14 +46,113 @@ func TestInit(t *testing.T) {
 
 func (s *Suite) TestCreate() {
 	id := uuid.New().String()
-	s.mock.ExpectExec("INSERT INTO `todos` (`id`,`name`) VALUES (?,?)").
-		WithArgs(id, "Todo 1").
+	name := "Todo 1"
+
+	s.mock.ExpectExec("INSERT INTO `todos`").
+		WithArgs(id, name).
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	service := NewTodoService(s.db)
-	service.Create(&models.Todo{Name: "Todo 1"}, id)
+	todo := &models.Todo{}
+	todo.Name = name
+	s.svc.Create(todo, id)
 
 	if err := s.mock.ExpectationsWereMet(); err != nil {
 		s.T().Errorf("there were unfulfilled expectations: %s", err)
+	}
+}
+
+func (s *Suite) TestUpdate() {
+	id := uuid.New().String()
+	updated_at := time.Now().UTC()
+	updated_by := ""
+	name := "Todo 1"
+
+	rows := sqlmock.NewRows([]string{"id", "updated_at", "updated_by", "name"}).
+		AddRow(id, updated_at, updated_by, name)
+
+	s.mock.ExpectQuery("SELECT (.)+ FROM `todos` WHERE").
+		WithArgs(id).
+		WillReturnRows(rows)
+	s.mock.ExpectExec("UPDATE `todos`").
+		WithArgs(configs.AnyTime{}, "someone_id", "Todo 2", id).
+		WillReturnResult(sqlmock.NewResult(0, 1))
+
+	todo := &models.Todo{}
+	todo.Name = "Todo 2"
+	todo.UpdatedBy = "someone_id"
+	s.svc.Update(todo, id)
+
+	if err := s.mock.ExpectationsWereMet(); err != nil {
+		s.T().Errorf("there were unfulfilled expectations: %s", err)
+	}
+}
+
+func (s *Suite) TestBind() {
+	id := uuid.New().String()
+	name := "Todo 1"
+
+	rows := sqlmock.NewRows([]string{"id", "name"}).
+		AddRow(id, name)
+
+	s.mock.ExpectQuery("SELECT (.)+ FROM `todos` WHERE").
+		WithArgs(id).
+		WillReturnRows(rows)
+
+	s.svc.Bind(&models.Todo{}, id)
+
+	if err := s.mock.ExpectationsWereMet(); err != nil {
+		s.T().Errorf("there were unfulfilled expectations: %s", err)
+	}
+}
+
+func (s *Suite) TestSoftDelete() {
+	m := models.Todo{}
+
+	if m.IsSoftDelete() {
+		id := uuid.New().String()
+		deleted_at := gorm.DeletedAt{}
+		deleted_by := ""
+		name := "Todo 1"
+
+		rows := sqlmock.NewRows([]string{"id", "deleted_at", "deleted_by", "name"}).
+			AddRow(id, deleted_at, deleted_by, name)
+
+		s.mock.ExpectQuery("SELECT (.)+ FROM `todos` WHERE").
+			WithArgs(id).
+			WillReturnRows(rows)
+		s.mock.ExpectExec("UPDATE `todos`").
+			WithArgs(configs.AnyTime{}, "", id).
+			WillReturnResult(sqlmock.NewResult(0, 1))
+
+		s.svc.Delete(&m, id)
+
+		if err := s.mock.ExpectationsWereMet(); err != nil {
+			s.T().Errorf("there were unfulfilled expectations: %s", err)
+		}
+	}
+}
+
+func (s *Suite) TestHardDelete() {
+	m := models.Todo{}
+
+	if !m.IsSoftDelete() {
+		id := uuid.New().String()
+		name := "Todo 1"
+
+		rows := sqlmock.NewRows([]string{"id", "name"}).
+			AddRow(id, name)
+
+		s.mock.ExpectQuery("SELECT (.)+ FROM `todos` WHERE").
+			WithArgs(id).
+			WillReturnRows(rows)
+		s.mock.ExpectExec("DELETE FROM `todos`").
+			WithArgs(id).
+			WillReturnResult(sqlmock.NewResult(0, 1))
+
+		s.svc.Delete(&m, id)
+
+		if err := s.mock.ExpectationsWereMet(); err != nil {
+			s.T().Errorf("there were unfulfilled expectations: %s", err)
+		}
 	}
 }

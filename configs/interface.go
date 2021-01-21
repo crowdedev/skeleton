@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"database/sql/driver"
 	"net/http"
 	"time"
 
@@ -18,6 +19,8 @@ type (
 		DeletedAt gorm.DeletedAt `gorm:"default:null;index"`
 		DeletedBy string         `gorm:"type:varchar(36);default:null"`
 	}
+
+	AnyTime struct{}
 
 	Model interface {
 		TableName() string
@@ -57,3 +60,9 @@ type (
 		Run()
 	}
 )
+
+// Match satisfies sqlmock.Argument interface
+func (a AnyTime) Match(v driver.Value) bool {
+	_, ok := v.(time.Time)
+	return ok
+}
