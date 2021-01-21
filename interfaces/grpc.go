@@ -10,15 +10,13 @@ import (
 	grpc "google.golang.org/grpc"
 )
 
-type (
-	GRpc struct{}
-)
+type gRpc struct{}
 
 func NewGRpc() configs.Application {
-	return &GRpc{}
+	return &gRpc{}
 }
 
-func (g *GRpc) Run() {
+func (g *gRpc) Run() {
 	l, err := net.Listen("tcp", fmt.Sprintf(":%d", configs.Env.RpcPort))
 	if err != nil {
 		log.Fatalf("Port %d is not available. %v", configs.Env.RpcPort, err)

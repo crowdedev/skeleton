@@ -6,11 +6,9 @@ import (
 	configs "github.com/crowdeco/skeleton/configs"
 )
 
-type (
-	Middleware struct {
-		middlewares []configs.Middleware
-	}
-)
+type Middleware struct {
+	middlewares []configs.Middleware
+}
 
 func NewMiddleware() *Middleware {
 	var middlewares []configs.Middleware
