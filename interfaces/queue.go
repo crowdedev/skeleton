@@ -7,15 +7,13 @@ import (
 	todos "github.com/crowdeco/skeleton/todos"
 )
 
-type (
-	Queue struct{}
-)
+type queue struct{}
 
 func NewQueue() configs.Application {
-	return &Queue{}
+	return &queue{}
 }
 
-func (q *Queue) Run() {
+func (q *queue) Run() {
 	log.Printf("Starting Queue Consumer")
 
 	go todos.NewServer().RegisterQueueConsumer()

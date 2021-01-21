@@ -18,16 +18,17 @@ import (
 	"github.com/jinzhu/copier"
 )
 
-type TodoModule interface {
-	grpcs.TodosServer
-	configs.Module
-}
-
-type module struct {
-	handler   *handlers.Handler
-	logger    *handlers.Logger
-	messenger *handlers.Messenger
-}
+type (
+	TodoModule interface {
+		grpcs.TodosServer
+		configs.Module
+	}
+	module struct {
+		handler   *handlers.Handler
+		logger    *handlers.Logger
+		messenger *handlers.Messenger
+	}
+)
 
 func NewTodoModule() TodoModule {
 	s := services.NewTodoService(configs.Database)

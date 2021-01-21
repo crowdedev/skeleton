@@ -7,15 +7,13 @@ import (
 	todos "github.com/crowdeco/skeleton/todos"
 )
 
-type (
-	Database struct{}
-)
+type database struct{}
 
 func NewDatabase() configs.Application {
-	return &Database{}
+	return &database{}
 }
 
-func (d *Database) Run() {
+func (d *database) Run() {
 	log.Printf("Starting DB Auto Migration")
 
 	todos.NewServer().RegisterAutoMigrate()

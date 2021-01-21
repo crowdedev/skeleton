@@ -6,11 +6,9 @@ import (
 	configs "github.com/crowdeco/skeleton/configs"
 )
 
-type (
-	Router struct {
-		routes []configs.Router
-	}
-)
+type Router struct {
+	routes []configs.Router
+}
 
 func NewRouter() *Router {
 	var routes []configs.Router

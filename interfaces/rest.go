@@ -60,7 +60,7 @@ func (g *Rest) Run() {
 	middleware := handlers.NewMiddleware()
 	middleware.Add(middlewares.NewAuth())
 
-	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(router.Handle(mux)))
+    log.Println("API Documentation is ready at /api/docs/ui")
 
-	log.Println("API Documentation is ready at /api/docs/ui")
+	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(router.Handle(mux)))
 }

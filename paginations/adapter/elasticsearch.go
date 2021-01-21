@@ -3,6 +3,7 @@ package paginations
 import (
 	"context"
 	"encoding/json"
+	"log"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	elastic "github.com/olivere/elastic/v7"
@@ -28,7 +29,8 @@ func NewElasticsearchAdapter(context context.Context, index string, query elasti
 func (es *ElasticsearchAdapter) Nums() (int64, error) {
 	result, err := configs.Elasticsearch.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).Do(es.context)
 	if err != nil {
-		panic(err)
+		log.Printf("%s", err.Error())
+		return 0, nil
 	}
 
 	return result.TotalHits(), nil
@@ -37,7 +39,8 @@ func (es *ElasticsearchAdapter) Nums() (int64, error) {
 func (es *ElasticsearchAdapter) Slice(offset, length int, data interface{}) error {
 	result, err := configs.Elasticsearch.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).From(offset).Size(length).Do(es.context)
 	if err != nil {
-		panic(err)
+		log.Printf("%s", err.Error())
+		return nil
 	}
 
 	records := data.(*[]interface{})
