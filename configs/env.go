@@ -19,6 +19,7 @@ type (
 		DbUser             string
 		DbPassword         string
 		DbName             string
+		DbDriver           string
 		DbAutoMigrate      bool
 		ElasticsearchHost  string
 		ElasticsearchPort  int
@@ -46,6 +47,7 @@ func loadEnv() {
 	Env.HtppPort, _ = strconv.Atoi(os.Getenv("APP_PORT"))
 	Env.RpcPort, _ = strconv.Atoi(os.Getenv("GRPC_PORT"))
 
+	Env.DbDriver = os.Getenv("DB_DRIVER")
 	Env.DbHost = os.Getenv("DB_HOST")
 	Env.DbPort, _ = strconv.Atoi(os.Getenv("DB_PORT"))
 	Env.DbUser = os.Getenv("DB_USER")
