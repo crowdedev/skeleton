@@ -6,19 +6,15 @@ import (
 )
 
 type (
-	Word struct {
+	word struct {
 	}
 )
 
-func (w *Word) Uppercase(words string) string {
-	return strings.ToUpper(words)
+func NewWord() *word {
+	return &word{}
 }
 
-func (w *Word) Lowercase(words string) string {
-	return strings.ToLower(words)
-}
-
-func (w *Word) Underscore(words string) string {
+func (w *word) Underscore(words string) string {
 	words = strings.ToLower(words)
 
 	expr := regexp.MustCompile("[[:space:][:blank:]]")

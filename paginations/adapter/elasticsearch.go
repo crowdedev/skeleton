@@ -11,7 +11,7 @@ import (
 )
 
 type (
-	ElasticsearchAdapter struct {
+	elasticsearchAdapter struct {
 		context context.Context
 		index   string
 		query   elastic.Query
@@ -19,14 +19,14 @@ type (
 )
 
 func NewElasticsearchAdapter(context context.Context, index string, query elastic.Query) paginator.Adapter {
-	return &ElasticsearchAdapter{
+	return &elasticsearchAdapter{
 		context: context,
 		index:   index,
 		query:   query,
 	}
 }
 
-func (es *ElasticsearchAdapter) Nums() (int64, error) {
+func (es *elasticsearchAdapter) Nums() (int64, error) {
 	result, err := configs.Elasticsearch.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).Do(es.context)
 	if err != nil {
 		log.Printf("%s", err.Error())
@@ -36,7 +36,7 @@ func (es *ElasticsearchAdapter) Nums() (int64, error) {
 	return result.TotalHits(), nil
 }
 
-func (es *ElasticsearchAdapter) Slice(offset, length int, data interface{}) error {
+func (es *elasticsearchAdapter) Slice(offset, length int, data interface{}) error {
 	result, err := configs.Elasticsearch.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).From(offset).Size(length).Do(es.context)
 	if err != nil {
 		log.Printf("%s", err.Error())

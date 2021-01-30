@@ -6,7 +6,7 @@ import (
 )
 
 type (
-	Filter struct {
+	filter struct {
 		Field string
 		Value string
 	}
@@ -14,7 +14,7 @@ type (
 	Pagination struct {
 		Limit   int
 		Page    int
-		Filters []Filter
+		Filters []filter
 		Pager   paginator.Paginator
 	}
 
@@ -38,7 +38,7 @@ func (p *Pagination) Handle(pagination *grpcs.Pagination) {
 	}
 
 	for k, v := range pagination.Fields {
-		p.Filters = append(p.Filters, Filter{Field: v, Value: pagination.Values[k]})
+		p.Filters = append(p.Filters, filter{Field: v, Value: pagination.Values[k]})
 	}
 
 	p.Limit = int(pagination.Limit)
