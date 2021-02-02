@@ -14,8 +14,8 @@ import (
 	services "github.com/crowdeco/skeleton/todos/services"
 	validations "github.com/crowdeco/skeleton/todos/validations"
 	utils "github.com/crowdeco/skeleton/utils"
-	"github.com/google/uuid"
-	"github.com/jinzhu/copier"
+	uuid "github.com/google/uuid"
+	copier "github.com/jinzhu/copier"
 )
 
 type (
