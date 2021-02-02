@@ -33,5 +33,4 @@ func (m *middleware) Attach(handler http.Handler) http.Handler {
 
 		handler.ServeHTTP(response, request)
 	})
-
 }
