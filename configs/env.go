@@ -34,6 +34,7 @@ type (
 		HeaderUserId       string
 		HeaderUserEmail    string
 		HeaderUserRole     string
+		CacheLifetime      int
 		User               *User
 	}
 )
@@ -71,6 +72,8 @@ func loadEnv() {
 	Env.HeaderUserId = os.Getenv("HEADER_USER_ID")
 	Env.HeaderUserEmail = os.Getenv("HEADER_USER_EMAIL")
 	Env.HeaderUserRole = os.Getenv("HEADER_USER_ROLE")
+
+	Env.CacheLifetime, _ = strconv.Atoi(os.Getenv("CACHE_LIFETIME"))
 
 	Env.User = &User{}
 }

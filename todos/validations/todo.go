@@ -5,9 +5,13 @@ import (
 	validator "github.com/go-ozzo/ozzo-validation/v4"
 )
 
-type Todo struct{}
+type todo struct{}
 
-func (j *Todo) Validate(m *models.Todo) (bool, error) {
+func NewTodoValidator() *todo {
+	return &todo{}
+}
+
+func (v *todo) Validate(m *models.Todo) (bool, error) {
 	err := validator.ValidateStruct(m,
 		validator.Field(&m.Name, validator.Required, validator.Length(2, 50)),
 	)
