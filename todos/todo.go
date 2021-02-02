@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	handlers "github.com/crowdeco/skeleton/handlers"
@@ -36,7 +35,7 @@ func NewTodoModule() TodoModule {
 	return &module{
 		handler:   handlers.NewHandler(s),
 		logger:    handlers.NewLogger(),
-		messenger: handlers.NewMessenger(s.Name()),
+		messenger: handlers.NewMessenger(),
 	}
 }
 
@@ -133,7 +132,7 @@ func (m *module) Update(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, 
 	}
 
 	data, _ := json.Marshal(v)
-	err = m.messenger.Push(data)
+	err = m.messenger.Publish(v.TableName(), data)
 	if err != nil {
 		m.logger.Error(fmt.Sprintf("%+v", err))
 	}
@@ -197,16 +196,14 @@ func (m *module) Delete(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse, 
 }
 
 func (m *module) Consume() {
-	time.Sleep(time.Second * 5) // waiting for connection
-
-	message, err := m.messenger.Consume()
+	v := models.Todo{}
+	messages, err := m.messenger.Consume(v.TableName())
 	if err != nil {
 		m.logger.Error(fmt.Sprintf("%+v", err))
 	}
 
-	for d := range message {
-		v := models.Todo{}
-		json.Unmarshal(d.Body, &v)
+	for message := range messages {
+		json.Unmarshal(message.Payload, &v)
 
 		m.logger.Info(fmt.Sprintf("%+v", v))
 
@@ -214,6 +211,7 @@ func (m *module) Consume() {
 		if err != nil {
 			m.logger.Error(fmt.Sprintf("%+v", err))
 		}
-		d.Ack(false)
+
+		message.Ack()
 	}
 }
