@@ -19,7 +19,7 @@ func (s *todoSearch) Listen() string {
 func (s *todoSearch) Handle(event interface{}) {
 	// Example of Listener
 
-	// e := event.(*adapter.PaginationEvent)
+	// e := event.(*events.PaginationEvent)
 	// query := e.Query()
 
 	// for _, v := range e.Filters() {

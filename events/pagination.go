@@ -1,4 +1,4 @@
-package adapter
+package events
 
 import (
 	paginations "github.com/crowdeco/skeleton/paginations"

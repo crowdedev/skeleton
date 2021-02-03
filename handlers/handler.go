@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
@@ -34,7 +35,7 @@ func NewHandler(service configs.Service, dispatcher *events.Dispatcher) *Handler
 func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
 	query := elastic.NewBoolQuery()
 
-	h.dispatcher.Dispatch(PAGINATION_EVENT, adapter.NewPaginationEvent(query, paginator.Filters))
+	h.dispatcher.Dispatch(PAGINATION_EVENT, events.NewPaginationEvent(query, paginator.Filters))
 
 	var result []interface{}
 	adapter := adapter.NewElasticsearchAdapter(context.Background(), h.service.Name(), query)
@@ -58,6 +59,11 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 }
 
 func (h *Handler) Create(v interface{}, id string) error {
+	h.dispatcher.Dispatch(BEFORE_CREATE_EVENT, events.NewModelEvent(v))
+
+	fmt.Println(v)
+	return nil
+
 	err := h.service.Create(v, id)
 	if err != nil {
 		return err
@@ -66,10 +72,14 @@ func (h *Handler) Create(v interface{}, id string) error {
 	data, _ := json.Marshal(v)
 	configs.Elasticsearch.Index().Index(h.service.Name()).BodyJson(string(data)).Do(context.Background())
 
+	h.dispatcher.Dispatch(AFTER_CREATE_EVENT, events.NewModelEvent(v))
+
 	return nil
 }
 
 func (h *Handler) Update(v interface{}, id string) error {
+	h.dispatcher.Dispatch(BEFORE_UPDATE_EVENT, events.NewModelEvent(v))
+
 	err := h.service.Update(v, id)
 	if err != nil {
 		return err
@@ -79,6 +89,8 @@ func (h *Handler) Update(v interface{}, id string) error {
 	data, _ := json.Marshal(v)
 	configs.Elasticsearch.Index().Index(h.service.Name()).BodyJson(string(data)).Do(context.Background())
 
+	h.dispatcher.Dispatch(AFTER_UPDATE_EVENT, events.NewModelEvent(v))
+
 	return nil
 }
 
@@ -87,12 +99,16 @@ func (h *Handler) Bind(v interface{}, id string) error {
 }
 
 func (h *Handler) Delete(v interface{}, id string) error {
+	h.dispatcher.Dispatch(BEFORE_DELETE_EVENT, events.NewModelEvent(v))
+
 	err := h.service.Delete(v, id)
 	if err != nil {
 		return err
 	}
 
 	h.elasticsearchDelete(id)
+
+	h.dispatcher.Dispatch(AFTER_DELETE_EVENT, events.NewModelEvent(v))
 
 	return nil
 }
