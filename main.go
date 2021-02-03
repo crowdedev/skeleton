@@ -2,9 +2,9 @@ package main
 
 import (
 	configs "github.com/crowdeco/skeleton/configs"
-	"github.com/crowdeco/skeleton/events"
+	events "github.com/crowdeco/skeleton/events"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
-	"github.com/crowdeco/skeleton/todos/listeners"
+	listeners "github.com/crowdeco/skeleton/todos/listeners"
 )
 
 func init() {

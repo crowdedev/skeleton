@@ -3,7 +3,6 @@ package handlers
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
@@ -60,9 +59,6 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 
 func (h *Handler) Create(v interface{}, id string) error {
 	h.dispatcher.Dispatch(BEFORE_CREATE_EVENT, events.NewModelEvent(v))
-
-	fmt.Println(v)
-	return nil
 
 	err := h.service.Create(v, id)
 	if err != nil {
