@@ -15,14 +15,14 @@ import (
 )
 
 type (
-	Rest struct{}
+	rest struct{}
 )
 
 func NewRest() configs.Application {
-	return &Rest{}
+	return &rest{}
 }
 
-func (g *Rest) Run() {
+func (g *rest) Run() {
 	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
 
 	ctx := context.Background()
@@ -60,7 +60,7 @@ func (g *Rest) Run() {
 	middleware := handlers.NewMiddleware()
 	middleware.Add(middlewares.NewAuth())
 
-    log.Println("API Documentation is ready at /api/docs/ui")
+	log.Println("API Documentation is ready at /api/docs/ui")
 
 	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(router.Handle(mux)))
 }

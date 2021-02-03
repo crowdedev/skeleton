@@ -15,6 +15,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
 	github.com/jinzhu/copier v0.2.3
 	github.com/joho/godotenv v1.3.0
+	github.com/olivere/elastic v6.2.35+incompatible
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/sirupsen/logrus v1.7.0
 	github.com/streadway/amqp v1.0.0 // indirect

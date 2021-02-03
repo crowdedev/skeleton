@@ -5,24 +5,30 @@ import (
 	"encoding/json"
 
 	configs "github.com/crowdeco/skeleton/configs"
+	events "github.com/crowdeco/skeleton/events"
 	paginations "github.com/crowdeco/skeleton/paginations"
 	adapter "github.com/crowdeco/skeleton/paginations/adapter"
 	elastic "github.com/olivere/elastic/v7"
 )
 
+const BEFORE_PAGINATION_EVENT = "pagination.before"
+
 type Handler struct {
-	service configs.Service
+	dispatcher *events.Dispatcher
+	service    configs.Service
 }
 
-func NewHandler(service configs.Service) *Handler {
-	return &Handler{service}
+func NewHandler(service configs.Service, dispatcher *events.Dispatcher) *Handler {
+	return &Handler{
+		service:    service,
+		dispatcher: dispatcher,
+	}
 }
 
 func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
 	query := elastic.NewBoolQuery()
-	for _, v := range paginator.Filters {
-		query.Must(elastic.NewTermQuery(v.Field, v.Value))
-	}
+
+	h.dispatcher.Dispatch(BEFORE_PAGINATION_EVENT, adapter.NewPaginationEvent(query, paginator.Filters))
 
 	var result []interface{}
 	adapter := adapter.NewElasticsearchAdapter(context.Background(), h.service.Name(), query)

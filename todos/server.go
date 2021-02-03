@@ -2,6 +2,7 @@ package todos
 
 import (
 	configs "github.com/crowdeco/skeleton/configs"
+	"github.com/crowdeco/skeleton/events"
 	grpcs "github.com/crowdeco/skeleton/protos/builds"
 	models "github.com/crowdeco/skeleton/todos/models"
 	"google.golang.org/grpc"
@@ -11,9 +12,9 @@ type server struct {
 	module TodoModule
 }
 
-func NewServer() configs.Server {
+func NewServer(dispatcher *events.Dispatcher) configs.Server {
 	return &server{
-		module: NewTodoModule(),
+		module: NewTodoModule(dispatcher),
 	}
 }
 

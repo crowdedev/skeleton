@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	configs "github.com/crowdeco/skeleton/configs"
+	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	paginations "github.com/crowdeco/skeleton/paginations"
 	grpcs "github.com/crowdeco/skeleton/protos/builds"
@@ -30,10 +31,9 @@ type (
 	}
 )
 
-func NewTodoModule() TodoModule {
-	s := services.NewTodoService(configs.Database)
+func NewTodoModule(dispatcher *events.Dispatcher) TodoModule {
 	return &module{
-		handler:   handlers.NewHandler(s),
+		handler:   handlers.NewHandler(services.NewTodoService(configs.Database), dispatcher),
 		logger:    handlers.NewLogger(),
 		messenger: handlers.NewMessenger(),
 	}

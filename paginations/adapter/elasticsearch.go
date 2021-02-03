@@ -1,4 +1,4 @@
-package paginations
+package adapter
 
 import (
 	"context"
