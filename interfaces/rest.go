@@ -15,14 +15,10 @@ import (
 )
 
 type (
-	rest struct{}
+	Rest struct{}
 )
 
-func NewRest() configs.Application {
-	return &rest{}
-}
-
-func (g *rest) Run() {
+func (g *Rest) Run() {
 	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
 
 	ctx := context.Background()

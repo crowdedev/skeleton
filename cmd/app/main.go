@@ -2,9 +2,7 @@ package main
 
 import (
 	configs "github.com/crowdeco/skeleton/configs"
-	events "github.com/crowdeco/skeleton/events"
-	interfaces "github.com/crowdeco/skeleton/interfaces"
-	listeners "github.com/crowdeco/skeleton/todos/listeners"
+	dic "github.com/crowdeco/skeleton/dics/generated/dic"
 )
 
 func init() {
@@ -14,17 +12,17 @@ func init() {
 }
 
 func main() {
-	dispatcher := events.NewDispatcher(listeners.NewTodoSearch())
+	container, _ := dic.NewContainer()
 
-	database := interfaces.NewDatabase(dispatcher)
+	database := container.GetCoreInterfaceDatabase()
 	go database.Run()
 
-	grpc := interfaces.NewGRpc(dispatcher)
+	grpc := container.GetCoreInterfaceGrpc()
 	go grpc.Run()
 
-	queue := interfaces.NewQueue(dispatcher)
+	queue := container.GetCoreInterfaceQueue()
 	go queue.Run()
 
-	rest := interfaces.NewRest()
+	rest := container.GetCoreInterfaceRest()
 	rest.Run()
 }

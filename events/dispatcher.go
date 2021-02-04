@@ -8,7 +8,7 @@ type Dispatcher struct {
 	events map[string]Listener
 }
 
-func NewDispatcher(listeners ...Listener) *Dispatcher {
+func NewDispatcher(listeners []Listener) *Dispatcher {
 	dispatcher := Dispatcher{
 		events: make(map[string]Listener),
 	}

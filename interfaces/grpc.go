@@ -11,22 +11,18 @@ import (
 	grpc "google.golang.org/grpc"
 )
 
-type gRpc struct {
-	dispatcher *events.Dispatcher
+type GRpc struct {
+	Dispatcher *events.Dispatcher
 }
 
-func NewGRpc(dispatcher *events.Dispatcher) configs.Application {
-	return &gRpc{dispatcher: dispatcher}
-}
-
-func (g *gRpc) Run() {
+func (g *GRpc) Run() {
 	l, err := net.Listen("tcp", fmt.Sprintf(":%d", configs.Env.RpcPort))
 	if err != nil {
 		log.Fatalf("Port %d is not available. %v", configs.Env.RpcPort, err)
 	}
 
 	app := grpc.NewServer()
-	todos.NewServer(g.dispatcher).RegisterGRpc(app)
+	todos.NewServer(g.Dispatcher).RegisterGRpc(app)
 
 	log.Printf("Starting gRPC Server on :%d", configs.Env.RpcPort)
 
