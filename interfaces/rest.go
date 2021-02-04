@@ -9,6 +9,7 @@ import (
 	configs "github.com/crowdeco/skeleton/configs"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	middlewares "github.com/crowdeco/skeleton/middlewares"
+	grpcs "github.com/crowdeco/skeleton/protos/builds"
 	routes "github.com/crowdeco/skeleton/routes"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
@@ -53,9 +54,16 @@ func (g *rest) Run() {
 
 	mux := http.NewServeMux()
 
+	var rHandlers []routes.RegisterHandler
+	rHandlers = append(
+		rHandlers,
+		grpcs.RegisterParentsHandler,
+		grpcs.RegisterTodosHandler,
+	)
+
 	router := handlers.NewRouter()
 	router.Add(routes.NewMuxRouter(conn))
-	router.Add(routes.NewGRpcGateway(ctx, conn))
+	router.Add(routes.NewGRpcGateway(ctx, conn, rHandlers))
 
 	middleware := handlers.NewMiddleware()
 	middleware.Add(middlewares.NewAuth())

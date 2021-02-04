@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package grpcs;
+
+import "google/api/annotations.proto";
+import "google/protobuf/wrappers.proto";
+import "pagination.proto";
+import "child.proto";
+
+option go_package = ".;grpcs";
+
+message Parent {
+    string id = 1;
+    string name = 2;
+    google.protobuf.StringValue nullable = 3;
+    string create_only = 4;
+    repeated Child children = 5;
+}
+
+message ParentResponse {
+    int32 code = 1;
+    Parent data = 2;
+    string message = 3;
+}
+
+message ParentPaginatedResponse {
+    int32 code = 1;
+    repeated Parent data = 2;
+    PaginationMetadata meta = 3;
+}
+
+service Parents {
+    rpc GetPaginated (Pagination) returns (ParentPaginatedResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/parents"
+        };
+    }
+
+    rpc Create (Parent) returns (ParentResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/parents"
+            body: "*"
+        };
+    }
+
+    rpc Update (Parent) returns (ParentResponse) {
+        option (google.api.http) = {
+            put: "/api/v1/parents/{id}"
+            body: "*"
+
+            additional_bindings {
+                patch: "/api/v1/parents/{id}"
+                body: "*"
+            }
+        };
+    }
+
+    rpc Get (Parent) returns (ParentResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/parents/{id}"
+        };
+    }
+}

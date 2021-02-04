@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package grpcs;
+
+import "google/api/annotations.proto";
+
+option go_package = ".;grpcs";
+
+message Child {
+    string id = 1;
+    string name = 2;
+}
+
+message ChildResponse {
+    int32 code = 1;
+    Child data = 2;
+    string message = 3;
+}
+
+service Children {
+    rpc Get (Child) returns (ChildResponse) {
+        option (google.api.http) = {
+            get: "/api/v1/children/{id}"
+        };
+    }
+}
