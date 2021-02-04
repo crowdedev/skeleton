@@ -2,7 +2,6 @@ package main
 
 import (
 	configs "github.com/crowdeco/skeleton/configs"
-	consoles "github.com/crowdeco/skeleton/consoles"
 )
 
 func init() {
@@ -12,5 +11,5 @@ func init() {
 }
 
 func main() {
-    //TODO
+	//
 }
