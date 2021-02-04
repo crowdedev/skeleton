@@ -33,6 +33,26 @@ $ go install \
     github.com/golang/protobuf/protoc-gen-go
 ```
 
+## Run
+
+- Build Dependency Graph
+
+```
+go run cmd/dic/main.go
+```
+
+- Elasticsearch Dump
+
+```
+go run cmd/elasticsearch/main.go
+```
+
+- Application
+
+```
+go run cmd/app/main.go
+```
+
 ## Testing
 
 ```
