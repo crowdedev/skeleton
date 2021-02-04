@@ -1,22 +1,17 @@
 package listeners
 
 import (
-	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
 )
 
-type todoSearch struct {
+type TodoSearch struct {
 }
 
-func NewTodoSearch() events.Listener {
-	return &todoSearch{}
-}
-
-func (s *todoSearch) Listen() string {
+func (s *TodoSearch) Listen() string {
 	return handlers.PAGINATION_EVENT
 }
 
-func (s *todoSearch) Handle(event interface{}) {
+func (s *TodoSearch) Handle(event interface{}) {
 	// Example of Listener
 
 	// e := event.(*events.PaginationEvent)

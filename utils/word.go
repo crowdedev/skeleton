@@ -6,15 +6,11 @@ import (
 )
 
 type (
-	word struct {
+	Word struct {
 	}
 )
 
-func NewWord() *word {
-	return &word{}
-}
-
-func (w *word) Underscore(words string) string {
+func (w *Word) Underscore(words string) string {
 	words = strings.ToLower(words)
 
 	expr := regexp.MustCompile("[[:space:][:blank:]]")

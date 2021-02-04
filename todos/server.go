@@ -2,32 +2,28 @@ package todos
 
 import (
 	configs "github.com/crowdeco/skeleton/configs"
-	"github.com/crowdeco/skeleton/events"
 	grpcs "github.com/crowdeco/skeleton/protos/builds"
 	models "github.com/crowdeco/skeleton/todos/models"
 	"google.golang.org/grpc"
+	"gorm.io/gorm"
 )
 
-type server struct {
-	module TodoModule
+type Server struct {
+	Env      *configs.Env
+	Module   *TodoModule
+	Database *gorm.DB
 }
 
-func NewServer(dispatcher *events.Dispatcher) configs.Server {
-	return &server{
-		module: NewTodoModule(dispatcher),
+func (s *Server) RegisterGRpc(gs *grpc.Server) {
+	grpcs.RegisterTodosServer(gs, s.Module)
+}
+
+func (s *Server) RegisterAutoMigrate() {
+	if s.Env.DbAutoMigrate {
+		s.Database.AutoMigrate(&models.Todo{})
 	}
 }
 
-func (s *server) RegisterGRpc(gs *grpc.Server) {
-	grpcs.RegisterTodosServer(gs, s.module)
-}
-
-func (s *server) RegisterAutoMigrate() {
-	if configs.Env.DbAutoMigrate {
-		configs.Database.AutoMigrate(&models.Todo{})
-	}
-}
-
-func (s *server) RegisterQueueConsumer() {
-	s.module.Consume()
+func (s *Server) RegisterQueueConsumer() {
+	s.Module.Consume()
 }

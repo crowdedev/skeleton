@@ -7,28 +7,31 @@ import (
 
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
-	todos "github.com/crowdeco/skeleton/todos"
 	grpc "google.golang.org/grpc"
 )
 
-type gRpc struct {
-	dispatcher *events.Dispatcher
+type GRpc struct {
+	Env        *configs.Env
+	GRpc       *grpc.Server
+	Dispatcher *events.Dispatcher
+	Servers    []configs.Server
 }
 
-func NewGRpc(dispatcher *events.Dispatcher) configs.Application {
-	return &gRpc{dispatcher: dispatcher}
+func (g *GRpc) Register(servers []configs.Server) {
+	g.Servers = servers
 }
 
-func (g *gRpc) Run() {
-	l, err := net.Listen("tcp", fmt.Sprintf(":%d", configs.Env.RpcPort))
+func (g *GRpc) Run() {
+	l, err := net.Listen("tcp", fmt.Sprintf(":%d", g.Env.RpcPort))
 	if err != nil {
-		log.Fatalf("Port %d is not available. %v", configs.Env.RpcPort, err)
+		log.Fatalf("Port %d is not available. %v", g.Env.RpcPort, err)
 	}
 
-	app := grpc.NewServer()
-	todos.NewServer(g.dispatcher).RegisterGRpc(app)
+	for _, server := range g.Servers {
+		server.RegisterGRpc(g.GRpc)
+	}
 
-	log.Printf("Starting gRPC Server on :%d", configs.Env.RpcPort)
+	log.Printf("Starting gRPC Server on :%d", g.Env.RpcPort)
 
-	app.Serve(l)
+	g.GRpc.Serve(l)
 }

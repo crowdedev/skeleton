@@ -1,14 +1,7 @@
 package configs
 
-import (
-	"os"
-	"strconv"
-
-	"github.com/joho/godotenv"
-)
-
 type (
-	env struct {
+	Env struct {
 		Debug              bool
 		HtppPort           int
 		RpcPort            int
@@ -38,42 +31,3 @@ type (
 		User               *User
 	}
 )
-
-var Env env
-
-func loadEnv() {
-	godotenv.Load()
-
-	Env.Debug, _ = strconv.ParseBool(os.Getenv("APP_DEBUG"))
-	Env.HtppPort, _ = strconv.Atoi(os.Getenv("APP_PORT"))
-	Env.RpcPort, _ = strconv.Atoi(os.Getenv("GRPC_PORT"))
-
-	Env.DbDriver = os.Getenv("DB_DRIVER")
-	Env.DbHost = os.Getenv("DB_HOST")
-	Env.DbPort, _ = strconv.Atoi(os.Getenv("DB_PORT"))
-	Env.DbUser = os.Getenv("DB_USER")
-	Env.DbPassword = os.Getenv("DB_PASSWORD")
-	Env.DbName = os.Getenv("DB_NAME")
-	Env.DbAutoMigrate, _ = strconv.ParseBool(os.Getenv("DB_AUTO_CREATE"))
-
-	Env.ElasticsearchHost = os.Getenv("ELASTICSEARCH_HOST")
-	Env.ElasticsearchPort, _ = strconv.Atoi(os.Getenv("ELASTICSEARCH_PORT"))
-	Env.ElasticsearchIndex = Env.DbName
-
-	Env.MongoDbHost = os.Getenv("MONGODB_HOST")
-	Env.MongoDbPort, _ = strconv.Atoi(os.Getenv("MONGODB_PORT"))
-	Env.MongoDbName = os.Getenv("MONGODB_NAME")
-
-	Env.AmqpHost = os.Getenv("AMQP_HOST")
-	Env.AmqpPort, _ = strconv.Atoi(os.Getenv("AMQP_PORT"))
-	Env.AmqpUser = os.Getenv("AMQP_USER")
-	Env.AmqpPassword = os.Getenv("AMQP_PASSWORD")
-
-	Env.HeaderUserId = os.Getenv("HEADER_USER_ID")
-	Env.HeaderUserEmail = os.Getenv("HEADER_USER_EMAIL")
-	Env.HeaderUserRole = os.Getenv("HEADER_USER_ROLE")
-
-	Env.CacheLifetime, _ = strconv.Atoi(os.Getenv("CACHE_LIFETIME"))
-
-	Env.User = &User{}
-}

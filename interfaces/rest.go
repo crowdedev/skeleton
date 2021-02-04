@@ -8,32 +8,28 @@ import (
 
 	configs "github.com/crowdeco/skeleton/configs"
 	handlers "github.com/crowdeco/skeleton/handlers"
-	middlewares "github.com/crowdeco/skeleton/middlewares"
-	routes "github.com/crowdeco/skeleton/routes"
-	"google.golang.org/grpc"
+	grpc "google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 )
 
-type (
-	rest struct{}
-)
-
-func NewRest() configs.Application {
-	return &rest{}
+type Rest struct {
+	Env        *configs.Env
+	Middleware *handlers.Middleware
+	Router     *handlers.Router
+	Server     *http.ServeMux
+	Context    context.Context
 }
 
-func (g *rest) Run() {
-	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
+func (r *Rest) Run() {
+	log.Printf("Starting REST Server on :%d", r.Env.HtppPort)
 
-	ctx := context.Background()
-
-	ctx, cancel := context.WithCancel(ctx)
+	ctx, cancel := context.WithCancel(r.Context)
 	defer cancel()
 
-	endpoint := fmt.Sprintf("0.0.0.0:%d", configs.Env.RpcPort)
+	endpoint := fmt.Sprintf("0.0.0.0:%d", r.Env.RpcPort)
 	conn, err := grpc.DialContext(ctx, endpoint, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Failed to dial: %v", err)
+		panic(err)
 	}
 
 	defer func() {
@@ -51,16 +47,7 @@ func (g *rest) Run() {
 		}()
 	}()
 
-	mux := http.NewServeMux()
-
-	router := handlers.NewRouter()
-	router.Add(routes.NewMuxRouter(conn))
-	router.Add(routes.NewGRpcGateway(ctx, conn))
-
-	middleware := handlers.NewMiddleware()
-	middleware.Add(middlewares.NewAuth())
-
 	log.Println("API Documentation is ready at /api/docs/ui")
 
-	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(router.Handle(mux)))
+	http.ListenAndServe(fmt.Sprintf(":%d", r.Env.HtppPort), r.Middleware.Attach(r.Router.Handle(ctx, r.Server, conn)))
 }

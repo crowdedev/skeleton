@@ -6,25 +6,13 @@ import (
 	configs "github.com/crowdeco/skeleton/configs"
 )
 
-type middleware struct {
-	middlewares []configs.Middleware
+type Middleware struct {
+	Middlewares []configs.Middleware
 }
 
-func NewMiddleware() *middleware {
-	var middlewares []configs.Middleware
-
-	return &middleware{
-		middlewares: middlewares,
-	}
-}
-
-func (m *middleware) Add(middleware configs.Middleware) {
-	m.middlewares = append(m.middlewares, middleware)
-}
-
-func (m *middleware) Attach(handler http.Handler) http.Handler {
+func (m *Middleware) Attach(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
-		for _, middleware := range m.middlewares {
+		for _, middleware := range m.Middlewares {
 			stop := middleware.Attach(request, response)
 			if stop {
 				return

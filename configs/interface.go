@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"context"
 	"database/sql/driver"
 	"net/http"
 	"time"
@@ -49,7 +50,7 @@ type (
 	}
 
 	Router interface {
-		Handle(server *http.ServeMux) *http.ServeMux
+		Handle(context context.Context, server *http.ServeMux, client *grpc.ClientConn) *http.ServeMux
 	}
 
 	Middleware interface {
@@ -61,7 +62,6 @@ type (
 	}
 )
 
-// Match satisfies sqlmock.Argument interface
 func (a AnyTime) Match(v driver.Value) bool {
 	_, ok := v.(time.Time)
 	return ok

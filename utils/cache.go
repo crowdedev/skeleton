@@ -8,26 +8,21 @@ import (
 	cachita "github.com/gadelkareem/cachita"
 )
 
-type cache struct {
-	pool cachita.Cache
+type Cache struct {
+	Env  *configs.Env
+	Pool cachita.Cache
 }
 
-func NewCache() *cache {
-	return &cache{
-		pool: cachita.Memory(),
-	}
-}
-
-func (c *cache) Set(key string, value interface{}) {
-	err := c.pool.Put(key, value, time.Duration(configs.Env.CacheLifetime)*time.Second)
+func (c *Cache) Set(key string, value interface{}) {
+	err := c.Pool.Put(key, value, time.Duration(c.Env.CacheLifetime)*time.Second)
 	if err != nil {
 		fmt.Println(err)
 	}
 }
 
-func (c *cache) Get(key string) (interface{}, bool) {
+func (c *Cache) Get(key string) (interface{}, bool) {
 	var data interface{}
-	err := c.pool.Get(key, &data)
+	err := c.Pool.Get(key, &data)
 	if err != nil {
 		return nil, false
 	}

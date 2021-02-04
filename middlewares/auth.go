@@ -6,17 +6,14 @@ import (
 	configs "github.com/crowdeco/skeleton/configs"
 )
 
-type auth struct {
+type Auth struct {
+	Env *configs.Env
 }
 
-func NewAuth() configs.Middleware {
-	return &auth{}
-}
-
-func (a *auth) Attach(request *http.Request, response http.ResponseWriter) bool {
-	configs.Env.User.ID = request.Header.Get(configs.Env.HeaderUserId)
-	configs.Env.User.Email = request.Header.Get(configs.Env.HeaderUserEmail)
-	configs.Env.User.Role = request.Header.Get(configs.Env.HeaderUserRole)
+func (a *Auth) Attach(request *http.Request, response http.ResponseWriter) bool {
+	a.Env.User.ID = request.Header.Get(a.Env.HeaderUserId)
+	a.Env.User.Email = request.Header.Get(a.Env.HeaderUserEmail)
+	a.Env.User.Role = request.Header.Get(a.Env.HeaderUserRole)
 
 	return false
 }

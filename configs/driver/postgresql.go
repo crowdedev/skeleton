@@ -9,14 +9,10 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type postgresql struct {
+type PostgreSql struct {
 }
 
-func NewPostgreSQL() Driver {
-	return &postgresql{}
-}
-
-func (d *postgresql) Connect(host string, port int, user string, password string, dbname string, debug bool) *gorm.DB {
+func (d *PostgreSql) Connect(host string, port int, user string, password string, dbname string, debug bool) *gorm.DB {
 	var db *gorm.DB
 	var err error
 

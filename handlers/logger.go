@@ -1,36 +1,19 @@
 package handlers
 
 import (
-	"fmt"
 	"runtime"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	logrus "github.com/sirupsen/logrus"
-	mongodb "github.com/weekface/mgorus"
 )
 
 type Logger struct {
-	logger *logrus.Logger
-}
-
-func NewLogger() *Logger {
-	logger := logrus.New()
-	logger.SetFormatter(&logrus.JSONFormatter{})
-
-	mongodb, err := mongodb.NewHooker(fmt.Sprintf("%s:%d", configs.Env.MongoDbHost, configs.Env.MongoDbPort), configs.Env.MongoDbName, "logs")
-	if err == nil {
-		logger.AddHook(mongodb)
-	} else {
-		fmt.Print(err)
-	}
-
-	return &Logger{
-		logger: logger,
-	}
+	Env    *configs.Env
+	Logger *logrus.Logger
 }
 
 func (l *Logger) Trace(message string) {
-	if configs.Env.Debug {
+	if l.Env.Debug {
 		var file string
 		var line int
 		var caller string
@@ -42,19 +25,19 @@ func (l *Logger) Trace(message string) {
 		}
 
 		fields := logrus.Fields{
-			"ServiceName": configs.Env.ServiceName,
+			"ServiceName": l.Env.ServiceName,
 			"Debug":       true,
 			"Caller":      caller,
 			"File":        file,
 			"Line":        line,
 		}
 
-		l.logger.WithFields(fields).Trace(message)
+		l.Logger.WithFields(fields).Trace(message)
 	}
 }
 
 func (l *Logger) Debug(message string) {
-	if configs.Env.Debug {
+	if l.Env.Debug {
 		var file string
 		var line int
 		var caller string
@@ -66,19 +49,19 @@ func (l *Logger) Debug(message string) {
 		}
 
 		fields := logrus.Fields{
-			"ServiceName": configs.Env.ServiceName,
+			"ServiceName": l.Env.ServiceName,
 			"Debug":       true,
 			"Caller":      caller,
 			"File":        file,
 			"Line":        line,
 		}
 
-		l.logger.WithFields(fields).Debug(message)
+		l.Logger.WithFields(fields).Debug(message)
 	}
 }
 
 func (l *Logger) Info(message string) {
-	if configs.Env.Debug {
+	if l.Env.Debug {
 		var file string
 		var line int
 		var caller string
@@ -90,19 +73,19 @@ func (l *Logger) Info(message string) {
 		}
 
 		fields := logrus.Fields{
-			"ServiceName": configs.Env.ServiceName,
+			"ServiceName": l.Env.ServiceName,
 			"Debug":       true,
 			"Caller":      caller,
 			"File":        file,
 			"Line":        line,
 		}
 
-		l.logger.WithFields(fields).Info(message)
+		l.Logger.WithFields(fields).Info(message)
 	}
 }
 
 func (l *Logger) Warning(message string) {
-	if configs.Env.Debug {
+	if l.Env.Debug {
 		var file string
 		var line int
 		var caller string
@@ -114,14 +97,14 @@ func (l *Logger) Warning(message string) {
 		}
 
 		fields := logrus.Fields{
-			"ServiceName": configs.Env.ServiceName,
+			"ServiceName": l.Env.ServiceName,
 			"Debug":       true,
 			"Caller":      caller,
 			"File":        file,
 			"Line":        line,
 		}
 
-		l.logger.WithFields(fields).Warning(message)
+		l.Logger.WithFields(fields).Warning(message)
 	}
 }
 
@@ -137,14 +120,14 @@ func (l *Logger) Error(message string) {
 	}
 
 	fields := logrus.Fields{
-		"ServiceName": configs.Env.ServiceName,
-		"Debug":       configs.Env.Debug,
+		"ServiceName": l.Env.ServiceName,
+		"Debug":       l.Env.Debug,
 		"Caller":      caller,
 		"File":        file,
 		"Line":        line,
 	}
 
-	l.logger.WithFields(fields).Error(message)
+	l.Logger.WithFields(fields).Error(message)
 }
 
 func (l *Logger) Fatal(message string) {
@@ -159,14 +142,14 @@ func (l *Logger) Fatal(message string) {
 	}
 
 	fields := logrus.Fields{
-		"ServiceName": configs.Env.ServiceName,
-		"Debug":       configs.Env.Debug,
+		"ServiceName": l.Env.ServiceName,
+		"Debug":       l.Env.Debug,
 		"Caller":      caller,
 		"File":        file,
 		"Line":        line,
 	}
 
-	l.logger.WithFields(fields).Fatal(message)
+	l.Logger.WithFields(fields).Fatal(message)
 }
 
 func (l *Logger) Panic(message string) {
@@ -181,12 +164,12 @@ func (l *Logger) Panic(message string) {
 	}
 
 	fields := logrus.Fields{
-		"ServiceName": configs.Env.ServiceName,
-		"Debug":       configs.Env.Debug,
+		"ServiceName": l.Env.ServiceName,
+		"Debug":       l.Env.Debug,
 		"Caller":      caller,
 		"File":        file,
 		"Line":        line,
 	}
 
-	l.logger.WithFields(fields).Panic(message)
+	l.Logger.WithFields(fields).Panic(message)
 }

@@ -4,20 +4,16 @@ import (
 	"log"
 
 	configs "github.com/crowdeco/skeleton/configs"
-	events "github.com/crowdeco/skeleton/events"
-	todos "github.com/crowdeco/skeleton/todos"
 )
 
-type queue struct {
-	dispatcher *events.Dispatcher
+type Queue struct {
+	Servers []configs.Server
 }
 
-func NewQueue(dispatcher *events.Dispatcher) configs.Application {
-	return &queue{dispatcher: dispatcher}
-}
-
-func (q *queue) Run() {
+func (q *Queue) Run() {
 	log.Printf("Starting Queue Consumer")
 
-	go todos.NewServer(q.dispatcher).RegisterQueueConsumer()
+	for _, server := range q.Servers {
+		go server.RegisterQueueConsumer()
+	}
 }
