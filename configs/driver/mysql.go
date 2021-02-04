@@ -9,14 +9,10 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type mysql struct {
+type Mysql struct {
 }
 
-func NewMySQL() Driver {
-	return &mysql{}
-}
-
-func (d *mysql) Connect(host string, port int, user string, password string, dbname string, debug bool) *gorm.DB {
+func (d *Mysql) Connect(host string, port int, user string, password string, dbname string, debug bool) *gorm.DB {
 	var db *gorm.DB
 	var err error
 

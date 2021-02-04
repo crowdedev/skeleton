@@ -12,22 +12,21 @@ import (
 	"google.golang.org/grpc/grpclog"
 )
 
-type (
-	Rest struct {
-		Middleware *handlers.Middleware
-		Router     *handlers.Router
-		Server     *http.ServeMux
-		Context    context.Context
-	}
-)
+type Rest struct {
+	Env        *configs.Env
+	Middleware *handlers.Middleware
+	Router     *handlers.Router
+	Server     *http.ServeMux
+	Context    context.Context
+}
 
-func (g *Rest) Run() {
-	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
+func (r *Rest) Run() {
+	log.Printf("Starting REST Server on :%d", r.Env.HtppPort)
 
-	ctx, cancel := context.WithCancel(g.Context)
+	ctx, cancel := context.WithCancel(r.Context)
 	defer cancel()
 
-	endpoint := fmt.Sprintf("0.0.0.0:%d", configs.Env.RpcPort)
+	endpoint := fmt.Sprintf("0.0.0.0:%d", r.Env.RpcPort)
 	conn, err := grpc.DialContext(ctx, endpoint, grpc.WithInsecure())
 	if err != nil {
 		panic(err)
@@ -50,5 +49,5 @@ func (g *Rest) Run() {
 
 	log.Println("API Documentation is ready at /api/docs/ui")
 
-	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), g.Middleware.Attach(g.Router.Handle(ctx, g.Server, conn)))
+	http.ListenAndServe(fmt.Sprintf(":%d", r.Env.HtppPort), r.Middleware.Attach(r.Router.Handle(ctx, r.Server, conn)))
 }

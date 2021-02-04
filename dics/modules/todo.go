@@ -3,8 +3,8 @@ package modules
 import (
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
-	"github.com/crowdeco/skeleton/handlers"
-	"github.com/crowdeco/skeleton/paginations"
+	handlers "github.com/crowdeco/skeleton/handlers"
+	paginations "github.com/crowdeco/skeleton/paginations"
 	todos "github.com/crowdeco/skeleton/todos"
 	listeners "github.com/crowdeco/skeleton/todos/listeners"
 	models "github.com/crowdeco/skeleton/todos/models"
@@ -44,7 +44,9 @@ var Todo = []dingo.Def{
 		Name:  "module:todo:server",
 		Build: (*todos.Server)(nil),
 		Params: dingo.Params{
-			"Module": dingo.Service("module:todo"),
+			"Env":      dingo.Service("core:config:env"),
+			"Module":   dingo.Service("module:todo"),
+			"Database": dingo.Service("core:connection:database"),
 		},
 	},
 	{
@@ -57,9 +59,9 @@ var Todo = []dingo.Def{
 	},
 	{
 		Name: "module:todo:service",
-		Build: func(db *gorm.DB, model *models.Todo) (configs.Service, error) {
-			return &services.Service{
-				Db:        db,
+		Build: func(env *configs.Env, db *gorm.DB, model *models.Todo) (configs.Service, error) {
+			return &services.Todo{
+				Database:  db,
 				TableName: model.TableName(),
 			}, nil
 		},

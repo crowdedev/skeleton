@@ -2,12 +2,16 @@ package dics
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
+	"os"
+	"strconv"
 
 	"github.com/ThreeDotsLabs/watermill"
 	amqp "github.com/ThreeDotsLabs/watermill-amqp/pkg/amqp"
 	configs "github.com/crowdeco/skeleton/configs"
+	driver "github.com/crowdeco/skeleton/configs/driver"
 	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
@@ -16,6 +20,8 @@ import (
 	routes "github.com/crowdeco/skeleton/routes"
 	utils "github.com/crowdeco/skeleton/utils"
 	"github.com/gadelkareem/cachita"
+	"github.com/joho/godotenv"
+	elastic "github.com/olivere/elastic/v7"
 	"github.com/sarulabs/dingo/v4"
 	"github.com/sirupsen/logrus"
 	mongodb "github.com/weekface/mgorus"
@@ -24,6 +30,111 @@ import (
 )
 
 var Core = []dingo.Def{
+	{
+		Name:  "core:config:user",
+		Build: (*configs.User)(nil),
+	},
+	{
+		Name: "core:config:env",
+		Build: func(user *configs.User) (*configs.Env, error) {
+			godotenv.Load()
+
+			env := configs.Env{}
+
+			env.ServiceName = os.Getenv("APP_NAME")
+			env.Version = os.Getenv("APP_VERSION")
+			env.Debug, _ = strconv.ParseBool(os.Getenv("APP_DEBUG"))
+			env.HtppPort, _ = strconv.Atoi(os.Getenv("APP_PORT"))
+			env.RpcPort, _ = strconv.Atoi(os.Getenv("GRPC_PORT"))
+
+			env.DbDriver = os.Getenv("DB_DRIVER")
+			env.DbHost = os.Getenv("DB_HOST")
+			env.DbPort, _ = strconv.Atoi(os.Getenv("DB_PORT"))
+			env.DbUser = os.Getenv("DB_USER")
+			env.DbPassword = os.Getenv("DB_PASSWORD")
+			env.DbName = os.Getenv("DB_NAME")
+			env.DbAutoMigrate, _ = strconv.ParseBool(os.Getenv("DB_AUTO_CREATE"))
+
+			env.ElasticsearchHost = os.Getenv("ELASTICSEARCH_HOST")
+			env.ElasticsearchPort, _ = strconv.Atoi(os.Getenv("ELASTICSEARCH_PORT"))
+			env.ElasticsearchIndex = env.DbName
+
+			env.MongoDbHost = os.Getenv("MONGODB_HOST")
+			env.MongoDbPort, _ = strconv.Atoi(os.Getenv("MONGODB_PORT"))
+			env.MongoDbName = os.Getenv("MONGODB_NAME")
+
+			env.AmqpHost = os.Getenv("AMQP_HOST")
+			env.AmqpPort, _ = strconv.Atoi(os.Getenv("AMQP_PORT"))
+			env.AmqpUser = os.Getenv("AMQP_USER")
+			env.AmqpPassword = os.Getenv("AMQP_PASSWORD")
+
+			env.HeaderUserId = os.Getenv("HEADER_USER_ID")
+			env.HeaderUserEmail = os.Getenv("HEADER_USER_EMAIL")
+			env.HeaderUserRole = os.Getenv("HEADER_USER_ROLE")
+
+			env.CacheLifetime, _ = strconv.Atoi(os.Getenv("CACHE_LIFETIME"))
+
+			env.User = user
+
+			return &env, nil
+		},
+	},
+	{
+		Name:  "core:database:driver:mysql",
+		Build: (*driver.Mysql)(nil),
+	},
+	{
+		Name:  "core:database:driver:postgresql",
+		Build: (*driver.PostgreSql)(nil),
+	},
+	{
+		Name: "core:connection:database",
+		Build: func(
+			env *configs.Env,
+			mysql driver.Driver,
+			postgresql driver.Driver,
+		) (*gorm.DB, error) {
+			var db driver.Driver
+
+			switch env.DbDriver {
+			case "mysql":
+				db = mysql
+			case "postgresql":
+				db = postgresql
+			default:
+				return nil, errors.New("Unknown Database Driver")
+			}
+
+			fmt.Println("Database configured...")
+
+			return db.Connect(
+				env.DbHost,
+				env.DbPort,
+				env.DbUser,
+				env.DbPassword,
+				env.DbName,
+				env.Debug,
+			), nil
+		},
+		Params: dingo.Params{
+			"0": dingo.Service("core:config:env"),
+			"1": dingo.Service("core:database:driver:mysql"),
+			"2": dingo.Service("core:database:driver:postgresql"),
+		},
+	},
+	{
+		Name: "core:connection:elasticsearch",
+		Build: func(env *configs.Env) (*elastic.Client, error) {
+			client, err := elastic.NewClient(elastic.SetURL(fmt.Sprintf("%s:%d", env.ElasticsearchHost, env.ElasticsearchPort)), elastic.SetSniff(false), elastic.SetHealthcheck(false))
+			if err != nil {
+				return nil, err
+			}
+
+			fmt.Println("Elasticsearch configured...")
+
+			return client, nil
+		},
+	},
 	{
 		Name: "core:event:dispatcher",
 		Build: func(
@@ -55,11 +166,13 @@ var Core = []dingo.Def{
 	{
 		Name: "core:interface:grpc",
 		Build: func(
+			env *configs.Env,
 			todo configs.Server,
 			server *grpc.Server,
 			dispatcher *events.Dispatcher,
 		) (*interfaces.GRpc, error) {
 			grpc := interfaces.GRpc{
+				Env:        env,
 				GRpc:       server,
 				Dispatcher: dispatcher,
 			}
@@ -71,7 +184,8 @@ var Core = []dingo.Def{
 			return &grpc, nil
 		},
 		Params: dingo.Params{
-			"0": dingo.Service("module:todo:server"),
+			"0": dingo.Service("core:config:env"),
+			"1": dingo.Service("module:todo:server"),
 		},
 	},
 	{
@@ -103,11 +217,11 @@ var Core = []dingo.Def{
 	},
 	{
 		Name: "core:handler:logger",
-		Build: func() (*handlers.Logger, error) {
+		Build: func(env *configs.Env) (*handlers.Logger, error) {
 			logger := logrus.New()
 			logger.SetFormatter(&logrus.JSONFormatter{})
 
-			mongodb, err := mongodb.NewHooker(fmt.Sprintf("%s:%d", configs.Env.MongoDbHost, configs.Env.MongoDbPort), configs.Env.MongoDbName, "logs")
+			mongodb, err := mongodb.NewHooker(fmt.Sprintf("%s:%d", env.MongoDbHost, env.MongoDbPort), env.MongoDbName, "logs")
 			if err == nil {
 				logger.AddHook(mongodb)
 			} else {
@@ -115,6 +229,7 @@ var Core = []dingo.Def{
 			}
 
 			return &handlers.Logger{
+				Env:    env,
 				Logger: logger,
 			}, nil
 		},
@@ -132,8 +247,9 @@ var Core = []dingo.Def{
 		Name:  "core:handler:handler",
 		Build: (*handlers.Handler)(nil),
 		Params: dingo.Params{
-			"Dispatcher": dingo.Service("core:event:dispatcher"),
-			"Context":    dingo.Service("core:context:background"),
+			"Context":       dingo.Service("core:context:background"),
+			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
+			"Dispatcher":    dingo.Service("core:event:dispatcher"),
 		},
 	},
 	{
@@ -172,6 +288,9 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:middleware:auth",
 		Build: (*middlewares.Auth)(nil),
+		Params: dingo.Params{
+			"Env": dingo.Service("core:config:env"),
+		},
 	},
 	{
 		Name:  "core:router:gateway",
@@ -200,23 +319,17 @@ var Core = []dingo.Def{
 		},
 	},
 	{
-		Name: "core:gorm:db",
-		Build: func() (*gorm.DB, error) {
-			return configs.Database, nil
-		},
-	},
-	{
 		Name: "core:message:config",
-		Build: func() (amqp.Config, error) {
-			address := fmt.Sprintf("amqp://%s:%s@%s:%d/", configs.Env.AmqpUser, configs.Env.AmqpPassword, configs.Env.AmqpHost, configs.Env.AmqpPort)
+		Build: func(env *configs.Env) (amqp.Config, error) {
+			address := fmt.Sprintf("amqp://%s:%s@%s:%d/", env.AmqpUser, env.AmqpPassword, env.AmqpHost, env.AmqpPort)
 
 			return amqp.NewDurableQueueConfig(address), nil
 		},
 	},
 	{
 		Name: "core:message:publisher",
-		Build: func(config amqp.Config) (*amqp.Publisher, error) {
-			publisher, err := amqp.NewPublisher(config, watermill.NewStdLogger(configs.Env.Debug, configs.Env.Debug))
+		Build: func(env *configs.Env, config amqp.Config) (*amqp.Publisher, error) {
+			publisher, err := amqp.NewPublisher(config, watermill.NewStdLogger(env.Debug, env.Debug))
 			if err != nil {
 				return nil, err
 			}

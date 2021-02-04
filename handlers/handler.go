@@ -20,9 +20,10 @@ const BEFORE_DELETE_EVENT = "event.before_delete"
 const AFTER_DELETE_EVENT = "event.after_delete"
 
 type Handler struct {
-	Dispatcher *events.Dispatcher
-	Context    context.Context
-	Service    configs.Service
+	Context       context.Context
+	Elasticsearch *elastic.Client
+	Dispatcher    *events.Dispatcher
+	Service       configs.Service
 }
 
 func (h *Handler) SetService(service configs.Service) {
@@ -35,7 +36,7 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 	h.Dispatcher.Dispatch(PAGINATION_EVENT, events.NewPaginationEvent(query, paginator.Filters))
 
 	var result []interface{}
-	adapter := adapter.NewElasticsearchAdapter(h.Context, h.Service.Name(), query)
+	adapter := adapter.NewElasticsearchAdapter(h.Context, h.Elasticsearch, h.Service.Name(), query)
 	paginator.Paginate(adapter)
 	paginator.Pager.Results(&result)
 	next := paginator.Page + 1
@@ -64,7 +65,7 @@ func (h *Handler) Create(v interface{}, id string) error {
 	}
 
 	data, _ := json.Marshal(v)
-	configs.Elasticsearch.Index().Index(h.Service.Name()).BodyJson(string(data)).Do(context.Background())
+	h.Elasticsearch.Index().Index(h.Service.Name()).BodyJson(string(data)).Do(context.Background())
 
 	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, events.NewModelEvent(v))
 
@@ -81,7 +82,7 @@ func (h *Handler) Update(v interface{}, id string) error {
 
 	h.elasticsearchDelete(id)
 	data, _ := json.Marshal(v)
-	configs.Elasticsearch.Index().Index(h.Service.Name()).BodyJson(string(data)).Do(context.Background())
+	h.Elasticsearch.Index().Index(h.Service.Name()).BodyJson(string(data)).Do(context.Background())
 
 	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, events.NewModelEvent(v))
 
@@ -112,8 +113,8 @@ func (h *Handler) elasticsearchDelete(id interface{}) {
 
 	query := elastic.NewBoolQuery()
 	query.Must(elastic.NewTermQuery("id", id))
-	result, _ := configs.Elasticsearch.Search().Index(h.Service.Name()).Query(query).Do(context)
+	result, _ := h.Elasticsearch.Search().Index(h.Service.Name()).Query(query).Do(context)
 	for _, hit := range result.Hits.Hits {
-		configs.Elasticsearch.Delete().Index(h.Service.Name()).Id(hit.Id).Do(context)
+		h.Elasticsearch.Delete().Index(h.Service.Name()).Id(hit.Id).Do(context)
 	}
 }

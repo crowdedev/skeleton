@@ -5,10 +5,13 @@ import (
 	grpcs "github.com/crowdeco/skeleton/protos/builds"
 	models "github.com/crowdeco/skeleton/todos/models"
 	"google.golang.org/grpc"
+	"gorm.io/gorm"
 )
 
 type Server struct {
-	Module *TodoModule
+	Env      *configs.Env
+	Module   *TodoModule
+	Database *gorm.DB
 }
 
 func (s *Server) RegisterGRpc(gs *grpc.Server) {
@@ -16,8 +19,8 @@ func (s *Server) RegisterGRpc(gs *grpc.Server) {
 }
 
 func (s *Server) RegisterAutoMigrate() {
-	if configs.Env.DbAutoMigrate {
-		configs.Database.AutoMigrate(&models.Todo{})
+	if s.Env.DbAutoMigrate {
+		s.Database.AutoMigrate(&models.Todo{})
 	}
 }
 

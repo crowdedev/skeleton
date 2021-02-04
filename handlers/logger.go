@@ -8,11 +8,12 @@ import (
 )
 
 type Logger struct {
+	Env    *configs.Env
 	Logger *logrus.Logger
 }
 
 func (l *Logger) Trace(message string) {
-	if configs.Env.Debug {
+	if l.Env.Debug {
 		var file string
 		var line int
 		var caller string
@@ -24,7 +25,7 @@ func (l *Logger) Trace(message string) {
 		}
 
 		fields := logrus.Fields{
-			"ServiceName": configs.Env.ServiceName,
+			"ServiceName": l.Env.ServiceName,
 			"Debug":       true,
 			"Caller":      caller,
 			"File":        file,
@@ -36,7 +37,7 @@ func (l *Logger) Trace(message string) {
 }
 
 func (l *Logger) Debug(message string) {
-	if configs.Env.Debug {
+	if l.Env.Debug {
 		var file string
 		var line int
 		var caller string
@@ -48,7 +49,7 @@ func (l *Logger) Debug(message string) {
 		}
 
 		fields := logrus.Fields{
-			"ServiceName": configs.Env.ServiceName,
+			"ServiceName": l.Env.ServiceName,
 			"Debug":       true,
 			"Caller":      caller,
 			"File":        file,
@@ -60,7 +61,7 @@ func (l *Logger) Debug(message string) {
 }
 
 func (l *Logger) Info(message string) {
-	if configs.Env.Debug {
+	if l.Env.Debug {
 		var file string
 		var line int
 		var caller string
@@ -72,7 +73,7 @@ func (l *Logger) Info(message string) {
 		}
 
 		fields := logrus.Fields{
-			"ServiceName": configs.Env.ServiceName,
+			"ServiceName": l.Env.ServiceName,
 			"Debug":       true,
 			"Caller":      caller,
 			"File":        file,
@@ -84,7 +85,7 @@ func (l *Logger) Info(message string) {
 }
 
 func (l *Logger) Warning(message string) {
-	if configs.Env.Debug {
+	if l.Env.Debug {
 		var file string
 		var line int
 		var caller string
@@ -96,7 +97,7 @@ func (l *Logger) Warning(message string) {
 		}
 
 		fields := logrus.Fields{
-			"ServiceName": configs.Env.ServiceName,
+			"ServiceName": l.Env.ServiceName,
 			"Debug":       true,
 			"Caller":      caller,
 			"File":        file,
@@ -119,8 +120,8 @@ func (l *Logger) Error(message string) {
 	}
 
 	fields := logrus.Fields{
-		"ServiceName": configs.Env.ServiceName,
-		"Debug":       configs.Env.Debug,
+		"ServiceName": l.Env.ServiceName,
+		"Debug":       l.Env.Debug,
 		"Caller":      caller,
 		"File":        file,
 		"Line":        line,
@@ -141,8 +142,8 @@ func (l *Logger) Fatal(message string) {
 	}
 
 	fields := logrus.Fields{
-		"ServiceName": configs.Env.ServiceName,
-		"Debug":       configs.Env.Debug,
+		"ServiceName": l.Env.ServiceName,
+		"Debug":       l.Env.Debug,
 		"Caller":      caller,
 		"File":        file,
 		"Line":        line,
@@ -163,8 +164,8 @@ func (l *Logger) Panic(message string) {
 	}
 
 	fields := logrus.Fields{
-		"ServiceName": configs.Env.ServiceName,
-		"Debug":       configs.Env.Debug,
+		"ServiceName": l.Env.ServiceName,
+		"Debug":       l.Env.Debug,
 		"Caller":      caller,
 		"File":        file,
 		"Line":        line,
