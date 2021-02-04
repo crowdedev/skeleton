@@ -7,6 +7,7 @@ import (
 
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
+	parents "github.com/crowdeco/skeleton/parents"
 	todos "github.com/crowdeco/skeleton/todos"
 	grpc "google.golang.org/grpc"
 )
@@ -26,6 +27,7 @@ func (g *gRpc) Run() {
 	}
 
 	app := grpc.NewServer()
+	parents.NewServer(g.dispatcher).RegisterGRpc(app)
 	todos.NewServer(g.dispatcher).RegisterGRpc(app)
 
 	log.Printf("Starting gRPC Server on :%d", configs.Env.RpcPort)
