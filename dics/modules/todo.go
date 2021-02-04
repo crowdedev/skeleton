@@ -10,7 +10,7 @@ import (
 	models "github.com/crowdeco/skeleton/todos/models"
 	services "github.com/crowdeco/skeleton/todos/services"
 	validations "github.com/crowdeco/skeleton/todos/validations"
-	"github.com/crowdeco/skeleton/utils"
+	utils "github.com/crowdeco/skeleton/utils"
 	"github.com/sarulabs/dingo/v4"
 	"gorm.io/gorm"
 )
