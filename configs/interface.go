@@ -23,11 +23,6 @@ type (
 
 	AnyTime struct{}
 
-	Client struct {
-		Grpc    *grpc.ClientConn
-		Context context.Context
-	}
-
 	Model interface {
 		TableName() string
 		SetCreatedBy(user *User)
