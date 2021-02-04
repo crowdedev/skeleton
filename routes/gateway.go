@@ -5,30 +5,30 @@ import (
 	"net/http"
 
 	configs "github.com/crowdeco/skeleton/configs"
+	grpcs "github.com/crowdeco/skeleton/protos/builds"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 )
 
-type RegisterHandler = func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error
-
 type gRpcGateway struct {
-	context  context.Context
-	client   *grpc.ClientConn
-	handlers []RegisterHandler
+	context context.Context
+	client  *grpc.ClientConn
 }
 
-func NewGRpcGateway(context context.Context, client *grpc.ClientConn, handlers []RegisterHandler) configs.Router {
+func NewGRpcGateway(context context.Context, client *grpc.ClientConn) configs.Router {
 	return &gRpcGateway{
-		context:  context,
-		client:   client,
-		handlers: handlers,
+		context: context,
+		client:  client,
 	}
 }
 
 func (g *gRpcGateway) Handle(server *http.ServeMux) *http.ServeMux {
-	mux := runtime.NewServeMux()
+	var handlers []func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error
 
-	for _, handler := range g.handlers {
+	mux := runtime.NewServeMux()
+	handlers = append(handlers, grpcs.RegisterTodosHandler)
+
+	for _, handler := range handlers {
 		handler(g.context, mux, g.client)
 	}
 
