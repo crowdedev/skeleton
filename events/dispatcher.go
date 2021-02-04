@@ -8,22 +8,20 @@ type Dispatcher struct {
 	events map[string]Listener
 }
 
-func NewDispatcher() *Dispatcher {
-	return &Dispatcher{
+func NewDispatcher(listeners ...Listener) *Dispatcher {
+	dispatcher := Dispatcher{
 		events: make(map[string]Listener),
 	}
-}
 
-func (d *Dispatcher) Register(listeners []Listener) error {
 	for _, listener := range listeners {
-		if _, ok := d.events[listener.Listen()]; ok {
-			return fmt.Errorf("the '%s' event is already registered", listener.Listen())
+		if _, ok := dispatcher.events[listener.Listen()]; ok {
+			panic(fmt.Sprintf("the '%s' event is already registered", listener.Listen()))
 		}
 
-		d.events[listener.Listen()] = listener
+		dispatcher.events[listener.Listen()] = listener
 	}
 
-	return nil
+	return &dispatcher
 }
 
 func (d *Dispatcher) Dispatch(name string, event interface{}) error {

@@ -14,10 +14,7 @@ func init() {
 }
 
 func main() {
-	dispatcher := events.NewDispatcher()
-	dispatcher.Register([]events.Listener{
-		listeners.NewTodoSearch(),
-	})
+	dispatcher := events.NewDispatcher(listeners.NewTodoSearch())
 
 	database := interfaces.NewDatabase(dispatcher)
 	go database.Run()
