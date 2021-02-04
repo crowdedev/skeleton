@@ -8,35 +8,47 @@ import (
 
 	configs "github.com/crowdeco/skeleton/configs"
 	handlers "github.com/crowdeco/skeleton/handlers"
-	middlewares "github.com/crowdeco/skeleton/middlewares"
-	routes "github.com/crowdeco/skeleton/routes"
-	"google.golang.org/grpc"
+	grpc "google.golang.org/grpc"
+	"google.golang.org/grpc/grpclog"
 )
 
 type (
-	Client struct {
-		Grpc    *grpc.ClientConn
-		Context context.Context
-	}
-
 	Rest struct {
-		Client *Client
+		Middleware *handlers.Middleware
+		Router     *handlers.Router
+		Server     *http.ServeMux
+		Context    context.Context
 	}
 )
 
 func (g *Rest) Run() {
 	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
 
-	mux := http.NewServeMux()
+	ctx, cancel := context.WithCancel(g.Context)
+	defer cancel()
 
-	router := handlers.NewRouter()
-	router.Add(routes.NewMuxRouter(g.Client.Grpc))
-	router.Add(routes.NewGRpcGateway(g.Client.Context, g.Client.Grpc))
+	endpoint := fmt.Sprintf("0.0.0.0:%d", configs.Env.RpcPort)
+	conn, err := grpc.DialContext(ctx, endpoint, grpc.WithInsecure())
+	if err != nil {
+		panic(err)
+	}
 
-	middleware := handlers.NewMiddleware()
-	middleware.Add(middlewares.NewAuth())
+	defer func() {
+		if err != nil {
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+			return
+		}
+		go func() {
+			<-ctx.Done()
+			if cerr := conn.Close(); cerr != nil {
+				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
+			}
+		}()
+	}()
 
 	log.Println("API Documentation is ready at /api/docs/ui")
 
-	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), middleware.Attach(router.Handle(mux)))
+	http.ListenAndServe(fmt.Sprintf(":%d", configs.Env.HtppPort), g.Middleware.Attach(g.Router.Handle(ctx, g.Server, conn)))
 }

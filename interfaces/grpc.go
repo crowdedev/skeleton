@@ -17,7 +17,7 @@ type GRpc struct {
 }
 
 func (g *GRpc) Register(servers []configs.Server) {
-
+	g.Servers = servers
 }
 
 func (g *GRpc) Run() {

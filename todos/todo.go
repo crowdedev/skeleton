@@ -23,30 +23,38 @@ type TodoModule struct {
 	Logger    *handlers.Logger
 	Messenger *handlers.Messenger
 	Validator *validations.Todo
+	Cache     *utils.Cache
+	Paginator *paginations.Pagination
 }
 
 func NewTodoModule(
 	dispatcher *events.Dispatcher,
-	services configs.Service,
+	service configs.Service,
 	logger *handlers.Logger,
 	messenger *handlers.Messenger,
+	handler *handlers.Handler,
 	validator *validations.Todo,
+	cache *utils.Cache,
+	paginator *paginations.Pagination,
 ) *TodoModule {
+	handler.SetService(service)
+
 	return &TodoModule{
-		Handler:   handlers.NewHandler(services, dispatcher),
+		Handler:   handler,
 		Logger:    logger,
 		Messenger: messenger,
 		Validator: validator,
+		Cache:     cache,
+		Paginator: paginator,
 	}
 }
 
 func (m *TodoModule) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.TodoPaginatedResponse, error) {
 	m.Logger.Info(fmt.Sprintf("%+v", r))
 
-	paginator := paginations.Pagination{}
-	paginator.Handle(r)
+	m.Paginator.Handle(r)
 
-	metadata, result := m.Handler.Paginate(paginator)
+	metadata, result := m.Handler.Paginate(*m.Paginator)
 	todos := []*grpcs.Todo{}
 	todo := &grpcs.Todo{}
 
@@ -149,8 +157,7 @@ func (m *TodoModule) Get(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse,
 
 	var v models.Todo
 
-	cachePool := utils.NewCache()
-	data, found := cachePool.Get(r.Id)
+	data, found := m.Cache.Get(r.Id)
 	if found {
 		v = data.(models.Todo)
 	} else {
@@ -164,6 +171,8 @@ func (m *TodoModule) Get(c context.Context, r *grpcs.Todo) (*grpcs.TodoResponse,
 				Message: err.Error(),
 			}, nil
 		}
+
+		m.Cache.Set(r.Id, &v)
 	}
 
 	copier.Copy(&r, &v)

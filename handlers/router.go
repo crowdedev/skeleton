@@ -1,30 +1,20 @@
 package handlers
 
 import (
+	"context"
 	"net/http"
 
 	configs "github.com/crowdeco/skeleton/configs"
+	"google.golang.org/grpc"
 )
 
-type router struct {
-	routes []configs.Router
+type Router struct {
+	Routes []configs.Router
 }
 
-func NewRouter() *router {
-	var routes []configs.Router
-
-	return &router{
-		routes: routes,
-	}
-}
-
-func (r *router) Add(route configs.Router) {
-	r.routes = append(r.routes, route)
-}
-
-func (r *router) Handle(server *http.ServeMux) *http.ServeMux {
-	for _, route := range r.routes {
-		route.Handle(server)
+func (r *Router) Handle(context context.Context, server *http.ServeMux, client *grpc.ClientConn) *http.ServeMux {
+	for _, route := range r.Routes {
+		route.Handle(context, server, client)
 	}
 
 	return server
