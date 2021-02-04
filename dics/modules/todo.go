@@ -61,6 +61,7 @@ var Todo = []dingo.Def{
 		Name: "module:todo:service",
 		Build: func(env *configs.Env, db *gorm.DB, model *models.Todo) (configs.Service, error) {
 			return &services.Todo{
+				Env:       env,
 				Database:  db,
 				TableName: model.TableName(),
 			}, nil
