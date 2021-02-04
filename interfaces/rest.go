@@ -11,47 +11,27 @@ import (
 	middlewares "github.com/crowdeco/skeleton/middlewares"
 	routes "github.com/crowdeco/skeleton/routes"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/grpclog"
 )
 
 type (
-	Rest struct{}
+	Client struct {
+		Grpc    *grpc.ClientConn
+		Context context.Context
+	}
+
+	Rest struct {
+		Client *Client
+	}
 )
 
 func (g *Rest) Run() {
 	log.Printf("Starting REST Server on :%d", configs.Env.HtppPort)
 
-	ctx := context.Background()
-
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	endpoint := fmt.Sprintf("0.0.0.0:%d", configs.Env.RpcPort)
-	conn, err := grpc.DialContext(ctx, endpoint, grpc.WithInsecure())
-	if err != nil {
-		log.Fatalf("Failed to dial: %v", err)
-	}
-
-	defer func() {
-		if err != nil {
-			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
-			}
-			return
-		}
-		go func() {
-			<-ctx.Done()
-			if cerr := conn.Close(); cerr != nil {
-				grpclog.Infof("Failed to close conn to %s: %v", endpoint, cerr)
-			}
-		}()
-	}()
-
 	mux := http.NewServeMux()
 
 	router := handlers.NewRouter()
-	router.Add(routes.NewMuxRouter(conn))
-	router.Add(routes.NewGRpcGateway(ctx, conn))
+	router.Add(routes.NewMuxRouter(g.Client.Grpc))
+	router.Add(routes.NewGRpcGateway(g.Client.Context, g.Client.Grpc))
 
 	middleware := handlers.NewMiddleware()
 	middleware.Add(middlewares.NewAuth())

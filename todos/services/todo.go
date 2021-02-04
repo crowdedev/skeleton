@@ -8,36 +8,29 @@ import (
 	"gorm.io/gorm"
 )
 
-type service struct {
-	db   *gorm.DB
-	name string
+type Service struct {
+	Db        *gorm.DB
+	TableName string
 }
 
-func NewTodoService(db *gorm.DB) configs.Service {
-	return &service{
-		db:   db,
-		name: models.Todo{}.TableName(),
-	}
+func (s *Service) Name() string {
+	return s.TableName
 }
 
-func (s *service) Name() string {
-	return s.name
-}
-
-func (s *service) Create(v interface{}, id string) error {
+func (s *Service) Create(v interface{}, id string) error {
 	if m, ok := v.(*models.Todo); ok {
 		m.Id = id
 		m.SetCreatedBy(configs.Env.User)
 
-		return s.db.Create(m).Error
+		return s.Db.Create(m).Error
 	}
 
 	return gorm.ErrModelValueRequired
 }
 
-func (s *service) Update(v interface{}, id string) error {
+func (s *Service) Update(v interface{}, id string) error {
 	if m, ok := v.(*models.Todo); ok {
-		err := s.db.Where("id = ?", id).First(&models.Todo{}).Error
+		err := s.Db.Where("id = ?", id).First(&models.Todo{}).Error
 		if err != nil {
 			return err
 		}
@@ -45,7 +38,7 @@ func (s *service) Update(v interface{}, id string) error {
 		m.Id = id
 		m.SetUpdatedBy(configs.Env.User)
 
-		return s.db.
+		return s.Db.
 			Select("*").
 			Omit("created_at", "created_by", "deleted_at", "deleted_by").
 			Updates(m).Error
@@ -54,17 +47,17 @@ func (s *service) Update(v interface{}, id string) error {
 	return gorm.ErrModelValueRequired
 }
 
-func (s *service) Bind(v interface{}, id string) error {
+func (s *Service) Bind(v interface{}, id string) error {
 	if _, ok := v.(*models.Todo); ok {
-		return s.db.Where("id = ?", id).First(v).Error
+		return s.Db.Where("id = ?", id).First(v).Error
 	}
 
 	return gorm.ErrModelValueRequired
 }
 
-func (s *service) Delete(v interface{}, id string) error {
+func (s *Service) Delete(v interface{}, id string) error {
 	if m, ok := v.(*models.Todo); ok {
-		err := s.db.Where("id = ?", id).First(&models.Todo{}).Error
+		err := s.Db.Where("id = ?", id).First(&models.Todo{}).Error
 		if err != nil {
 			return err
 		}
@@ -73,9 +66,9 @@ func (s *service) Delete(v interface{}, id string) error {
 			m.DeletedAt = gorm.DeletedAt{}
 			m.DeletedAt.Scan(time.Now())
 			m.SetDeletedBy(configs.Env.User)
-			return s.db.Select("deleted_at", "deleted_by").Where("id = ?", id).Updates(m).Error
+			return s.Db.Select("deleted_at", "deleted_by").Where("id = ?", id).Updates(m).Error
 		} else {
-			return s.db.Unscoped().Where("id = ?", id).Delete(m).Error
+			return s.Db.Unscoped().Where("id = ?", id).Delete(m).Error
 		}
 	}
 

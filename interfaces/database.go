@@ -3,16 +3,17 @@ package interfaces
 import (
 	"log"
 
-	events "github.com/crowdeco/skeleton/events"
-	todos "github.com/crowdeco/skeleton/todos"
+	configs "github.com/crowdeco/skeleton/configs"
 )
 
 type Database struct {
-	Dispatcher *events.Dispatcher
+	Servers []configs.Server
 }
 
 func (d *Database) Run() {
 	log.Printf("Starting DB Auto Migration")
 
-	todos.NewServer(d.Dispatcher).RegisterAutoMigrate()
+	for _, server := range d.Servers {
+		server.RegisterAutoMigrate()
+	}
 }

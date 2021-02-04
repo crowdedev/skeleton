@@ -14,10 +14,10 @@ import (
 type Messenger struct {
 	publisher *amqp.Publisher
 	consumer  *amqp.Subscriber
-	logger    *Logger
+	Logger    *Logger
 }
 
-func NewMessenger() *Messenger {
+func NewMessenger(logger *Logger) *Messenger {
 	address := fmt.Sprintf("amqp://%s:%s@%s:%d/", configs.Env.AmqpUser, configs.Env.AmqpPassword, configs.Env.AmqpHost, configs.Env.AmqpPort)
 	config := amqp.NewDurableQueueConfig(address)
 
@@ -32,7 +32,7 @@ func NewMessenger() *Messenger {
 	}
 
 	return &Messenger{
-		logger:    NewLogger(),
+		Logger:    logger,
 		publisher: publisher,
 		consumer:  consumer,
 	}
@@ -43,7 +43,7 @@ func (m *Messenger) Publish(queueName string, data []byte) error {
 		msg := message.NewMessage(watermill.NewUUID(), data)
 		err := m.publisher.Publish(queueName, msg)
 		if err != nil {
-			m.logger.Error(err.Error())
+			m.Logger.Error(err.Error())
 
 			return err
 		}
@@ -55,7 +55,7 @@ func (m *Messenger) Publish(queueName string, data []byte) error {
 func (m *Messenger) Consume(queueName string) (<-chan *message.Message, error) {
 	messages, err := m.consumer.Subscribe(context.Background(), queueName)
 	if err != nil {
-		m.logger.Error(err.Error())
+		m.Logger.Error(err.Error())
 
 		return nil, err
 	}

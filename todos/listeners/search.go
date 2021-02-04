@@ -1,15 +1,10 @@
 package listeners
 
 import (
-	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
 )
 
 type TodoSearch struct {
-}
-
-func NewTodoSearch() events.Listener {
-	return &TodoSearch{}
 }
 
 func (s *TodoSearch) Listen() string {
