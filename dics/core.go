@@ -12,7 +12,6 @@ import (
 	amqp "github.com/ThreeDotsLabs/watermill-amqp/pkg/amqp"
 	configs "github.com/crowdeco/skeleton/configs"
 	driver "github.com/crowdeco/skeleton/configs/driver"
-	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
 	middlewares "github.com/crowdeco/skeleton/middlewares"
@@ -133,76 +132,6 @@ var Core = []dingo.Def{
 			fmt.Println("Elasticsearch configured...")
 
 			return client, nil
-		},
-	},
-	{
-		Name: "core:event:dispatcher",
-		Build: func(
-			todo events.Listener,
-		) (*events.Dispatcher, error) {
-			return events.NewDispatcher([]events.Listener{todo}), nil
-		},
-		Params: dingo.Params{
-			"0": dingo.Service("module:todo:listener:search"),
-		},
-	},
-	{
-		Name: "core:interface:database",
-		Build: func(
-			todo configs.Server,
-		) (*interfaces.Database, error) {
-			database := interfaces.Database{
-				Servers: []configs.Server{
-					todo,
-				},
-			}
-
-			return &database, nil
-		},
-		Params: dingo.Params{
-			"0": dingo.Service("module:todo:server"),
-		},
-	},
-	{
-		Name: "core:interface:grpc",
-		Build: func(
-			env *configs.Env,
-			todo configs.Server,
-			server *grpc.Server,
-			dispatcher *events.Dispatcher,
-		) (*interfaces.GRpc, error) {
-			grpc := interfaces.GRpc{
-				Env:        env,
-				GRpc:       server,
-				Dispatcher: dispatcher,
-			}
-
-			grpc.Register([]configs.Server{
-				todo,
-			})
-
-			return &grpc, nil
-		},
-		Params: dingo.Params{
-			"0": dingo.Service("core:config:env"),
-			"1": dingo.Service("module:todo:server"),
-		},
-	},
-	{
-		Name: "core:interface:queue",
-		Build: func(
-			todo configs.Server,
-		) (*interfaces.Queue, error) {
-			queue := interfaces.Queue{
-				Servers: []configs.Server{
-					todo,
-				},
-			}
-
-			return &queue, nil
-		},
-		Params: dingo.Params{
-			"0": dingo.Service("module:todo:server"),
 		},
 	},
 	{
