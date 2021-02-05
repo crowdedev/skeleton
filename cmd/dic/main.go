@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	err := dingo.GenerateContainer((*dics.Provider)(nil), "dics/generated")
+	err := dingo.GenerateContainer((*dics.Provider)(nil), "generated")
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)

@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	dic "github.com/crowdeco/skeleton/dics/generated/dic"
+	dic "github.com/crowdeco/skeleton/generated/dic"
 )
 
 func main() {
