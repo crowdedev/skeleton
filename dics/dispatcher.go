@@ -8,13 +8,10 @@ import (
 var Dispatcher = []dingo.Def{
 	{
 		Name: "core:event:dispatcher",
-		Build: func(
-			todo events.Listener,
-		) (*events.Dispatcher, error) {
-			return events.NewDispatcher([]events.Listener{todo}), nil
-		},
-		Params: dingo.Params{
-			"0": dingo.Service("module:todo:listener:search"),
+		Build: func() (*events.Dispatcher, error) {
+			return events.NewDispatcher([]events.Listener{
+				// @see skeleton-todo
+			}), nil
 		},
 	},
 }
