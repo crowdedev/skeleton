@@ -11,7 +11,7 @@ import (
 
 	amqp "github.com/ThreeDotsLabs/watermill-amqp/pkg/amqp"
 	configs "github.com/crowdeco/skeleton/configs"
-	driver "github.com/crowdeco/skeleton/configs/driver"
+	drivers "github.com/crowdeco/skeleton/configs/drivers"
 	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
@@ -53,8 +53,8 @@ func getDiDefs(provider dingo.Provider) []di.Def {
 					return eo, errors.New("could not cast parameter Pool to cachita.Cache")
 				}
 				return &utils.Cache{
-					Env:  p0,
 					Pool: p1,
+					Env:  p0,
 				}, nil
 			},
 			Close: func(obj interface{}) error {
@@ -152,25 +152,25 @@ func getDiDefs(provider dingo.Provider) []di.Def {
 					var eo *gorm.DB
 					return eo, err
 				}
-				p1, ok := pi1.(driver.Driver)
+				p1, ok := pi1.(configs.Driver)
 				if !ok {
 					var eo *gorm.DB
-					return eo, errors.New("could not cast parameter 1 to driver.Driver")
+					return eo, errors.New("could not cast parameter 1 to configs.Driver")
 				}
 				pi2, err := ctn.SafeGet("core:database:driver:postgresql")
 				if err != nil {
 					var eo *gorm.DB
 					return eo, err
 				}
-				p2, ok := pi2.(driver.Driver)
+				p2, ok := pi2.(configs.Driver)
 				if !ok {
 					var eo *gorm.DB
-					return eo, errors.New("could not cast parameter 2 to driver.Driver")
+					return eo, errors.New("could not cast parameter 2 to configs.Driver")
 				}
-				b, ok := d.Build.(func(*configs.Env, driver.Driver, driver.Driver) (*gorm.DB, error))
+				b, ok := d.Build.(func(*configs.Env, configs.Driver, configs.Driver) (*gorm.DB, error))
 				if !ok {
 					var eo *gorm.DB
-					return eo, errors.New("could not cast build function to func(*configs.Env, driver.Driver, driver.Driver) (*gorm.DB, error)")
+					return eo, errors.New("could not cast build function to func(*configs.Env, configs.Driver, configs.Driver) (*gorm.DB, error)")
 				}
 				return b(p0, p1, p2)
 			},
@@ -232,7 +232,7 @@ func getDiDefs(provider dingo.Provider) []di.Def {
 			Name:  "core:database:driver:mysql",
 			Scope: "",
 			Build: func(ctn di.Container) (interface{}, error) {
-				return &driver.Mysql{}, nil
+				return &drivers.Mysql{}, nil
 			},
 			Close: func(obj interface{}) error {
 				return nil
@@ -242,7 +242,7 @@ func getDiDefs(provider dingo.Provider) []di.Def {
 			Name:  "core:database:driver:postgresql",
 			Scope: "",
 			Build: func(ctn di.Container) (interface{}, error) {
-				return &driver.PostgreSql{}, nil
+				return &drivers.PostgreSql{}, nil
 			},
 			Close: func(obj interface{}) error {
 				return nil
@@ -324,10 +324,10 @@ func getDiDefs(provider dingo.Provider) []di.Def {
 				}
 				var p3 configs.Service
 				return &handlers.Handler{
+					Context:       p0,
 					Elasticsearch: p1,
 					Dispatcher:    p2,
 					Service:       p3,
-					Context:       p0,
 				}, nil
 			},
 			Close: func(obj interface{}) error {
@@ -643,11 +643,11 @@ func getDiDefs(provider dingo.Provider) []di.Def {
 					return eo, errors.New("could not cast parameter Server to *aliashttp.ServeMux")
 				}
 				return &interfaces.Rest{
+					Router:     p2,
 					Server:     p3,
 					Context:    p4,
 					Env:        p0,
 					Middleware: p1,
-					Router:     p2,
 				}, nil
 			},
 			Close: func(obj interface{}) error {
@@ -786,11 +786,11 @@ func getDiDefs(provider dingo.Provider) []di.Def {
 				var p4 v1.Paginator
 				var p3 string
 				return &paginations.Pagination{
+					Pager:   p4,
 					Limit:   p0,
 					Page:    p1,
 					Filters: p2,
 					Search:  p3,
-					Pager:   p4,
 				}, nil
 			},
 			Close: func(obj interface{}) error {

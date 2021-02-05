@@ -15,7 +15,7 @@ import (
 
 	amqp "github.com/ThreeDotsLabs/watermill-amqp/pkg/amqp"
 	configs "github.com/crowdeco/skeleton/configs"
-	driver "github.com/crowdeco/skeleton/configs/driver"
+	drivers "github.com/crowdeco/skeleton/configs/drivers"
 	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
@@ -638,23 +638,23 @@ func CoreContextBackground(i interface{}) context.Context {
 }
 
 // SafeGetCoreDatabaseDriverMysql works like SafeGet but only for CoreDatabaseDriverMysql.
-// It does not return an interface but a *driver.Mysql.
-func (c *Container) SafeGetCoreDatabaseDriverMysql() (*driver.Mysql, error) {
+// It does not return an interface but a *drivers.Mysql.
+func (c *Container) SafeGetCoreDatabaseDriverMysql() (*drivers.Mysql, error) {
 	i, err := c.ctn.SafeGet("core:database:driver:mysql")
 	if err != nil {
-		var eo *driver.Mysql
+		var eo *drivers.Mysql
 		return eo, err
 	}
-	o, ok := i.(*driver.Mysql)
+	o, ok := i.(*drivers.Mysql)
 	if !ok {
-		return o, errors.New("could get 'core:database:driver:mysql' because the object could not be cast to *driver.Mysql")
+		return o, errors.New("could get 'core:database:driver:mysql' because the object could not be cast to *drivers.Mysql")
 	}
 	return o, nil
 }
 
 // GetCoreDatabaseDriverMysql is similar to SafeGetCoreDatabaseDriverMysql but it does not return the error.
 // Instead it panics.
-func (c *Container) GetCoreDatabaseDriverMysql() *driver.Mysql {
+func (c *Container) GetCoreDatabaseDriverMysql() *drivers.Mysql {
 	o, err := c.SafeGetCoreDatabaseDriverMysql()
 	if err != nil {
 		panic(err)
@@ -663,23 +663,23 @@ func (c *Container) GetCoreDatabaseDriverMysql() *driver.Mysql {
 }
 
 // UnscopedSafeGetCoreDatabaseDriverMysql works like UnscopedSafeGet but only for CoreDatabaseDriverMysql.
-// It does not return an interface but a *driver.Mysql.
-func (c *Container) UnscopedSafeGetCoreDatabaseDriverMysql() (*driver.Mysql, error) {
+// It does not return an interface but a *drivers.Mysql.
+func (c *Container) UnscopedSafeGetCoreDatabaseDriverMysql() (*drivers.Mysql, error) {
 	i, err := c.ctn.UnscopedSafeGet("core:database:driver:mysql")
 	if err != nil {
-		var eo *driver.Mysql
+		var eo *drivers.Mysql
 		return eo, err
 	}
-	o, ok := i.(*driver.Mysql)
+	o, ok := i.(*drivers.Mysql)
 	if !ok {
-		return o, errors.New("could get 'core:database:driver:mysql' because the object could not be cast to *driver.Mysql")
+		return o, errors.New("could get 'core:database:driver:mysql' because the object could not be cast to *drivers.Mysql")
 	}
 	return o, nil
 }
 
 // UnscopedGetCoreDatabaseDriverMysql is similar to UnscopedSafeGetCoreDatabaseDriverMysql but it does not return the error.
 // Instead it panics.
-func (c *Container) UnscopedGetCoreDatabaseDriverMysql() *driver.Mysql {
+func (c *Container) UnscopedGetCoreDatabaseDriverMysql() *drivers.Mysql {
 	o, err := c.UnscopedSafeGetCoreDatabaseDriverMysql()
 	if err != nil {
 		panic(err)
@@ -691,28 +691,28 @@ func (c *Container) UnscopedGetCoreDatabaseDriverMysql() *driver.Mysql {
 // It tries to find the container with the C method and the given interface.
 // If the container can be retrieved, it applies the GetCoreDatabaseDriverMysql method.
 // If the container can not be retrieved, it panics.
-func CoreDatabaseDriverMysql(i interface{}) *driver.Mysql {
+func CoreDatabaseDriverMysql(i interface{}) *drivers.Mysql {
 	return C(i).GetCoreDatabaseDriverMysql()
 }
 
 // SafeGetCoreDatabaseDriverPostgresql works like SafeGet but only for CoreDatabaseDriverPostgresql.
-// It does not return an interface but a *driver.PostgreSql.
-func (c *Container) SafeGetCoreDatabaseDriverPostgresql() (*driver.PostgreSql, error) {
+// It does not return an interface but a *drivers.PostgreSql.
+func (c *Container) SafeGetCoreDatabaseDriverPostgresql() (*drivers.PostgreSql, error) {
 	i, err := c.ctn.SafeGet("core:database:driver:postgresql")
 	if err != nil {
-		var eo *driver.PostgreSql
+		var eo *drivers.PostgreSql
 		return eo, err
 	}
-	o, ok := i.(*driver.PostgreSql)
+	o, ok := i.(*drivers.PostgreSql)
 	if !ok {
-		return o, errors.New("could get 'core:database:driver:postgresql' because the object could not be cast to *driver.PostgreSql")
+		return o, errors.New("could get 'core:database:driver:postgresql' because the object could not be cast to *drivers.PostgreSql")
 	}
 	return o, nil
 }
 
 // GetCoreDatabaseDriverPostgresql is similar to SafeGetCoreDatabaseDriverPostgresql but it does not return the error.
 // Instead it panics.
-func (c *Container) GetCoreDatabaseDriverPostgresql() *driver.PostgreSql {
+func (c *Container) GetCoreDatabaseDriverPostgresql() *drivers.PostgreSql {
 	o, err := c.SafeGetCoreDatabaseDriverPostgresql()
 	if err != nil {
 		panic(err)
@@ -721,23 +721,23 @@ func (c *Container) GetCoreDatabaseDriverPostgresql() *driver.PostgreSql {
 }
 
 // UnscopedSafeGetCoreDatabaseDriverPostgresql works like UnscopedSafeGet but only for CoreDatabaseDriverPostgresql.
-// It does not return an interface but a *driver.PostgreSql.
-func (c *Container) UnscopedSafeGetCoreDatabaseDriverPostgresql() (*driver.PostgreSql, error) {
+// It does not return an interface but a *drivers.PostgreSql.
+func (c *Container) UnscopedSafeGetCoreDatabaseDriverPostgresql() (*drivers.PostgreSql, error) {
 	i, err := c.ctn.UnscopedSafeGet("core:database:driver:postgresql")
 	if err != nil {
-		var eo *driver.PostgreSql
+		var eo *drivers.PostgreSql
 		return eo, err
 	}
-	o, ok := i.(*driver.PostgreSql)
+	o, ok := i.(*drivers.PostgreSql)
 	if !ok {
-		return o, errors.New("could get 'core:database:driver:postgresql' because the object could not be cast to *driver.PostgreSql")
+		return o, errors.New("could get 'core:database:driver:postgresql' because the object could not be cast to *drivers.PostgreSql")
 	}
 	return o, nil
 }
 
 // UnscopedGetCoreDatabaseDriverPostgresql is similar to UnscopedSafeGetCoreDatabaseDriverPostgresql but it does not return the error.
 // Instead it panics.
-func (c *Container) UnscopedGetCoreDatabaseDriverPostgresql() *driver.PostgreSql {
+func (c *Container) UnscopedGetCoreDatabaseDriverPostgresql() *drivers.PostgreSql {
 	o, err := c.UnscopedSafeGetCoreDatabaseDriverPostgresql()
 	if err != nil {
 		panic(err)
@@ -749,7 +749,7 @@ func (c *Container) UnscopedGetCoreDatabaseDriverPostgresql() *driver.PostgreSql
 // It tries to find the container with the C method and the given interface.
 // If the container can be retrieved, it applies the GetCoreDatabaseDriverPostgresql method.
 // If the container can not be retrieved, it panics.
-func CoreDatabaseDriverPostgresql(i interface{}) *driver.PostgreSql {
+func CoreDatabaseDriverPostgresql(i interface{}) *drivers.PostgreSql {
 	return C(i).GetCoreDatabaseDriverPostgresql()
 }
 

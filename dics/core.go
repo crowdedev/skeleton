@@ -11,7 +11,7 @@ import (
 	"github.com/ThreeDotsLabs/watermill"
 	amqp "github.com/ThreeDotsLabs/watermill-amqp/pkg/amqp"
 	configs "github.com/crowdeco/skeleton/configs"
-	driver "github.com/crowdeco/skeleton/configs/driver"
+	drivers "github.com/crowdeco/skeleton/configs/drivers"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
 	middlewares "github.com/crowdeco/skeleton/middlewares"
@@ -80,20 +80,20 @@ var Core = []dingo.Def{
 	},
 	{
 		Name:  "core:database:driver:mysql",
-		Build: (*driver.Mysql)(nil),
+		Build: (*drivers.Mysql)(nil),
 	},
 	{
 		Name:  "core:database:driver:postgresql",
-		Build: (*driver.PostgreSql)(nil),
+		Build: (*drivers.PostgreSql)(nil),
 	},
 	{
 		Name: "core:connection:database",
 		Build: func(
 			env *configs.Env,
-			mysql driver.Driver,
-			postgresql driver.Driver,
+			mysql configs.Driver,
+			postgresql configs.Driver,
 		) (*gorm.DB, error) {
-			var db driver.Driver
+			var db configs.Driver
 
 			switch env.DbDriver {
 			case "mysql":
