@@ -7,12 +7,10 @@ require (
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.0
 	github.com/dustin/go-humanize v1.0.0
 	github.com/gadelkareem/cachita v0.2.1
-	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.4 // indirect
-	github.com/google/uuid v1.1.5
+	github.com/google/uuid v1.1.5 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
-	github.com/jinzhu/copier v0.2.3
 	github.com/joho/godotenv v1.3.0
 	github.com/olivere/elastic/v7 v7.0.22
 	github.com/sarulabs/di/v2 v2.4.0

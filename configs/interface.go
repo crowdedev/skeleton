@@ -32,6 +32,7 @@ type (
 		Update(value interface{}, id string) error
 		Bind(value interface{}, id string) error
 		Delete(value interface{}, id string) error
+		All(value interface{}) error
 	}
 
 	Module interface {

@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"encoding/json"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
@@ -33,7 +32,7 @@ func (h *Handler) SetService(service configs.Service) {
 func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
 	query := elastic.NewBoolQuery()
 
-	h.Dispatcher.Dispatch(PAGINATION_EVENT, events.NewPaginationEvent(query, paginator.Filters))
+	h.Dispatcher.Dispatch(PAGINATION_EVENT, events.NewPaginationEvent(h.Service.Name(), query, paginator.Filters))
 
 	var result []interface{}
 	adapter := adapter.NewElasticsearchAdapter(h.Context, h.Elasticsearch, h.Service.Name(), query)
@@ -57,34 +56,27 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 }
 
 func (h *Handler) Create(v interface{}, id string) error {
-	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, events.NewModelEvent(v))
+	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, events.NewModelEvent(h.Service.Name(), v, ""))
 
 	err := h.Service.Create(v, id)
 	if err != nil {
 		return err
 	}
 
-	data, _ := json.Marshal(v)
-	h.Elasticsearch.Index().Index(h.Service.Name()).BodyJson(string(data)).Do(context.Background())
-
-	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, events.NewModelEvent(v))
+	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, events.NewModelEvent(h.Service.Name(), v, ""))
 
 	return nil
 }
 
 func (h *Handler) Update(v interface{}, id string) error {
-	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, events.NewModelEvent(v))
+	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, events.NewModelEvent(h.Service.Name(), v, id))
 
 	err := h.Service.Update(v, id)
 	if err != nil {
 		return err
 	}
 
-	h.elasticsearchDelete(id)
-	data, _ := json.Marshal(v)
-	h.Elasticsearch.Index().Index(h.Service.Name()).BodyJson(string(data)).Do(context.Background())
-
-	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, events.NewModelEvent(v))
+	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, events.NewModelEvent(h.Service.Name(), v, id))
 
 	return nil
 }
@@ -93,28 +85,19 @@ func (h *Handler) Bind(v interface{}, id string) error {
 	return h.Service.Bind(v, id)
 }
 
+func (h *Handler) All(v interface{}) error {
+	return h.Service.All(v)
+}
+
 func (h *Handler) Delete(v interface{}, id string) error {
-	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, events.NewModelEvent(v))
+	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, events.NewModelEvent(h.Service.Name(), v, id))
 
 	err := h.Service.Delete(v, id)
 	if err != nil {
 		return err
 	}
 
-	h.elasticsearchDelete(id)
-
-	h.Dispatcher.Dispatch(AFTER_DELETE_EVENT, events.NewModelEvent(v))
+	h.Dispatcher.Dispatch(AFTER_DELETE_EVENT, events.NewModelEvent(h.Service.Name(), v, id))
 
 	return nil
-}
-
-func (h *Handler) elasticsearchDelete(id interface{}) {
-	context := context.Background()
-
-	query := elastic.NewBoolQuery()
-	query.Must(elastic.NewTermQuery("id", id))
-	result, _ := h.Elasticsearch.Search().Index(h.Service.Name()).Query(query).Do(context)
-	for _, hit := range result.Hits.Hits {
-		h.Elasticsearch.Delete().Index(h.Service.Name()).Id(hit.Id).Do(context)
-	}
 }
