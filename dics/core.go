@@ -289,12 +289,16 @@ var Core = []dingo.Def{
 		},
 	},
 	{
-		Name:  "core:number:formatter",
+		Name:  "core:util:number",
 		Build: (*utils.Number)(nil),
 	},
 	{
-		Name:  "core:string:formatter",
+		Name:  "core:util:word",
 		Build: (*utils.Word)(nil),
+	},
+	{
+		Name:  "core:util:time",
+		Build: (*utils.Time)(nil),
 	},
 	{
 		Name: "core:cachita:cache",
