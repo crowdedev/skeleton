@@ -40,9 +40,6 @@ var Interface = []dingo.Def{
 
 			return &grpc, nil
 		},
-		Params: dingo.Params{
-			"0": dingo.Service("core:config:env"),
-		},
 	},
 	{
 		Name: "core:interface:queue",
