@@ -2,34 +2,30 @@ package events
 
 import (
 	"fmt"
+
+	"github.com/crowdeco/skeleton/configs"
 )
 
 type Dispatcher struct {
-	events map[string]Listener
+	Events map[string]configs.Listener
 }
 
-func NewDispatcher(listeners []Listener) *Dispatcher {
-	dispatcher := Dispatcher{
-		events: make(map[string]Listener),
-	}
-
+func (d *Dispatcher) Register(listeners []configs.Listener) {
 	for _, listener := range listeners {
-		if _, ok := dispatcher.events[listener.Listen()]; ok {
+		if _, ok := d.Events[listener.Listen()]; ok {
 			panic(fmt.Sprintf("the '%s' event is already registered", listener.Listen()))
 		}
 
-		dispatcher.events[listener.Listen()] = listener
+		d.Events[listener.Listen()] = listener
 	}
-
-	return &dispatcher
 }
 
 func (d *Dispatcher) Dispatch(name string, event interface{}) error {
-	if _, ok := d.events[name]; !ok {
+	if _, ok := d.Events[name]; !ok {
 		return fmt.Errorf("the '%s' event is already registered", name)
 	}
 
-	d.events[name].Handle(event)
+	d.Events[name].Handle(event)
 
 	return nil
 }

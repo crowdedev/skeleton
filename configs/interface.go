@@ -13,6 +13,11 @@ type (
 		Connect(host string, port int, user string, password string, dbname string, debug bool) *gorm.DB
 	}
 
+	Listener interface {
+		Handle(event interface{})
+		Listen() string
+	}
+
 	Model interface {
 		TableName() string
 		SetCreatedBy(user *User)
