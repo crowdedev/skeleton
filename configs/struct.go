@@ -69,9 +69,10 @@ type (
 	}
 
 	FieldTemplate struct {
-		Name       string
-		Type       string
-		Index      int
-		IsRequired bool
+		Name           string
+		NameUnderScore string
+		Type           string
+		Index          int
+		IsRequired     bool
 	}
 )

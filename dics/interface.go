@@ -13,9 +13,7 @@ var Interface = []dingo.Def{
 		Name: "core:interface:database",
 		Build: func() (*interfaces.Database, error) {
 			database := interfaces.Database{
-				Servers: []configs.Server{
-					// @see skeleton-todo
-				},
+				Servers: []configs.Server{},
 			}
 
 			return &database, nil
@@ -34,9 +32,7 @@ var Interface = []dingo.Def{
 				Dispatcher: dispatcher,
 			}
 
-			grpc.Register([]configs.Server{
-				// @see skeleton-todo
-			})
+			grpc.Register([]configs.Server{})
 
 			return &grpc, nil
 		},
@@ -45,9 +41,7 @@ var Interface = []dingo.Def{
 		Name: "core:interface:queue",
 		Build: func() (*interfaces.Queue, error) {
 			queue := interfaces.Queue{
-				Servers: []configs.Server{
-					// @see skeleton-todo
-				},
+				Servers: []configs.Server{},
 			}
 
 			return &queue, nil

@@ -45,6 +45,11 @@ func main() {
 		panic(err)
 	}
 
+	word, err := container.SafeGetCoreUtilWord()
+	if err != nil {
+		panic(err)
+	}
+
 	err = interact.NewInteraction("Masukkan Nama Table?").Resolve(&module.Name)
 	if err != nil {
 		panic(err)
@@ -67,6 +72,7 @@ func main() {
 
 			column.Index = index
 			column.Name = strings.Title(column.Name)
+			column.NameUnderScore = word.Underscore(column.Name)
 			module.Fields = append(module.Fields, &column)
 
 			field.Name = ""
