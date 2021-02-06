@@ -46,7 +46,7 @@ type (
 
 	Server interface {
 		RegisterGRpc(server *grpc.Server)
-		GRpcHandler(context.Context, *runtime.ServeMux, *grpc.ClientConn) error
+		GRpcHandler(context context.Context, server *runtime.ServeMux, client *grpc.ClientConn) error
 		RegisterAutoMigrate()
 		RegisterQueueConsumer()
 	}

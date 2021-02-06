@@ -9,10 +9,15 @@ import (
 var Router = []dingo.Def{
 	{
 		Name: "core:router:gateway",
-		Build: func() (*routes.GRpcGateway, error) {
+		Build: func(
+			bank configs.Server,
+		) (*routes.GRpcGateway, error) {
 			return &routes.GRpcGateway{[]configs.Server{
-				// @see skeleton-todo
+				bank,
 			}}, nil
+		},
+		Params: dingo.Params{
+			"0": dingo.Service("module:bank:server"),
 		},
 	},
 }

@@ -4,14 +4,14 @@ import (
 	configs "{{.PackageName}}/configs"
 )
 
-type Todo struct {
+type {{.Module}} struct {
 	configs.Base
 {{range .Columns}}
     {{.Name}} {{.Type}}
 {{end}}
 }
 
-func ({{.Module}}) TableName() string {
+func (m {{.Module}}) TableName() string {
 	return "{{.ModuleLowercase}}"
 }
 
