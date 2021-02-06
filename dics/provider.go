@@ -25,5 +25,9 @@ func (p *Provider) Load() error {
 		return err
 	}
 
+	if err := p.AddDefSlice(Router); err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -267,10 +267,6 @@ var Core = []dingo.Def{
 		},
 	},
 	{
-		Name:  "core:router:gateway",
-		Build: (*routes.GRpcGateway)(nil),
-	},
-	{
 		Name:  "core:router:mux",
 		Build: (*routes.MuxRouter)(nil),
 	},

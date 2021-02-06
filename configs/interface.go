@@ -4,6 +4,7 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
 )
@@ -45,6 +46,7 @@ type (
 
 	Server interface {
 		RegisterGRpc(server *grpc.Server)
+		GRpcHandler(context.Context, *runtime.ServeMux, *grpc.ClientConn) error
 		RegisterAutoMigrate()
 		RegisterQueueConsumer()
 	}

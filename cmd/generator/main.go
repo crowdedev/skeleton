@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/crowdeco/skeleton/configs"
+	configs "github.com/crowdeco/skeleton/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
 	"github.com/jinzhu/copier"
 	"github.com/vito/go-interact/interact"
