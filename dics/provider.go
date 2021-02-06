@@ -17,6 +17,10 @@ func (p *Provider) Load() error {
 		return err
 	}
 
+	if err := p.AddDefSlice(Generator); err != nil {
+		return err
+	}
+
 	if err := p.AddDefSlice(Interface); err != nil {
 		return err
 	}

@@ -13,6 +13,10 @@ type (
 		Connect(host string, port int, user string, password string, dbname string, debug bool) *gorm.DB
 	}
 
+	Generator interface {
+		Generate(template *Template, modulePath string, workDir string, templatePath string)
+	}
+
 	Listener interface {
 		Handle(event interface{})
 		Listen() string

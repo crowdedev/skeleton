@@ -85,12 +85,28 @@ var Core = []dingo.Def{
 		},
 	},
 	{
-		Name:  "core:module:generator",
-		Build: (*generators.Generator)(nil),
-		Params: dingo.Params{
-			"Pluralizer": dingo.Service("core:util:pluralizer"),
-			"Template":   dingo.Service("core:config:template"),
-		},
+		Name:  "core:generator:model",
+		Build: (*generators.Model)(nil),
+	},
+	{
+		Name:  "core:generator:module",
+		Build: (*generators.Module)(nil),
+	},
+	{
+		Name:  "core:generator:proto",
+		Build: (*generators.Proto)(nil),
+	},
+	{
+		Name:  "core:generator:server",
+		Build: (*generators.Server)(nil),
+	},
+	{
+		Name:  "core:generator:service",
+		Build: (*generators.Service)(nil),
+	},
+	{
+		Name:  "core:generator:validation",
+		Build: (*generators.Validation)(nil),
 	},
 	{
 		Name:  "core:database:driver:mysql",
