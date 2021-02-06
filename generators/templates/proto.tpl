@@ -10,7 +10,7 @@ option go_package = ".;grpcs";
 message {{.Module}} {
     string id = 1;
 {{range .Columns}}
-    {{.Type}} {{.Name}} = {{.Index}};
+    {{.Type}} {{.NameUnderScore}} = {{.Index}};
 {{end}}
 }
 
