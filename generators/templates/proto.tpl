@@ -29,24 +29,24 @@ message {{.Module}}PaginatedResponse {
 service {{.Module}}s {
     rpc GetPaginated (Pagination) returns ({{.Module}}PaginatedResponse) {
         option (google.api.http) = {
-            get: "/api/v1/{{.ModulePluralLowercase}}"
+            get: "/api/{{.ApiVersion}}/{{.ModulePluralLowercase}}"
         };
     }
 
     rpc Create ({{.Module}}) returns ({{.Module}}Response) {
         option (google.api.http) = {
-            post: "/api/v1/{{.ModulePluralLowercase}}"
+            post: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}"
             body: "*"
         };
     }
 
     rpc Update ({{.Module}}) returns ({{.Module}}Response) {
         option (google.api.http) = {
-            put: "/api/v1/{{.ModulePluralLowercase}}/{id}"
+            put: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}/{id}"
             body: "*"
 
             additional_bindings {
-                patch: "/api/v1/{{.ModulePluralLowercase}}/{id}"
+                patch: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}/{id}"
                 body: "*"
             }
         };
@@ -54,13 +54,13 @@ service {{.Module}}s {
 
     rpc Get ({{.Module}}) returns ({{.Module}}Response) {
         option (google.api.http) = {
-            get: "/api/v1/{{.ModulePluralLowercase}}/{id}"
+            get: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}/{id}"
         };
     }
 
     rpc Delete ({{.Module}}) returns ({{.Module}}Response) {
         option (google.api.http) = {
-            delete: "/api/v1/{{.ModulePluralLowercase}}/{id}"
+            delete: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}/{id}"
         };
     }
 }

@@ -28,6 +28,7 @@ type (
 		HtppPort           int
 		RpcPort            int
 		Version            string
+		ApiVersion         string
 		ServiceName        string
 		DbHost             string
 		DbPort             int
@@ -55,6 +56,7 @@ type (
 	}
 
 	Template struct {
+		ApiVersion            string
 		PackageName           string
 		Module                string
 		ModuleLowercase       string

@@ -57,6 +57,7 @@ var Core = []dingo.Def{
 
 			env.ServiceName = os.Getenv("APP_NAME")
 			env.Version = os.Getenv("APP_VERSION")
+			env.ApiVersion = os.Getenv("API_VERSION")
 			env.Debug, _ = strconv.ParseBool(os.Getenv("APP_DEBUG"))
 			env.HtppPort, _ = strconv.Atoi(os.Getenv("APP_PORT"))
 			env.RpcPort, _ = strconv.Atoi(os.Getenv("GRPC_PORT"))

@@ -28,6 +28,7 @@ func (f *Factory) Generate(module *configs.ModuleTemplate) {
 	modulePluralLowercase := strings.ToLower(modulePlural)
 	modulePath := fmt.Sprintf("%s/%s", workDir, modulePluralLowercase)
 
+	f.Template.ApiVersion = f.Env.ApiVersion
 	f.Template.PackageName = packageName
 	f.Template.Module = moduleName
 	f.Template.ModuleLowercase = strings.ToLower(module.Name)
