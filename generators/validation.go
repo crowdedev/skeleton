@@ -3,7 +3,6 @@ package generators
 import (
 	"fmt"
 	"os"
-	"strings"
 	engine "text/template"
 
 	configs "github.com/crowdeco/skeleton/configs"
@@ -17,7 +16,7 @@ func (g *Validation) Generate(template *configs.Template, modulePath string, wor
 	validationPath := fmt.Sprintf("%s/validations", modulePath)
 	os.MkdirAll(validationPath, 0755)
 
-	validationFile, err := os.Create(fmt.Sprintf("%s/%s.go", validationPath, strings.ToLower(template.Module)))
+	validationFile, err := os.Create(fmt.Sprintf("%s/%s.go", validationPath, template.ModuleLowercase))
 	if err != nil {
 		panic(err)
 	}

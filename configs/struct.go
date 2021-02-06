@@ -51,12 +51,26 @@ type (
 		HeaderUserRole     string
 		CacheLifetime      int
 		User               *User
+		TemplateLocation   string
 	}
 
 	Template struct {
 		PackageName           string
 		Module                string
+		ModuleLowercase       string
 		ModulePlural          string
 		ModulePluralLowercase string
+		Columns               []*FieldTemplate
+	}
+
+	ModuleTemplate struct {
+		Name   string
+		Fields []*FieldTemplate
+	}
+
+	FieldTemplate struct {
+		Name  string
+		Type  string
+		Index int
 	}
 )

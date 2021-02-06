@@ -40,6 +40,14 @@ var Core = []dingo.Def{
 		Build: (*configs.Template)(nil),
 	},
 	{
+		Name:  "core:template:module",
+		Build: (*configs.ModuleTemplate)(nil),
+	},
+	{
+		Name:  "core:template:field",
+		Build: (*configs.FieldTemplate)(nil),
+	},
+	{
 		Name: "core:config:env",
 		Build: func(user *configs.User) (*configs.Env, error) {
 			godotenv.Load()
@@ -81,8 +89,14 @@ var Core = []dingo.Def{
 
 			env.User = user
 
+			env.TemplateLocation = generators.TEMPLATE_PATH
+
 			return &env, nil
 		},
+	},
+	{
+		Name:  "core:generator:dic",
+		Build: (*generators.Dic)(nil),
 	},
 	{
 		Name:  "core:generator:model",

@@ -9,7 +9,9 @@ option go_package = ".;grpcs";
 
 message {{.Module}} {
     string id = 1;
-    string name = 2;
+{{range .Fields}}
+    {{.Type}} {{.Name}} = {{.Index}}
+{{end}}
 }
 
 message {{.Module}}Response {

@@ -3,7 +3,6 @@ package generators
 import (
 	"fmt"
 	"os"
-	"strings"
 	engine "text/template"
 
 	configs "github.com/crowdeco/skeleton/configs"
@@ -17,7 +16,7 @@ func (g *Service) Generate(template *configs.Template, modulePath string, workDi
 	servicePath := fmt.Sprintf("%s/services", modulePath)
 	os.MkdirAll(servicePath, 0755)
 
-	serviceFile, err := os.Create(fmt.Sprintf("%s/%s.go", servicePath, strings.ToLower(template.Module)))
+	serviceFile, err := os.Create(fmt.Sprintf("%s/%s.go", servicePath, template.ModuleLowercase))
 	if err != nil {
 		panic(err)
 	}

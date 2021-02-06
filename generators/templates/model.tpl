@@ -6,11 +6,13 @@ import (
 
 type Todo struct {
 	configs.Base
-	Name string `gorm:"column:name;type:varchar(255);not null"`
+{{range .Fields}}
+    {{.Name}} {{.Type}}
+{{end}}
 }
 
 func ({{.Module}}) TableName() string {
-	return "{{.ModulePluralLowercase}}"
+	return "{{.ModuleLowercase}}"
 }
 
 func (m {{.Module}}) SetCreatedBy(user *configs.User) {
