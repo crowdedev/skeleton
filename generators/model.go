@@ -21,5 +21,8 @@ func (g *Model) Generate(template *configs.Template, modulePath string, workDir 
 		panic(err)
 	}
 
-	modelTemplate.Execute(modelFile, template)
+	err = modelTemplate.Execute(modelFile, template)
+	if err != nil {
+		panic(err)
+	}
 }

@@ -9,7 +9,11 @@ type {{.Module}} struct{}
 
 func (v *{{.Module}}) Validate(m *models.{{.Module}}) (bool, error) {
 	err := validator.ValidateStruct(m,
-		validator.Field(&m.Name, validator.Required, validator.Length(2, 50)),
+    {{range .Columns}}
+        {{if .IsRequired}}
+        validator.Field(&m.{{.Name}}, validator.Required),
+        {{end}}
+    {{end}}
 	)
 
 	if err != nil {

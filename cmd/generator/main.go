@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/crowdeco/skeleton/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
 	"github.com/jinzhu/copier"
@@ -9,6 +11,20 @@ import (
 
 func main() {
 	container, _ := dic.NewContainer()
+	util, err := container.SafeGetCoreUtilCli()
+	if err != nil {
+		panic(err)
+	}
+
+	util.Println(`
+    _________                         .___         ___________          .__          __
+    \_   ___ \_______  ______  _  ____| _/____    /   _____/  | __ ____ |  |   _____/  |_  ____   ____
+    /    \  \/\_  __ \/  _ \ \/ \/ / __ |/ __ \   \_____  \|  |/ // __ \|  | _/ __ \   __\/  _ \ /    \
+    \     \____|  | \(  <_> )     / /_/ \  ___/   /        \    <\  ___/|  |_\  ___/|  | (  <_> )   |  \
+     \______  /|__|   \____/ \/\_/\____ |\___  > /_______  /__|_ \\___  >____/\___  >__|  \____/|___|  /
+            \/                         \/    \/          \/     \/    \/          \/                 \/
+`)
+
 	generator, err := container.SafeGetCoreModuleGenerator()
 	if err != nil {
 		panic(err)
@@ -39,16 +55,20 @@ func main() {
 
 		if more {
 			addColumn(field)
+
+			column := configs.FieldTemplate{}
+
+			copier.Copy(&column, field)
+
+			column.Index = index
+			column.Name = strings.Title(column.Name)
+			module.Fields = append(module.Fields, &column)
+
+			field.Name = ""
+			field.Type = ""
+
+			index++
 		}
-
-		column := configs.FieldTemplate{}
-
-		copier.Copy(&column, field)
-
-		column.Index = index
-		module.Fields = append(module.Fields, &column)
-
-		index++
 	}
 
 	generator.Generate(module)
@@ -81,6 +101,12 @@ func addColumn(field *configs.FieldTemplate) {
 		interact.Choice{Display: "rune", Value: "rune"},
 		interact.Choice{Display: "uintptr", Value: "uintptr"},
 	).Resolve(&field.Type)
+	if err != nil {
+		panic(err)
+	}
+
+	field.IsRequired = true
+	err = interact.NewInteraction("Apakah Kolom Wajib Diisi?").Resolve(&field.IsRequired)
 	if err != nil {
 		panic(err)
 	}

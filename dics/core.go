@@ -19,6 +19,7 @@ import (
 	paginations "github.com/crowdeco/skeleton/paginations"
 	routes "github.com/crowdeco/skeleton/routes"
 	utils "github.com/crowdeco/skeleton/utils"
+	"github.com/fatih/color"
 	"github.com/gadelkareem/cachita"
 	"github.com/gertd/go-pluralize"
 	"github.com/joho/godotenv"
@@ -339,6 +340,12 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:util:word",
 		Build: (*utils.Word)(nil),
+	},
+	{
+		Name: "core:util:cli",
+		Build: func() (*color.Color, error) {
+			return color.New(color.FgCyan, color.Bold), nil
+		},
 	},
 	{
 		Name: "core:util:pluralizer",

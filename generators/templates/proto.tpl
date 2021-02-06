@@ -9,8 +9,8 @@ option go_package = ".;grpcs";
 
 message {{.Module}} {
     string id = 1;
-{{range .Fields}}
-    {{.Type}} {{.Name}} = {{.Index}}
+{{range .Columns}}
+    {{.Type}} {{.Name}} = {{.Index}};
 {{end}}
 }
 

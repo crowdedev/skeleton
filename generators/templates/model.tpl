@@ -6,7 +6,7 @@ import (
 
 type Todo struct {
 	configs.Base
-{{range .Fields}}
+{{range .Columns}}
     {{.Name}} {{.Type}}
 {{end}}
 }
