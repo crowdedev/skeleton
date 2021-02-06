@@ -12,6 +12,7 @@ import (
 	amqp "github.com/ThreeDotsLabs/watermill-amqp/pkg/amqp"
 	configs "github.com/crowdeco/skeleton/configs"
 	drivers "github.com/crowdeco/skeleton/configs/drivers"
+	generators "github.com/crowdeco/skeleton/generators"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
 	middlewares "github.com/crowdeco/skeleton/middlewares"
@@ -19,6 +20,7 @@ import (
 	routes "github.com/crowdeco/skeleton/routes"
 	utils "github.com/crowdeco/skeleton/utils"
 	"github.com/gadelkareem/cachita"
+	"github.com/gertd/go-pluralize"
 	"github.com/joho/godotenv"
 	elastic "github.com/olivere/elastic/v7"
 	"github.com/sarulabs/dingo/v4"
@@ -32,6 +34,10 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:config:user",
 		Build: (*configs.User)(nil),
+	},
+	{
+		Name:  "core:config:template",
+		Build: (*configs.Template)(nil),
 	},
 	{
 		Name: "core:config:env",
@@ -76,6 +82,14 @@ var Core = []dingo.Def{
 			env.User = user
 
 			return &env, nil
+		},
+	},
+	{
+		Name:  "core:module:generator",
+		Build: (*generators.Generator)(nil),
+		Params: dingo.Params{
+			"Pluralizer": dingo.Service("core:util:pluralizer"),
+			"Template":   dingo.Service("core:config:template"),
 		},
 	},
 	{
@@ -295,6 +309,12 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:util:word",
 		Build: (*utils.Word)(nil),
+	},
+	{
+		Name: "core:util:pluralizer",
+		Build: func() (*pluralize.Client, error) {
+			return pluralize.NewClient(), nil
+		},
 	},
 	{
 		Name:  "core:util:time",

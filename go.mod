@@ -7,6 +7,7 @@ require (
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.0
 	github.com/dustin/go-humanize v1.0.0
 	github.com/gadelkareem/cachita v0.2.1
+	github.com/gertd/go-pluralize v0.1.7
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/google/uuid v1.1.5 // indirect
@@ -20,6 +21,7 @@ require (
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/vcraescu/go-paginator/v2 v2.0.0
 	github.com/weekface/mgorus v0.0.0-20181029072001-239539fe10e4
+	golang.org/x/mod v0.3.0
 	golang.org/x/net v0.0.0-20201031054903-ff519b6c9102 // indirect
 	golang.org/x/sys v0.0.0-20201201145000-ef89a241ccb3 // indirect
 	golang.org/x/text v0.3.4 // indirect

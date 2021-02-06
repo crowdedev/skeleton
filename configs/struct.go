@@ -52,4 +52,11 @@ type (
 		CacheLifetime      int
 		User               *User
 	}
+
+	Template struct {
+		PackageName           string
+		Module                string
+		ModulePlural          string
+		ModulePluralLowercase string
+	}
 )
