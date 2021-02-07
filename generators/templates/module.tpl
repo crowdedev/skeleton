@@ -71,6 +71,8 @@ func (m *Module) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.{{
 		data, _ := json.Marshal(v)
 		json.Unmarshal(data, &model)
 		copier.Copy(record, &model)
+
+		record.Id = model.Id.String()
 		records = append(records, record)
 	}
 
