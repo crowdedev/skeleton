@@ -9,10 +9,9 @@ require (
 	github.com/fatih/color v1.10.0
 	github.com/gadelkareem/cachita v0.2.1
 	github.com/gertd/go-pluralize v0.1.7
-	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang/protobuf v1.4.3
 	github.com/google/go-cmp v0.5.4 // indirect
-	github.com/google/uuid v1.1.5
+	github.com/google/uuid v1.1.5 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
 	github.com/jinzhu/copier v0.2.3
 	github.com/joho/godotenv v1.3.0
@@ -29,7 +28,7 @@ require (
 	github.com/weekface/mgorus v0.0.0-20181029072001-239539fe10e4
 	golang.org/x/mod v0.3.0
 	golang.org/x/text v0.3.4 // indirect
-	google.golang.org/genproto v0.0.0-20201214200347-8c77b98c765d
+	google.golang.org/genproto v0.0.0-20201214200347-8c77b98c765d // indirect
 	google.golang.org/grpc v1.33.2
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22 // indirect
