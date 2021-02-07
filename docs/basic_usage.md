@@ -14,6 +14,8 @@
 
 `NamaModul` adalah nama variabel pada file `dics/modules/<modul>.go`
 
+Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/dics/provider.go)
+
 - Daftarkan server ke interface pada file `dics/interface.go`
 
 Pada DI Param
