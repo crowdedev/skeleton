@@ -1,6 +1,6 @@
-## Master Service
+## Skeleton
 
-## Architecture
+## Arsitektur
 
 ![Architecture](assets/imgs/architecture.png)
 
@@ -22,7 +22,7 @@
 
 ![Get](assets/imgs/get.png)
 
-## Tools
+## Tool
 
 Saat ini masih menggunakan protoc-gen-go versi yang lama (v1.4.3)
 
@@ -33,18 +33,12 @@ $ go install \
     github.com/golang/protobuf/protoc-gen-go
 ```
 
-## Run
+## Perintah
 
 - Build Dependency Graph
 
 ```
 go run cmd/dic/main.go
-```
-
-- Elasticsearch Dump
-
-```
-go run cmd/elasticsearch/main.go
 ```
 
 - Application
@@ -53,12 +47,20 @@ go run cmd/elasticsearch/main.go
 go run cmd/app/main.go
 ```
 
+- Generator
+
+```
+go run cmd/generator/main.go
+```
+
 ## Testing
 
 ```
 $ go test ./... [-v]
 ```
 
-## Example
+## Contoh
 
 - [Todo Application](https://github.com/crowdeco/skeleton-todo)
+
+## Dokumentasi
