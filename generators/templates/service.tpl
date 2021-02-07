@@ -19,8 +19,8 @@ func (s *{{.Module}}) Name() string {
 }
 
 func (s *{{.Module}}) Create(v interface{}) error {
-	if m, ok := v.(*models.{{.Module}}); ok {
-		return s.Database.Create(m).Error
+	if v, ok := v.(*models.{{.Module}}); ok {
+		return s.Database.Create(v).Error
 	}
 
 	return gorm.ErrModelValueRequired
@@ -28,6 +28,9 @@ func (s *{{.Module}}) Create(v interface{}) error {
 
 func (s *{{.Module}}) Update(v interface{}, id string) error {
 	if v, ok := v.(*models.{{.Module}}); ok {
+		if err := v.Id.Scan(id); err != nil {
+			return err
+		}
 		return s.Database.Select("*").Omit("created_at", "created_by", "deleted_at", "deleted_by").Updates(v).Error
 	}
 
@@ -35,8 +38,11 @@ func (s *{{.Module}}) Update(v interface{}, id string) error {
 }
 
 func (s *{{.Module}}) Bind(v interface{}, id string) error {
-	if _, ok := v.(*models.{{.Module}}); ok {
-		return s.Database.Where("id", id).First(v).Error
+	if v, ok := v.(*models.{{.Module}}); ok {
+		if err := v.Id.Scan(id); err != nil {
+			return err
+		}
+		return s.Database.First(v).Error
 	}
 
 	return gorm.ErrModelValueRequired
@@ -51,18 +57,20 @@ func (s *{{.Module}}) All(v interface{}) error {
 }
 
 func (s *{{.Module}}) Delete(v interface{}, id string) error {
-	if m, ok := v.(*models.{{.Module}}); ok {
-		err := s.Database.Where("id", id).First(&models.{{.Module}}{}).Error
-		if err != nil {
+	if v, ok := v.(*models.{{.Module}}); ok {
+		if err := v.Id.Scan(id); err != nil {
+			return err
+		}
+		if err := s.Database.First(v).Error; err != nil {
 			return err
 		}
 
-		if m.IsSoftDelete() {
-			m.DeletedAt = gorm.DeletedAt{Time: time.Now(), Valid: true}
-			m.DeletedBy = s.Env.User.Id
-			return s.Database.Select("deleted_at", "deleted_by").Where("id", id).Updates(m).Error
+		if v.IsSoftDelete() {
+			v.DeletedAt = gorm.DeletedAt{Time: time.Now(), Valid: true}
+			v.DeletedBy = s.Env.User.Id
+			return s.Database.Select("deleted_at", "deleted_by").Updates(v).Error
 		} else {
-			return s.Database.Unscoped().Where("id", id).Delete(m).Error
+			return s.Database.Unscoped().Delete(v).Error
 		}
 	}
 
