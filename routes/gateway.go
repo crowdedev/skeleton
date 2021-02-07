@@ -13,6 +13,10 @@ type GRpcGateway struct {
 	Servers []configs.Server
 }
 
+func (g *GRpcGateway) Register(servers []configs.Server) {
+	g.Servers = servers
+}
+
 func (g *GRpcGateway) Handle(ctx context.Context, server *http.ServeMux, client *grpc.ClientConn) *http.ServeMux {
 	mux := runtime.NewServeMux()
 

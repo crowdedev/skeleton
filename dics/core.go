@@ -33,6 +33,10 @@ import (
 
 var Core = []dingo.Def{
 	{
+		Name:  "core:config:parser",
+		Build: (*configs.Config)(nil),
+	},
+	{
 		Name:  "core:config:user",
 		Build: (*configs.User)(nil),
 	},
@@ -97,6 +101,45 @@ var Core = []dingo.Def{
 		},
 	},
 	{
+		Name: "core:module:generator",
+		Build: func(
+			dic configs.Generator,
+			model configs.Generator,
+			module configs.Generator,
+			proto configs.Generator,
+			server configs.Generator,
+			service configs.Generator,
+			validation configs.Generator,
+			env *configs.Env,
+			pluralizer *pluralize.Client,
+			template *configs.Template,
+		) (*generators.Factory, error) {
+			return &generators.Factory{
+				Env:        env,
+				Pluralizer: pluralizer,
+				Template:   template,
+				Generators: []configs.Generator{
+					dic,
+					model,
+					module,
+					proto,
+					server,
+					service,
+					validation,
+				},
+			}, nil
+		},
+		Params: dingo.Params{
+			"0": dingo.Service("core:generator:dic"),
+			"1": dingo.Service("core:generator:model"),
+			"2": dingo.Service("core:generator:module"),
+			"3": dingo.Service("core:generator:proto"),
+			"4": dingo.Service("core:generator:server"),
+			"5": dingo.Service("core:generator:service"),
+			"6": dingo.Service("core:generator:validation"),
+		},
+	},
+	{
 		Name:  "core:generator:dic",
 		Build: (*generators.Dic)(nil),
 	},
@@ -107,6 +150,9 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:generator:module",
 		Build: (*generators.Module)(nil),
+		Params: dingo.Params{
+			"Config": dingo.Service("core:config:parser"),
+		},
 	},
 	{
 		Name:  "core:generator:proto",
@@ -290,6 +336,10 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:router:mux",
 		Build: (*routes.MuxRouter)(nil),
+	},
+	{
+		Name:  "core:router:gateway",
+		Build: (*routes.GRpcGateway)(nil),
 	},
 	{
 		Name: "core:http:mux",

@@ -15,7 +15,7 @@ var {{.Module}} = []dingo.Def{
 		Name:  "module:{{.ModuleLowercase}}:model",
 		Build: (*models.{{.Module}})(nil),
 	},
-	{
+    {
 		Name: "module:{{.ModuleLowercase}}:service",
 		Build: func(
 			env *configs.Env,

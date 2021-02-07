@@ -1,10 +1,20 @@
 package main
 
 import (
-	dic "github.com/crowdeco/skeleton/generated/dic"
+	"fmt"
+
+	"github.com/crowdeco/skeleton/configs"
+	"github.com/crowdeco/skeleton/generated/dic"
 )
 
 func main() {
 	container, _ := dic.NewContainer()
-	container.GetCoreApplication().Run()
+
+	var servers []configs.Server
+	for _, m := range container.GetCoreConfigParser().Parse() {
+		servers = append(servers, container.Get(fmt.Sprintf("%s:server", m)).(configs.Server))
+	}
+
+	container.GetCoreRouterGateway().Register(servers)
+	container.GetCoreApplication().Run(servers)
 }
