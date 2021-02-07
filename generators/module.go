@@ -23,6 +23,7 @@ func (g *Module) Generate(template *configs.Template, modulePath string, workDir
 
 	g.Config.Parse()
 	g.Config.Modules = append(g.Config.Modules, fmt.Sprintf("module:%s", template.ModuleLowercase))
+	g.Config.Modules = g.makeUnique(g.Config.Modules)
 
 	modules, err := yaml.Marshal(g.Config)
 	if err != nil {
@@ -35,4 +36,18 @@ func (g *Module) Generate(template *configs.Template, modulePath string, workDir
 	}
 
 	moduleTemplate.Execute(moduleFile, template)
+}
+
+func (g *Module) makeUnique(slices []string) []string {
+	occured := make(map[string]bool)
+	var result []string
+	for e := range slices {
+		if occured[slices[e]] != true {
+			occured[slices[e]] = true
+
+			result = append(result, slices[e])
+		}
+	}
+
+	return result
 }
