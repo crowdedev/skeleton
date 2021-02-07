@@ -47,7 +47,7 @@ func (r *Rest) Run(servers []configs.Server) {
 		}()
 	}()
 
-	log.Println("API Documentation is ready at /api/docs/ui")
+	log.Println("API Documentation is ready at /api/docs")
 
 	http.ListenAndServe(fmt.Sprintf(":%d", r.Env.HtppPort), r.Middleware.Attach(r.Router.Handle(ctx, r.Server, conn)))
 }

@@ -4,8 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-	"path"
-	"strings"
+	"regexp"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
@@ -16,9 +15,8 @@ type MuxRouter struct {
 
 func (g *MuxRouter) Handle(context context.Context, server *http.ServeMux, client *grpc.ClientConn) *http.ServeMux {
 	server.HandleFunc("/api/docs/", func(w http.ResponseWriter, r *http.Request) {
-		p := strings.TrimPrefix(r.URL.Path, "/api/docs/")
-		p = path.Join("swagger", p)
-		http.ServeFile(w, r, p)
+		regex := regexp.MustCompile("/api/docs/")
+		http.ServeFile(w, r, regex.ReplaceAllString(r.URL.Path, "swagger/"))
 	})
 
 	server.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
