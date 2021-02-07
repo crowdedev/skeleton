@@ -64,3 +64,7 @@ $ go test ./... [-v]
 - [Todo Application](https://github.com/crowdeco/skeleton-todo)
 
 ## Dokumentasi
+
+- [Instalasi](docs/install.md)
+
+- [Awal Memulai](docs/basic_usage.md)
