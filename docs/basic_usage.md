@@ -36,6 +36,8 @@ Pada parameter struct
 Servers: []configs.Server{<modul>},
 ```
 
+Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/dics/interface.go)
+
 - Daftarkan route ke router pada file `dics/routes.go`
 
 Pada DI Param
@@ -57,6 +59,8 @@ Pada parameter struct
 ```go
 Servers: []configs.Server{<modul>},
 ```
+
+Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/dics/routes.go)
 
 - Update DI Container dengan `go run cmd/dic/main.go`
 
