@@ -15,6 +15,6 @@ func main() {
 		servers = append(servers, container.Get(fmt.Sprintf("%s:server", m)).(configs.Server))
 	}
 
-	container.GetCoreApplication().Run(servers)
 	container.GetCoreRouterGateway().Register(servers)
+	container.GetCoreApplication().Run(servers)
 }
