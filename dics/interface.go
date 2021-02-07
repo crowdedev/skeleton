@@ -17,7 +17,6 @@ var Interface = []dingo.Def{
 			rest configs.Application,
 		) (*interfaces.Application, error) {
 			return &interfaces.Application{
-				Servers:      []configs.Server{},
 				Applications: []configs.Application{database, elasticsearch, grpc, queue, rest},
 			}, nil
 		},
