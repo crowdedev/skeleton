@@ -9,8 +9,10 @@ func (b *Base) BeforeCreate(tx *gorm.DB) (err error) {
 	if b.Id == uuid.Nil {
 		b.Id = uuid.New()
 	}
+
 	b.CreatedBy = "Env.User.Id"
 	b.UpdatedBy = "Env.User.Id"
+
 	return nil
 }
 
