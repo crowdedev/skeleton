@@ -41,13 +41,14 @@ Servers: []configs.Server{<modul>},
 Pada DI Param
 
 ```go
-"0": dingo.Service("module:<modul>:server"),
+Params: dingo.Params{
+    "0": dingo.Service("module:todo:server"),
+},
 ```
 
 Pada parameter fungsi
 
 ```go
-rest configs.Application,
 <modul> configs.Server,
 ```
 
