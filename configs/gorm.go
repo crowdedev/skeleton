@@ -18,5 +18,6 @@ func (b *Base) BeforeCreate(tx *gorm.DB) (err error) {
 
 func (b *Base) BeforeUpdate(tx *gorm.DB) (err error) {
 	b.UpdatedBy = "Env.User.Id"
+
 	return nil
 }
