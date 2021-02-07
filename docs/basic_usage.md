@@ -40,7 +40,7 @@ Servers: []configs.Server{<modul>},
 
 Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/dics/interface.go)
 
-- Daftarkan route ke router pada file `dics/routes.go`
+- Daftarkan route ke router pada file `dics/router.go`
 
 Pada DI Param
 
@@ -62,7 +62,7 @@ Pada parameter struct
 Servers: []configs.Server{<modul>},
 ```
 
-Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/dics/routes.go)
+Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/dics/router.go)
 
 - Update DI Container dengan `go run cmd/dic/main.go`
 
@@ -71,3 +71,5 @@ Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowde
 - Modulmu dapat diakses via `http://localhost:<APP_PORT>/api/[API_VERSION]/<modul-plural>`
 
 `modul-plural` adalah bentuk plural dari nama modul yang kamu masukkan, kamu juga dapat melihatnya pada file `protos/<modul>.proto`
+
+Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/protos/todo.proto#L34)
