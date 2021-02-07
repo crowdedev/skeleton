@@ -20,3 +20,7 @@ func (e *Elasticsearch) Run(servers []configs.Server) {
 func (e *Elasticsearch) IsBackground() bool {
 	return true
 }
+
+func (e *Elasticsearch) Priority() int {
+	return configs.HIGEST_PRIORITY + 1
+}

@@ -2,6 +2,7 @@ package events
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/crowdeco/skeleton/configs"
 )
@@ -11,6 +12,10 @@ type Dispatcher struct {
 }
 
 func (d *Dispatcher) Register(listeners []configs.Listener) {
+	sort.Slice(listeners, func(i, j int) bool {
+		return listeners[i].Priority() > listeners[j].Priority()
+	})
+
 	for _, listener := range listeners {
 		if _, ok := d.Events[listener.Listen()]; ok {
 			panic(fmt.Sprintf("the '%s' event is already registered", listener.Listen()))

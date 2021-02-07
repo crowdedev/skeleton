@@ -24,3 +24,7 @@ func (g *GRpcGateway) Handle(ctx context.Context, server *http.ServeMux, client 
 
 	return server
 }
+
+func (a *GRpcGateway) Priority() int {
+	return configs.HIGEST_PRIORITY + 1
+}

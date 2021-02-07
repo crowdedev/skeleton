@@ -9,6 +9,10 @@ import (
 	"gorm.io/gorm"
 )
 
+const HIGEST_PRIORITY = 255
+
+const LOWEST_PRIORITY = -255
+
 type (
 	Driver interface {
 		Connect(host string, port int, user string, password string, dbname string, debug bool) *gorm.DB
@@ -21,6 +25,7 @@ type (
 	Listener interface {
 		Handle(event interface{})
 		Listen() string
+		Priority() int
 	}
 
 	Model interface {
@@ -55,14 +60,17 @@ type (
 
 	Router interface {
 		Handle(context context.Context, server *http.ServeMux, client *grpc.ClientConn) *http.ServeMux
+		Priority() int
 	}
 
 	Middleware interface {
 		Attach(request *http.Request, response http.ResponseWriter) bool
+		Priority() int
 	}
 
 	Application interface {
 		Run(servers []Server)
 		IsBackground() bool
+		Priority() int
 	}
 )

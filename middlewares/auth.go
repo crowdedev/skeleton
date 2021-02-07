@@ -17,3 +17,7 @@ func (a *Auth) Attach(request *http.Request, response http.ResponseWriter) bool 
 
 	return false
 }
+
+func (a *Auth) Priority() int {
+	return configs.HIGEST_PRIORITY + 1
+}

@@ -55,3 +55,7 @@ func (r *Rest) Run(servers []configs.Server) {
 func (r *Rest) IsBackground() bool {
 	return false
 }
+
+func (r *Rest) Priority() int {
+	return configs.LOWEST_PRIORITY - 1
+}

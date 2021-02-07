@@ -20,3 +20,7 @@ func (d *Database) Run(servers []configs.Server) {
 func (d *Database) IsBackground() bool {
 	return true
 }
+
+func (d *Database) Priority() int {
+	return configs.HIGEST_PRIORITY + 1
+}

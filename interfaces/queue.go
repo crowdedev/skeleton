@@ -20,3 +20,7 @@ func (q *Queue) Run(servers []configs.Server) {
 func (q *Queue) IsBackground() bool {
 	return true
 }
+
+func (q *Queue) Priority() int {
+	return configs.HIGEST_PRIORITY + 1
+}

@@ -12,10 +12,12 @@ import (
 
 func main() {
 	container, _ := dic.NewContainer()
-	util, err := container.SafeGetCoreUtilCli()
-	if err != nil {
-		panic(err)
-	}
+
+	util := container.GetCoreUtilCli()
+	generator := container.GetCoreModuleGenerator()
+	module := container.GetCoreTemplateModule()
+	field := container.GetCoreTemplateField()
+	word := container.GetCoreUtilWord()
 
 	util.Println(`
      ______                                           __                   ______   __                  __              __
@@ -30,27 +32,7 @@ func main() {
 
 `)
 
-	generator, err := container.SafeGetCoreModuleGenerator()
-	if err != nil {
-		panic(err)
-	}
-
-	module, err := container.SafeGetCoreTemplateModule()
-	if err != nil {
-		panic(err)
-	}
-
-	field, err := container.SafeGetCoreTemplateField()
-	if err != nil {
-		panic(err)
-	}
-
-	word, err := container.SafeGetCoreUtilWord()
-	if err != nil {
-		panic(err)
-	}
-
-	err = interact.NewInteraction("Masukkan Nama Table?").Resolve(&module.Name)
+	err := interact.NewInteraction("Masukkan Nama Table?").Resolve(&module.Name)
 	if err != nil {
 		panic(err)
 	}

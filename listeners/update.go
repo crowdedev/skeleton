@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 
+	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	elastic "github.com/olivere/elastic/v7"
@@ -30,4 +31,8 @@ func (u *Update) Handle(event interface{}) {
 
 func (u *Update) Listen() string {
 	return handlers.AFTER_UPDATE_EVENT
+}
+
+func (u *Update) Priority() int {
+	return configs.HIGEST_PRIORITY + 1
 }

@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"regexp"
 
+	configs "github.com/crowdeco/skeleton/configs"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
 )
@@ -13,7 +14,7 @@ import (
 type MuxRouter struct {
 }
 
-func (g *MuxRouter) Handle(context context.Context, server *http.ServeMux, client *grpc.ClientConn) *http.ServeMux {
+func (m *MuxRouter) Handle(context context.Context, server *http.ServeMux, client *grpc.ClientConn) *http.ServeMux {
 	server.HandleFunc("/api/docs/", func(w http.ResponseWriter, r *http.Request) {
 		regex := regexp.MustCompile("/api/docs/")
 		http.ServeFile(w, r, regex.ReplaceAllString(r.URL.Path, "swagger/"))
@@ -33,4 +34,8 @@ func (g *MuxRouter) Handle(context context.Context, server *http.ServeMux, clien
 	})
 
 	return server
+}
+
+func (m *MuxRouter) Priority() int {
+	return configs.LOWEST_PRIORITY - 1
 }

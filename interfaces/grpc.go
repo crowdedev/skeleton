@@ -32,3 +32,7 @@ func (g *GRpc) Run(servers []configs.Server) {
 func (g *GRpc) IsBackground() bool {
 	return true
 }
+
+func (g *GRpc) Priority() int {
+	return configs.HIGEST_PRIORITY + 1
+}

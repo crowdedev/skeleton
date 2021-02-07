@@ -1,6 +1,8 @@
 package interfaces
 
 import (
+	"sort"
+
 	"github.com/crowdeco/skeleton/configs"
 )
 
@@ -10,6 +12,10 @@ type Application struct {
 }
 
 func (a *Application) Run() {
+	sort.Slice(a.Applications, func(i, j int) bool {
+		return a.Applications[i].Priority() > a.Applications[j].Priority()
+	})
+
 	for _, application := range a.Applications {
 		if application.IsBackground() {
 			go application.Run(a.Servers)
