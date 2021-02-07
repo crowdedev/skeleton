@@ -10,9 +10,9 @@
 
 - Database (`mysql` atau `postgresql`)
 
-- AMPQ (RabbitMQ)
+- AMQP ([RabbitMQ](https://www.rabbitmq.com))
 
-- Elasticsearch
+- [Elasticsearch](https://www.elastic.co)
 
 ## Cara Install
 
