@@ -18,11 +18,8 @@ func (s *{{.Module}}) Name() string {
 	return s.TableName
 }
 
-func (s *{{.Module}}) Create(v interface{}, id string) error {
+func (s *{{.Module}}) Create(v interface{}) error {
 	if m, ok := v.(*models.{{.Module}}); ok {
-		m.Id = id
-		m.SetCreatedBy(s.Env.User)
-
 		return s.Database.Create(m).Error
 	}
 
@@ -30,16 +27,8 @@ func (s *{{.Module}}) Create(v interface{}, id string) error {
 }
 
 func (s *{{.Module}}) Update(v interface{}, id string) error {
-	if m, ok := v.(*models.{{.Module}}); ok {
-		err := s.Database.Where("id = ?", id).First(&models.{{.Module}}{}).Error
-		if err != nil {
-			return err
-		}
-
-		m.Id = id
-		m.SetUpdatedBy(s.Env.User)
-
-		return s.Database.Select("*").Omit("created_at", "created_by", "deleted_at", "deleted_by").Updates(m).Error
+	if v, ok := v.(*models.{{.Module}}); ok {
+		return s.Database.Select("*").Omit("created_at", "created_by", "deleted_at", "deleted_by").Updates(v).Error
 	}
 
 	return gorm.ErrModelValueRequired
@@ -47,7 +36,7 @@ func (s *{{.Module}}) Update(v interface{}, id string) error {
 
 func (s *{{.Module}}) Bind(v interface{}, id string) error {
 	if _, ok := v.(*models.{{.Module}}); ok {
-		return s.Database.Where("id = ?", id).First(v).Error
+		return s.Database.Where("id", id).First(v).Error
 	}
 
 	return gorm.ErrModelValueRequired
@@ -63,18 +52,17 @@ func (s *{{.Module}}) All(v interface{}) error {
 
 func (s *{{.Module}}) Delete(v interface{}, id string) error {
 	if m, ok := v.(*models.{{.Module}}); ok {
-		err := s.Database.Where("id = ?", id).First(&models.{{.Module}}{}).Error
+		err := s.Database.Where("id", id).First(&models.{{.Module}}{}).Error
 		if err != nil {
 			return err
 		}
 
 		if m.IsSoftDelete() {
-			m.DeletedAt = gorm.DeletedAt{}
-			m.DeletedAt.Scan(time.Now())
-			m.SetDeletedBy(s.Env.User)
-			return s.Database.Select("deleted_at", "deleted_by").Where("id = ?", id).Updates(m).Error
+			m.DeletedAt = gorm.DeletedAt{Time: time.Now(), Valid: true}
+			m.DeletedBy = s.Env.User.Id
+			return s.Database.Select("deleted_at", "deleted_by").Where("id", id).Updates(m).Error
 		} else {
-			return s.Database.Unscoped().Where("id = ?", id).Delete(m).Error
+			return s.Database.Unscoped().Where("id", id).Delete(m).Error
 		}
 	}
 

@@ -38,11 +38,11 @@ type (
 
 	Service interface {
 		Name() string
-		Create(value interface{}, id string) error
+		Create(value interface{}) error
 		Update(value interface{}, id string) error
 		Bind(value interface{}, id string) error
-		Delete(value interface{}, id string) error
 		All(value interface{}) error
+		Delete(value interface{}, id string) error
 	}
 
 	Module interface {

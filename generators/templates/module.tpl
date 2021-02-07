@@ -14,7 +14,6 @@ import (
 	models "{{.PackageName}}/{{.ModulePluralLowercase}}/models"
 	validations "{{.PackageName}}/{{.ModulePluralLowercase}}/validations"
 	utils "{{.PackageName}}/utils"
-	uuid "github.com/google/uuid"
 	copier "github.com/jinzhu/copier"
 	elastic "github.com/olivere/elastic/v7"
 )
@@ -105,7 +104,7 @@ func (m *Module) Create(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	err = m.Handler.Create(&v, uuid.New().String())
+	err = m.Handler.Create(&v)
 	if err != nil {
 		return &grpcs.{{.Module}}Response{
 			Code:    http.StatusBadRequest,
@@ -114,7 +113,7 @@ func (m *Module) Create(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	r.Id = v.Id
+	r.Id = v.Id.String()
 
 	return &grpcs.{{.Module}}Response{
 		Code: http.StatusCreated,
@@ -149,7 +148,7 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	err = m.Handler.Update(&v, v.Id)
+	err = m.Handler.Update(&v, v.Id.String())
 	if err != nil {
 		return &grpcs.{{.Module}}Response{
 			Code:    http.StatusBadRequest,
@@ -229,7 +228,7 @@ func (m *Module) Consume() {
 
 		m.Logger.Info(fmt.Sprintf("%+v", v))
 
-		err := m.Handler.Update(&v, v.Id)
+		err := m.Handler.Update(&v, v.Id.String())
 		if err != nil {
 			m.Logger.Error(fmt.Sprintf("%+v", err))
 		}

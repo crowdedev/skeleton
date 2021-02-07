@@ -3,14 +3,15 @@ package configs
 import (
 	"time"
 
-	"gorm.io/gorm"
+	uuid "github.com/google/uuid"
+	gorm "gorm.io/gorm"
 )
 
 type (
 	Base struct {
-		Id        string         `gorm:"type:varchar(36);primary_key"`
-		CreatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP"`
-		UpdatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
+		Id        uuid.UUID      `gorm:"type:varchar(36);primaryKey"`
+		CreatedAt time.Time      `gorm:"type:timestamp(3);notNull;default:CURRENT_TIMESTAMP(3)"`
+		UpdatedAt time.Time      `gorm:"type:timestamp(3);notNull;default:CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP"`
 		CreatedBy string         `gorm:"type:varchar(36);default:null"`
 		UpdatedBy string         `gorm:"type:varchar(36);default:null"`
 		DeletedAt gorm.DeletedAt `gorm:"default:null;index"`
@@ -18,7 +19,7 @@ type (
 	}
 
 	User struct {
-		ID    string
+		Id    string
 		Email string
 		Role  string
 	}

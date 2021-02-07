@@ -55,10 +55,10 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 	}, result
 }
 
-func (h *Handler) Create(v interface{}, id string) error {
+func (h *Handler) Create(v interface{}) error {
 	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, events.NewModelEvent(h.Service.Name(), v, ""))
 
-	err := h.Service.Create(v, id)
+	err := h.Service.Create(v)
 	if err != nil {
 		return err
 	}
