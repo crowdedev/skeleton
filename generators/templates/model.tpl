@@ -7,7 +7,7 @@ import (
 type {{.Module}} struct {
 	configs.Base
 {{range .Columns}}
-    {{.Name}} {{.Type}} `json:"{{.NameUnderScore}}"`
+    {{.Name}} {{.Type}}
 {{end}}
 }
 
