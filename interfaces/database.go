@@ -7,13 +7,16 @@ import (
 )
 
 type Database struct {
-	Servers []configs.Server
 }
 
-func (d *Database) Run() {
+func (d *Database) Run(servers []configs.Server) {
 	log.Printf("Starting DB Auto Migration")
 
-	for _, server := range d.Servers {
+	for _, server := range servers {
 		server.RegisterAutoMigrate()
 	}
+}
+
+func (d *Database) IsBackground() bool {
+	return true
 }

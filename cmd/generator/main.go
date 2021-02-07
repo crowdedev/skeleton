@@ -92,6 +92,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	_, err = exec.Command("go", "mod", "tidy").Output()
+	if err != nil {
+		panic(err)
+	}
 }
 
 func addColumn(field *configs.FieldTemplate) {

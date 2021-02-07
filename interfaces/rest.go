@@ -20,7 +20,7 @@ type Rest struct {
 	Context    context.Context
 }
 
-func (r *Rest) Run() {
+func (r *Rest) Run(servers []configs.Server) {
 	log.Printf("Starting REST Server on :%d", r.Env.HtppPort)
 
 	ctx, cancel := context.WithCancel(r.Context)
@@ -50,4 +50,8 @@ func (r *Rest) Run() {
 	log.Println("API Documentation is ready at /api/docs/ui")
 
 	http.ListenAndServe(fmt.Sprintf(":%d", r.Env.HtppPort), r.Middleware.Attach(r.Router.Handle(ctx, r.Server, conn)))
+}
+
+func (r *Rest) IsBackground() bool {
+	return false
 }

@@ -42,6 +42,7 @@ type (
 
 	Module interface {
 		Consume()
+		Populete()
 	}
 
 	Server interface {
@@ -49,6 +50,7 @@ type (
 		GRpcHandler(context context.Context, server *runtime.ServeMux, client *grpc.ClientConn) error
 		RegisterAutoMigrate()
 		RegisterQueueConsumer()
+		RepopulateData()
 	}
 
 	Router interface {
@@ -60,6 +62,7 @@ type (
 	}
 
 	Application interface {
-		Run()
+		Run(servers []Server)
+		IsBackground() bool
 	}
 )

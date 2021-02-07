@@ -2,49 +2,31 @@ package dics
 
 import (
 	configs "github.com/crowdeco/skeleton/configs"
-	events "github.com/crowdeco/skeleton/events"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
 	"github.com/sarulabs/dingo/v4"
-	"google.golang.org/grpc"
 )
 
 var Interface = []dingo.Def{
 	{
-		Name: "core:interface:database",
-		Build: func() (*interfaces.Database, error) {
-			database := interfaces.Database{
-				Servers: []configs.Server{},
-			}
-
-			return &database, nil
-		},
-	},
-	{
-		Name: "core:interface:grpc",
+		Name: "core:application",
 		Build: func(
-			env *configs.Env,
-			server *grpc.Server,
-			dispatcher *events.Dispatcher,
-		) (*interfaces.GRpc, error) {
-			grpc := interfaces.GRpc{
-				Env:        env,
-				GRpc:       server,
-				Dispatcher: dispatcher,
-			}
-
-			grpc.Register([]configs.Server{})
-
-			return &grpc, nil
+			database configs.Application,
+			elasticsearch configs.Application,
+			grpc configs.Application,
+			queue configs.Application,
+			rest configs.Application,
+		) (*interfaces.Application, error) {
+			return &interfaces.Application{
+				Servers:      []configs.Server{},
+				Applications: []configs.Application{database, elasticsearch, grpc, queue, rest},
+			}, nil
 		},
-	},
-	{
-		Name: "core:interface:queue",
-		Build: func() (*interfaces.Queue, error) {
-			queue := interfaces.Queue{
-				Servers: []configs.Server{},
-			}
-
-			return &queue, nil
+		Params: dingo.Params{
+			"0": dingo.Service("core:interface:database"),
+			"1": dingo.Service("core:interface:elasticsearch"),
+			"2": dingo.Service("core:interface:grpc"),
+			"3": dingo.Service("core:interface:queue"),
+			"4": dingo.Service("core:interface:rest"),
 		},
 	},
 }

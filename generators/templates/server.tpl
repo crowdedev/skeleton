@@ -34,3 +34,9 @@ func (s *Server) RegisterAutoMigrate() {
 func (s *Server) RegisterQueueConsumer() {
 	s.Module.Consume()
 }
+
+func (s *Server) RepopulateData() {
+	if s.Env.Debug {
+		s.Module.Populete()
+	}
+}

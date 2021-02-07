@@ -7,13 +7,16 @@ import (
 )
 
 type Queue struct {
-	Servers []configs.Server
 }
 
-func (q *Queue) Run() {
+func (q *Queue) Run(servers []configs.Server) {
 	log.Printf("Starting Queue Consumer")
 
-	for _, server := range q.Servers {
+	for _, server := range servers {
 		go server.RegisterQueueConsumer()
 	}
+}
+
+func (q *Queue) IsBackground() bool {
+	return true
 }

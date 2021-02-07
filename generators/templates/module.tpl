@@ -16,18 +16,24 @@ import (
 	utils "{{.PackageName}}/utils"
 	uuid "github.com/google/uuid"
 	copier "github.com/jinzhu/copier"
+	elastic "github.com/olivere/elastic/v7"
 )
 
 type Module struct {
-	Handler   *handlers.Handler
-	Logger    *handlers.Logger
-	Messenger *handlers.Messenger
-	Validator *validations.{{.Module}}
-	Cache     *utils.Cache
-	Paginator *paginations.Pagination
+	Context       context.Context
+	Elasticsearch *elastic.Client
+	Service       configs.Service
+	Handler       *handlers.Handler
+	Logger        *handlers.Logger
+	Messenger     *handlers.Messenger
+	Validator     *validations.Todo
+	Cache         *utils.Cache
+	Paginator     *paginations.Pagination
 }
 
 func NewModule(
+	context context.Context,
+	elasticsearch *elastic.Client,
 	dispatcher *events.Dispatcher,
 	service configs.Service,
 	logger *handlers.Logger,
@@ -40,12 +46,15 @@ func NewModule(
 	handler.SetService(service)
 
 	return &Module{
-		Handler:   handler,
-		Logger:    logger,
-		Messenger: messenger,
-		Validator: validator,
-		Cache:     cache,
-		Paginator: paginator,
+		Context:       context,
+		Elasticsearch: elasticsearch,
+		Service:       service,
+		Handler:       handler,
+		Logger:        logger,
+		Messenger:     messenger,
+		Validator:     validator,
+		Cache:         cache,
+		Paginator:     paginator,
 	}
 }
 
@@ -140,10 +149,13 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	data, _ := json.Marshal(v)
-	err = m.Messenger.Publish(v.TableName(), data)
+	err = m.Handler.Update(&v, v.Id)
 	if err != nil {
-		m.Logger.Error(fmt.Sprintf("%+v", err))
+		return &grpcs.{{.Module}}Response{
+			Code:    http.StatusBadRequest,
+			Data:    r,
+			Message: err.Error(),
+		}, nil
 	}
 
 	return &grpcs.{{.Module}}Response{
@@ -223,5 +235,23 @@ func (m *Module) Consume() {
 		}
 
 		message.Ack()
+	}
+}
+
+func (m *Module) Populete() {
+	_, err := m.Elasticsearch.DeleteIndex(m.Service.Name()).Do(m.Context)
+	if err != nil {
+		m.Logger.Error(fmt.Sprintf("%+v", err))
+	}
+
+	var records []models.{{.Module}}
+	err = m.Handler.All(&records)
+	if err != nil {
+		m.Logger.Error(fmt.Sprintf("%+v", err))
+	}
+
+	for _, d := range records {
+		data, _ := json.Marshal(d)
+		m.Elasticsearch.Index().Index(m.Service.Name()).BodyJson(string(data)).Do(m.Context)
 	}
 }

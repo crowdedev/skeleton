@@ -181,6 +181,26 @@ var Core = []dingo.Def{
 		},
 	},
 	{
+		Name:  "core:interface:database",
+		Build: (*interfaces.Database)(nil),
+	},
+	{
+		Name:  "core:interface:elasticsearch",
+		Build: (*interfaces.Elasticsearch)(nil),
+	},
+	{
+		Name:  "core:interface:grpc",
+		Build: (*interfaces.GRpc)(nil),
+		Params: dingo.Params{
+			"Env":  dingo.Service("core:config:env"),
+			"GRpc": dingo.Service("core:grpc:server"),
+		},
+	},
+	{
+		Name:  "core:interface:queue",
+		Build: (*interfaces.Queue)(nil),
+	},
+	{
 		Name:  "core:interface:rest",
 		Build: (*interfaces.Rest)(nil),
 		Params: dingo.Params{
@@ -292,9 +312,7 @@ var Core = []dingo.Def{
 	{
 		Name: "core:message:config",
 		Build: func(env *configs.Env) (amqp.Config, error) {
-			address := fmt.Sprintf("amqp://%s:%s@%s:%d/", env.AmqpUser, env.AmqpPassword, env.AmqpHost, env.AmqpPort)
-
-			return amqp.NewDurableQueueConfig(address), nil
+			return amqp.NewDurableQueueConfig(fmt.Sprintf("amqp://%s:%s@%s:%d/", env.AmqpUser, env.AmqpPassword, env.AmqpHost, env.AmqpPort)), nil
 		},
 	},
 	{

@@ -35,18 +35,18 @@ service {{.Module}}s {
 
     rpc Create ({{.Module}}) returns ({{.Module}}Response) {
         option (google.api.http) = {
-            post: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}"
+            post: "/api/{{.ApiVersion}}/{{.ModulePluralLowercase}}"
             body: "*"
         };
     }
 
     rpc Update ({{.Module}}) returns ({{.Module}}Response) {
         option (google.api.http) = {
-            put: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}/{id}"
+            put: "/api/{{.ApiVersion}}/{{.ModulePluralLowercase}}/{id}"
             body: "*"
 
             additional_bindings {
-                patch: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}/{id}"
+                patch: "/api/{{.ApiVersion}}/{{.ModulePluralLowercase}}/{id}"
                 body: "*"
             }
         };
@@ -54,13 +54,13 @@ service {{.Module}}s {
 
     rpc Get ({{.Module}}) returns ({{.Module}}Response) {
         option (google.api.http) = {
-            get: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}/{id}"
+            get: "/api/{{.ApiVersion}}/{{.ModulePluralLowercase}}/{id}"
         };
     }
 
     rpc Delete ({{.Module}}) returns ({{.Module}}Response) {
         option (google.api.http) = {
-            delete: "/api/{{.ApiVersion}/{{.ModulePluralLowercase}}/{id}"
+            delete: "/api/{{.ApiVersion}}/{{.ModulePluralLowercase}}/{id}"
         };
     }
 }
