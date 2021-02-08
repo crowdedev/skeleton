@@ -1,6 +1,6 @@
 ## Memulai Skeleton
 
-- Buat modul baru dengan perintah `go run cmd/generator/main.go`
+- Buat modul baru dengan perintah `go run cmds/generator/main.go`
 
 - Ikuti setiap langkah yang ada, maka **Skeleton** akan membuatkan modul untukmu secara otomatis dan menambahkan modulmu pada file `modules.yaml`
 
@@ -16,9 +16,9 @@
 
 Bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/dics/provider.go)
 
-- Update DI Container dengan `go run cmd/dic/main.go`
+- Update DI Container dengan `go run cmds/dic/main.go`
 
-- Jalankan aplikasi `go run cmd/app/main.go`
+- Jalankan aplikasi `go run cmds/app/main.go`
 
 - Modulmu dapat diakses via `http://localhost:<APP_PORT>/api/[API_VERSION]/<modul-plural>`
 

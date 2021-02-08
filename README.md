@@ -38,19 +38,19 @@ $ go install \
 - Build Dependency Graph
 
 ```
-go run cmd/dic/main.go
+go run cmds/dic/main.go
 ```
 
 - Application
 
 ```
-go run cmd/app/main.go
+go run cmds/app/main.go
 ```
 
 - Generator
 
 ```
-go run cmd/generator/main.go
+go run cmds/generator/main.go
 ```
 
 ## Testing
