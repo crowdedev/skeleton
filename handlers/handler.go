@@ -33,7 +33,11 @@ func (h *Handler) SetService(service configs.Service) {
 func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
 	query := elastic.NewBoolQuery()
 
-	h.Dispatcher.Dispatch(PAGINATION_EVENT, events.NewPaginationEvent(h.Service.Name(), query, paginator.Filters))
+	h.Dispatcher.Dispatch(PAGINATION_EVENT, events.PaginationEvent{
+		Service: h.Service,
+		Query:   query,
+		Filters: paginator.Filters,
+	})
 
 	var result []interface{}
 	adapter := adapter.NewElasticsearchAdapter(h.Context, h.Elasticsearch, h.Service.Name(), query)
@@ -60,7 +64,7 @@ func (h *Handler) Create(v interface{}) error {
 	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, events.ModelEvent{
 		Id:      "",
 		Data:    v,
-		Service: h.Service.Name(),
+		Service: h.Service,
 	})
 
 	fmt.Printf("%+v\n", v)
@@ -72,7 +76,7 @@ func (h *Handler) Create(v interface{}) error {
 	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, events.ModelEvent{
 		Id:      "",
 		Data:    v,
-		Service: h.Service.Name(),
+		Service: h.Service,
 	})
 
 	return nil
@@ -82,7 +86,7 @@ func (h *Handler) Update(v interface{}, id string) error {
 	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, events.ModelEvent{
 		Id:      id,
 		Data:    v,
-		Service: h.Service.Name(),
+		Service: h.Service,
 	})
 
 	err := h.Service.Update(v, id)
@@ -93,7 +97,7 @@ func (h *Handler) Update(v interface{}, id string) error {
 	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, events.ModelEvent{
 		Id:      id,
 		Data:    v,
-		Service: h.Service.Name(),
+		Service: h.Service,
 	})
 
 	return nil
@@ -111,7 +115,7 @@ func (h *Handler) Delete(v interface{}, id string) error {
 	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, events.ModelEvent{
 		Id:      id,
 		Data:    v,
-		Service: h.Service.Name(),
+		Service: h.Service,
 	})
 
 	err := h.Service.Delete(v, id)
@@ -122,7 +126,7 @@ func (h *Handler) Delete(v interface{}, id string) error {
 	h.Dispatcher.Dispatch(AFTER_DELETE_EVENT, events.ModelEvent{
 		Id:      id,
 		Data:    v,
-		Service: h.Service.Name(),
+		Service: h.Service,
 	})
 
 	return nil
