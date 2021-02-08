@@ -1,3 +1,8 @@
 .env
 !generated/.gitignore
 generated/*
+todos
+dics/modules/todo.go
+protos/todo.proto
+protos/builds/todo.pb.go
+protos/builds/todo.pb.gw.go
