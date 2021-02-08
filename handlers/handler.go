@@ -3,10 +3,10 @@ package handlers
 import (
 	"context"
 
-	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
 	paginations "github.com/crowdeco/skeleton/paginations"
 	adapter "github.com/crowdeco/skeleton/paginations/adapter"
+	services "github.com/crowdeco/skeleton/services"
 	elastic "github.com/olivere/elastic/v7"
 )
 
@@ -22,11 +22,7 @@ type Handler struct {
 	Context       context.Context
 	Elasticsearch *elastic.Client
 	Dispatcher    *events.Dispatcher
-	Service       configs.Service
-}
-
-func (h *Handler) SetService(service configs.Service) {
-	h.Service = service
+	Service       *services.Service
 }
 
 func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
@@ -39,7 +35,7 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 	})
 
 	var result []interface{}
-	adapter := adapter.NewElasticsearchAdapter(h.Context, h.Elasticsearch, h.Service.Name(), query)
+	adapter := adapter.NewElasticsearchAdapter(h.Context, h.Elasticsearch, paginator.Model, query)
 	paginator.Paginate(adapter)
 	paginator.Pager.Results(&result)
 	next := paginator.Page + 1

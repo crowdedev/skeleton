@@ -1,13 +1,13 @@
 package events
 
 import (
-	"github.com/crowdeco/skeleton/configs"
 	paginations "github.com/crowdeco/skeleton/paginations"
+	services "github.com/crowdeco/skeleton/services"
 	elastic "github.com/olivere/elastic/v7"
 )
 
 type PaginationEvent struct {
-	Service configs.Service
+	Service *services.Service
 	Query   *elastic.BoolQuery
 	Filters []paginations.Filter
 }

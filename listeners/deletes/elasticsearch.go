@@ -17,11 +17,12 @@ type Elasticsearch struct {
 func (d *Elasticsearch) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 
+	m := e.Data.(configs.Model)
 	query := elastic.NewBoolQuery()
 	query.Must(elastic.NewTermQuery("id", e.Id))
-	result, _ := d.Elasticsearch.Search().Index(e.Service.Name()).Query(query).Do(d.Context)
+	result, _ := d.Elasticsearch.Search().Index(m.TableName()).Query(query).Do(d.Context)
 	for _, hit := range result.Hits.Hits {
-		d.Elasticsearch.Delete().Index(e.Service.Name()).Id(hit.Id).Do(d.Context)
+		d.Elasticsearch.Delete().Index(m.TableName()).Id(hit.Id).Do(d.Context)
 	}
 }
 

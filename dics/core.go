@@ -18,6 +18,7 @@ import (
 	middlewares "github.com/crowdeco/skeleton/middlewares"
 	paginations "github.com/crowdeco/skeleton/paginations"
 	routes "github.com/crowdeco/skeleton/routes"
+	"github.com/crowdeco/skeleton/services"
 	utils "github.com/crowdeco/skeleton/utils"
 	"github.com/fatih/color"
 	"github.com/gadelkareem/cachita"
@@ -317,6 +318,7 @@ var Core = []dingo.Def{
 			"Context":       dingo.Service("core:context:background"),
 			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
 			"Dispatcher":    dingo.Service("core:event:dispatcher"),
+			"Service":       dingo.Service("core:service:service"),
 		},
 	},
 	{
@@ -416,6 +418,14 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:pagination:paginator",
 		Build: (*paginations.Pagination)(nil),
+	},
+	{
+		Name:  "core:service:service",
+		Build: (*services.Service)(nil),
+		Params: dingo.Params{
+			"Env":      dingo.Service("core:config:env"),
+			"Database": dingo.Service("core:connection:database"),
+		},
 	},
 	{
 		Name:  "core:cache:memory",

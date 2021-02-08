@@ -17,6 +17,7 @@ type (
 		Filters []Filter
 		Search  string
 		Pager   paginator.Paginator
+		Model   string
 	}
 
 	PaginationMeta struct {

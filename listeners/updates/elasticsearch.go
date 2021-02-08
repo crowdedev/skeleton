@@ -18,15 +18,16 @@ type Elasticsearch struct {
 func (u *Elasticsearch) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 
+	m := e.Data.(configs.Model)
 	query := elastic.NewBoolQuery()
 	query.Must(elastic.NewTermQuery("id", e.Id))
-	result, _ := u.Elasticsearch.Search().Index(e.Service.Name()).Query(query).Do(u.Context)
+	result, _ := u.Elasticsearch.Search().Index(m.TableName()).Query(query).Do(u.Context)
 	for _, hit := range result.Hits.Hits {
-		u.Elasticsearch.Delete().Index(e.Service.Name()).Id(hit.Id).Do(u.Context)
+		u.Elasticsearch.Delete().Index(m.TableName()).Id(hit.Id).Do(u.Context)
 	}
 
 	data, _ := json.Marshal(e.Data)
-	u.Elasticsearch.Index().Index(e.Service.Name()).BodyJson(string(data)).Do(u.Context)
+	u.Elasticsearch.Index().Index(m.TableName()).BodyJson(string(data)).Do(u.Context)
 }
 
 func (u *Elasticsearch) Listen() string {

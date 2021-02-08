@@ -4,7 +4,6 @@ import (
 	"time"
 
 	configs "{{.PackageName}}/configs"
-	models "{{.PackageName}}/{{.ModulePluralLowercase}}/models"
 	"gorm.io/gorm"
 )
 
@@ -20,53 +19,34 @@ func (s *{{.Module}}) Name() string {
 }
 
 func (s *{{.Module}}) Create(v interface{}) error {
-	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
-		return s.Database.Create(v).Error
-	}
-
-	return gorm.ErrModelValueRequired
+	return s.Database.Create(s.bind(v)).Error
 }
 
 func (s *{{.Module}}) Update(v interface{}, id string) error {
-	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
-		return s.Database.Select("*").Omit("created_at", "created_by", "deleted_at", "deleted_by").Updates(v).Error
-	}
-
-	return gorm.ErrModelValueRequired
+	return s.Database.Select("*").Omit("created_at", "created_by", "deleted_at", "deleted_by").Updates(s.bind(v)).Error
 }
 
 func (s *{{.Module}}) Bind(v interface{}, id string) error {
-	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
-		return s.Database.First(v).Error
-	}
-
-	return gorm.ErrModelValueRequired
+	return s.Database.First(v).Error
 }
 
 func (s *{{.Module}}) All(v interface{}) error {
-	if _, ok := s.bind(v).(*[]models.{{.Module}}); ok {
-		return s.Database.Find(v).Error
-	}
-
-	return gorm.ErrModelValueRequired
+	return s.Database.Find(v).Error
 }
 
 func (s *{{.Module}}) Delete(v interface{}, id string) error {
-	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
-		if err := s.Database.First(v).Error; err != nil {
-			return err
-		}
+	if err := s.Database.First(v).Error; err != nil {
+        return err
+    }
 
-		if v.IsSoftDelete() {
-			v.SetDeletedAt(time.Now())
-            v.SetDeletedBy(s.Env.User)
-			return s.Database.Select("deleted_at", "deleted_by").Updates(v).Error
-		} else {
-			return s.Database.Unscoped().Delete(v).Error
-		}
-	}
+    if v.IsSoftDelete() {
+        v.SetDeletedAt(time.Now())
+        v.SetDeletedBy(s.Env.User)
 
-	return gorm.ErrModelValueRequired
+        return s.Database.Select("deleted_at", "deleted_by").Updates(s.bind(v)).Error
+    } else {
+        return s.Database.Unscoped().Delete(v).Error
+    }
 }
 
 func (s *{{.Module}}) OverrideData(v interface{}) {
