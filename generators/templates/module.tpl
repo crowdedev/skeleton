@@ -137,7 +137,8 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	err = m.Handler.Bind(&models.{{.Module}}{}, r.Id)
+    temp := models.{{.Module}}{}
+	err = m.Handler.Bind(&temp, r.Id)
 	if err != nil {
 		m.Logger.Info(fmt.Sprintf("Data with ID '%s' Not found.", r.Id))
 
@@ -148,6 +149,9 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
+    v.ID = r.Id
+	v.SetCreatedBy(&configs.User{Id: temp.CreatedBy.String})
+	v.SetCreatedAt(temp.CreatedAt.Time)
 	err = m.Handler.Update(&v, v.ID)
 	if err != nil {
 		return &grpcs.{{.Module}}Response{

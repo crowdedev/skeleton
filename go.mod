@@ -29,7 +29,7 @@ require (
 	github.com/weekface/mgorus v0.0.0-20181029072001-239539fe10e4
 	golang.org/x/mod v0.3.0
 	golang.org/x/text v0.3.4 // indirect
-	google.golang.org/genproto v0.0.0-20201214200347-8c77b98c765d
+	google.golang.org/genproto v0.0.0-20201214200347-8c77b98c765d // indirect
 	google.golang.org/grpc v1.33.2
 	google.golang.org/protobuf v1.25.0
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22 // indirect
