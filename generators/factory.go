@@ -32,7 +32,7 @@ func (f *Factory) Generate(module *configs.ModuleTemplate) {
 	f.Template.ApiVersion = f.Env.ApiVersion
 	f.Template.PackageName = packageName
 	f.Template.Module = moduleName
-	f.Template.ModuleLowercase = f.Word.Underscore(f.Pluralizer.Plural(module.Name))
+	f.Template.ModuleLowercase = f.Word.Underscore(module.Name)
 	f.Template.ModulePlural = modulePlural
 	f.Template.ModulePluralLowercase = modulePluralLowercase
 	f.Template.Columns = module.Fields
