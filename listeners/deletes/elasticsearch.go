@@ -1,4 +1,4 @@
-package listeners
+package deletes
 
 import (
 	"context"
@@ -9,12 +9,12 @@ import (
 	elastic "github.com/olivere/elastic/v7"
 )
 
-type Delete struct {
+type Elasticsearch struct {
 	Context       context.Context
 	Elasticsearch *elastic.Client
 }
 
-func (d *Delete) Handle(event interface{}) {
+func (d *Elasticsearch) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 
 	query := elastic.NewBoolQuery()
@@ -25,10 +25,10 @@ func (d *Delete) Handle(event interface{}) {
 	}
 }
 
-func (d *Delete) Listen() string {
+func (d *Elasticsearch) Listen() string {
 	return handlers.AFTER_DELETE_EVENT
 }
 
-func (d *Delete) Priority() int {
+func (d *Elasticsearch) Priority() int {
 	return configs.HIGEST_PRIORITY + 1
 }

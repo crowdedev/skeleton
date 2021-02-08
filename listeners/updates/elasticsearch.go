@@ -1,4 +1,4 @@
-package listeners
+package updates
 
 import (
 	"context"
@@ -10,12 +10,12 @@ import (
 	elastic "github.com/olivere/elastic/v7"
 )
 
-type Update struct {
+type Elasticsearch struct {
 	Context       context.Context
 	Elasticsearch *elastic.Client
 }
 
-func (u *Update) Handle(event interface{}) {
+func (u *Elasticsearch) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 
 	query := elastic.NewBoolQuery()
@@ -29,10 +29,10 @@ func (u *Update) Handle(event interface{}) {
 	u.Elasticsearch.Index().Index(e.Service()).BodyJson(string(data)).Do(u.Context)
 }
 
-func (u *Update) Listen() string {
+func (u *Elasticsearch) Listen() string {
 	return handlers.AFTER_UPDATE_EVENT
 }
 
-func (u *Update) Priority() int {
+func (u *Elasticsearch) Priority() int {
 	return configs.HIGEST_PRIORITY + 1
 }

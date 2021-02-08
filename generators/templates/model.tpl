@@ -15,6 +15,18 @@ func (m {{.Module}}) TableName() string {
 	return "{{.ModuleLowercase}}"
 }
 
+func (m {{.Module}}) SetCreatedBy(user *configs.User) {
+    m.CreatedBy = user.Id
+}
+
+func (m {{.Module}}) SetUpdatedBy(user *configs.User) {
+    m.UpdatedBy = user.Id
+}
+
+func (m {{.Module}}) SetDeletedBy(user *configs.User) {
+    m.DeletedBy = user.Id
+}
+
 func ({{.Module}}) IsSoftDelete() bool {
 	return false
 }

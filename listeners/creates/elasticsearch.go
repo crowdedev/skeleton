@@ -1,4 +1,4 @@
-package listeners
+package creates
 
 import (
 	"context"
@@ -10,22 +10,22 @@ import (
 	elastic "github.com/olivere/elastic/v7"
 )
 
-type Create struct {
+type Elasticsearch struct {
 	Context       context.Context
 	Elasticsearch *elastic.Client
 }
 
-func (c *Create) Handle(event interface{}) {
+func (c *Elasticsearch) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 
 	data, _ := json.Marshal(e.Data())
 	c.Elasticsearch.Index().Index(e.Service()).BodyJson(string(data)).Do(c.Context)
 }
 
-func (u *Create) Listen() string {
+func (u *Elasticsearch) Listen() string {
 	return handlers.AFTER_CREATE_EVENT
 }
 
-func (c *Create) Priority() int {
+func (c *Elasticsearch) Priority() int {
 	return configs.HIGEST_PRIORITY + 1
 }
