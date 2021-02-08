@@ -15,31 +15,16 @@ var {{.Module}} = []dingo.Def{
 		Name:  "module:{{.ModuleLowercase}}:model",
 		Build: (*models.{{.Module}})(nil),
 	},
-    {
-		Name: "module:{{.ModuleLowercase}}:service",
-		Build: func(
-			env *configs.Env,
-			db *gorm.DB,
-			model *models.{{.Module}},
-		) (configs.Service, error) {
-			return &services.{{.Module}}{
-				Env:       env,
-				Database:  db,
-				TableName: model.TableName(),
-			}, nil
-		},
-	},
 	{
 		Name:  "module:{{.ModuleLowercase}}:validation",
 		Build: (*validations.{{.Module}})(nil),
 	},
 	{
-		Name:  "module:{{.Module}}",
+		Name:  "module:{{.ModuleLowercase}}",
 		Build: (*{{.ModulePluralLowercase}}.Module)(nil),
 		Params: dingo.Params{
 			"Context":       dingo.Service("core:context:background"),
 			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
-			"Service":       dingo.Service("module:{{.ModuleLowercase}}:service"),
 			"Handler":       dingo.Service("core:handler:handler"),
 			"Logger":        dingo.Service("core:handler:logger"),
 			"Messenger":     dingo.Service("core:handler:messager"),
@@ -53,7 +38,7 @@ var {{.Module}} = []dingo.Def{
 		Build: (*{{.ModulePluralLowercase}}.Server)(nil),
 		Params: dingo.Params{
 			"Env":      dingo.Service("core:config:env"),
-			"Module":   dingo.Service("module:{{.Module}}"),
+			"Module":   dingo.Service("module:{{.ModuleLowercase}}"),
 			"Database": dingo.Service("core:connection:database"),
 		},
 	},

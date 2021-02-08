@@ -59,13 +59,13 @@ func NewModule(
 
 func (m *Module) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.{{.Module}}PaginatedResponse, error) {
 	m.Logger.Info(fmt.Sprintf("%+v", r))
+	records := []*grpcs.{{.Module}}{}
+	model := models.{{.Module}}{}
+	m.Paginator.Model = model.TableName()
 
 	m.Paginator.Handle(r)
 
 	metadata, result := m.Handler.Paginate(*m.Paginator)
-	records := []*grpcs.{{.Module}}{}
-	model := models.{{.Module}}{}
-
 	for _, v := range result {
 	    record := &grpcs.{{.Module}}{}
 		data, _ := json.Marshal(v)

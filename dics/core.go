@@ -133,7 +133,6 @@ var Core = []dingo.Def{
 			module configs.Generator,
 			proto configs.Generator,
 			server configs.Generator,
-			service configs.Generator,
 			validation configs.Generator,
 			env *configs.Env,
 			pluralizer *pluralize.Client,
@@ -151,7 +150,6 @@ var Core = []dingo.Def{
 					module,
 					proto,
 					server,
-					service,
 					validation,
 				},
 			}, nil
@@ -162,8 +160,7 @@ var Core = []dingo.Def{
 			"2": dingo.Service("core:generator:module"),
 			"3": dingo.Service("core:generator:proto"),
 			"4": dingo.Service("core:generator:server"),
-			"5": dingo.Service("core:generator:service"),
-			"6": dingo.Service("core:generator:validation"),
+			"5": dingo.Service("core:generator:validation"),
 		},
 	},
 	{
@@ -188,10 +185,6 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:generator:server",
 		Build: (*generators.Server)(nil),
-	},
-	{
-		Name:  "core:generator:service",
-		Build: (*generators.Service)(nil),
 	},
 	{
 		Name:  "core:generator:validation",
