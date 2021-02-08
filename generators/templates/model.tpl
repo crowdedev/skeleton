@@ -20,15 +20,15 @@ func (m *{{.Module}}) TableName() string {
 }
 
 func (m *{{.Module}}) SetCreatedBy(user *configs.User) {
-    m.CreatedBy = user.Id
+    m.CreatedBy = sql.NullString{String: user.Id, Valid: true}
 }
 
 func (m *{{.Module}}) SetUpdatedBy(user *configs.User) {
-    m.UpdatedBy = user.Id
+    m.UpdatedBy = sql.NullString{String: user.Id, Valid: true}
 }
 
 func (m *{{.Module}}) SetDeletedBy(user *configs.User) {
-    m.DeletedBy = user.Id
+    m.DeletedBy = sql.NullString{String: user.Id, Valid: true}
 }
 
 func (m *{{.Module}}) SetCreatedAt(time time.Time) {
