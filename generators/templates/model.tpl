@@ -7,7 +7,7 @@ import (
 type {{.Module}} struct {
 	configs.Base
 {{range .Columns}}
-    {{.Name}} {{.Type}}
+    {{.Name}} {{.GolangType}}
 {{end}}
 }
 
