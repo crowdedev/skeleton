@@ -9,9 +9,10 @@ import (
 )
 
 type {{.Module}} struct {
-	Env       *configs.Env
-	Database  *gorm.DB
-	TableName string
+	Env           *configs.Env
+	Database      *gorm.DB
+	TableName     string
+	overridedData interface{}
 }
 
 func (s *{{.Module}}) Name() string {
@@ -19,6 +20,7 @@ func (s *{{.Module}}) Name() string {
 }
 
 func (s *{{.Module}}) Create(v interface{}) error {
+	v = s.bind(v)
 	if v, ok := v.(*models.{{.Module}}); ok {
 		return s.Database.Create(v).Error
 	}
@@ -27,6 +29,7 @@ func (s *{{.Module}}) Create(v interface{}) error {
 }
 
 func (s *{{.Module}}) Update(v interface{}, id string) error {
+	v = s.bind(v)
 	if v, ok := v.(*models.{{.Module}}); ok {
 		if err := v.Id.Scan(id); err != nil {
 			return err
@@ -38,6 +41,7 @@ func (s *{{.Module}}) Update(v interface{}, id string) error {
 }
 
 func (s *{{.Module}}) Bind(v interface{}, id string) error {
+	v = s.bind(v)
 	if v, ok := v.(*models.{{.Module}}); ok {
 		if err := v.Id.Scan(id); err != nil {
 			return err
@@ -49,6 +53,7 @@ func (s *{{.Module}}) Bind(v interface{}, id string) error {
 }
 
 func (s *{{.Module}}) All(v interface{}) error {
+	v = s.bind(v)
 	if _, ok := v.(*[]models.{{.Module}}); ok {
 		return s.Database.Find(v).Error
 	}
@@ -57,6 +62,7 @@ func (s *{{.Module}}) All(v interface{}) error {
 }
 
 func (s *{{.Module}}) Delete(v interface{}, id string) error {
+	v = s.bind(v)
 	if v, ok := v.(*models.{{.Module}}); ok {
 		if err := v.Id.Scan(id); err != nil {
 			return err
@@ -75,4 +81,16 @@ func (s *{{.Module}}) Delete(v interface{}, id string) error {
 	}
 
 	return gorm.ErrModelValueRequired
+}
+
+func (s *{{.Module}}) OverrideData(v interface{}) {
+	s.overridedData = v
+}
+
+func (s *{{.Module}}) bind(v interface{}) interface{} {
+	if s.overridedData != nil {
+		v = s.overridedData
+	}
+
+	return v
 }
