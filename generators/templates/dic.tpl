@@ -1,13 +1,10 @@
 package modules
 
 import (
-	configs "{{.PackageName}}/configs"
 	{{.ModulePluralLowercase}} "{{.PackageName}}/{{.ModulePluralLowercase}}"
 	models "{{.PackageName}}/{{.ModulePluralLowercase}}/models"
-	services "{{.PackageName}}/{{.ModulePluralLowercase}}/services"
 	validations "{{.PackageName}}/{{.ModulePluralLowercase}}/validations"
 	"github.com/sarulabs/dingo/v4"
-	"gorm.io/gorm"
 )
 
 var {{.Module}} = []dingo.Def{

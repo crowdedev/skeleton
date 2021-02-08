@@ -44,5 +44,5 @@ func (m *{{.Module}}) SetDeletedAt(time time.Time) {
 }
 
 func (m *{{.Module}}) IsSoftDelete() bool {
-	return false
+	return true
 }

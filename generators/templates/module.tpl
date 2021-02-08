@@ -199,7 +199,7 @@ func (m *Module) Delete(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 
 	v := models.{{.Module}}{}
 
-	err := m.Handler.Delete(&v, r.Id)
+	err := m.Handler.Bind(&v, r.Id)
 	if err != nil {
 		m.Logger.Info(fmt.Sprintf("Data with ID '%s' Not found.", r.Id))
 
@@ -209,6 +209,8 @@ func (m *Module) Delete(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 			Message: err.Error(),
 		}, nil
 	}
+
+    m.Handler.Delete(&v, r.Id)
 
 	return &grpcs.{{.Module}}Response{
 		Code: http.StatusNoContent,
@@ -238,7 +240,9 @@ func (m *Module) Consume() {
 }
 
 func (m *Module) Populete() {
-	_, err := m.Elasticsearch.DeleteIndex(m.Service.Name()).Do(m.Context)
+	v := models.{{.Module}}{}
+
+	_, err := m.Elasticsearch.DeleteIndex(v.TableName()).Do(m.Context)
 	if err != nil {
 		m.Logger.Error(fmt.Sprintf("%+v", err))
 	}
@@ -251,6 +255,6 @@ func (m *Module) Populete() {
 
 	for _, d := range records {
 		data, _ := json.Marshal(d)
-		m.Elasticsearch.Index().Index(m.Service.Name()).BodyJson(string(data)).Do(m.Context)
+		m.Elasticsearch.Index().Index(v.TableName()).BodyJson(string(data)).Do(m.Context)
 	}
 }

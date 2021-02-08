@@ -1,8 +1,6 @@
 package services
 
 import (
-	"time"
-
 	configs "github.com/crowdeco/skeleton/configs"
 	"gorm.io/gorm"
 )
@@ -18,12 +16,12 @@ func (s *Service) Create(v interface{}) error {
 	return s.Database.Create(s.bind(v)).Error
 }
 
-func (s *Service) Update(v interface{}, id string) error {
-	return s.Database.Select("*").Omit("created_at", "created_by", "deleted_at", "deleted_by").Updates(s.bind(v)).Error
+func (s *Service) Update(v interface{}) error {
+	return s.Database.Save(s.bind(v)).Error
 }
 
 func (s *Service) Bind(v interface{}, id string) error {
-	return s.Database.First(v).Error
+	return s.Database.Where("id = ?", id).First(v).Error
 }
 
 func (s *Service) All(v interface{}) error {
@@ -31,18 +29,14 @@ func (s *Service) All(v interface{}) error {
 }
 
 func (s *Service) Delete(v interface{}, id string) error {
-	if err := s.Database.First(v).Error; err != nil {
-		return err
-	}
-
 	m := v.(configs.Model)
 	if m.IsSoftDelete() {
-		m.SetDeletedAt(time.Now())
+		s.Database.Save(v)
 
-		return s.Database.Select("deleted_at", "deleted_by").Updates(s.bind(m)).Error
-	} else {
-		return s.Database.Unscoped().Delete(s.bind(m)).Error
+		return s.Database.Where("id = ?", id).Delete(v).Error
 	}
+
+	return s.Database.Unscoped().Where("id = ?", id).Delete(v).Error
 }
 
 func (s *Service) OverrideData(v interface{}) {

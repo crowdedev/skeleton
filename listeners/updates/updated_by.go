@@ -21,7 +21,7 @@ func (c *UpdatedBy) Handle(event interface{}) {
 }
 
 func (u *UpdatedBy) Listen() string {
-	return handlers.BEFORE_DELETE_EVENT
+	return handlers.BEFORE_UPDATE_EVENT
 }
 
 func (c *UpdatedBy) Priority() int {

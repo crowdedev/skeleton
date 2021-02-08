@@ -57,7 +57,6 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 
 func (h *Handler) Create(v interface{}) error {
 	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, &events.ModelEvent{
-		Id:      "",
 		Data:    v,
 		Service: h.Service,
 	})
@@ -68,7 +67,6 @@ func (h *Handler) Create(v interface{}) error {
 	}
 
 	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, &events.ModelEvent{
-		Id:      "",
 		Data:    v,
 		Service: h.Service,
 	})
@@ -83,7 +81,7 @@ func (h *Handler) Update(v interface{}, id string) error {
 		Service: h.Service,
 	})
 
-	err := h.Service.Update(v, id)
+	err := h.Service.Update(v)
 	if err != nil {
 		return err
 	}
