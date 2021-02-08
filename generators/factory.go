@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"strings"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	"github.com/crowdeco/skeleton/utils"
@@ -27,13 +26,13 @@ func (f *Factory) Generate(module *configs.ModuleTemplate) {
 	packageName := f.GetPackageName(workDir)
 	moduleName := f.Word.Camelcase(module.Name)
 	modulePlural := f.Pluralizer.Plural(moduleName)
-	modulePluralLowercase := strings.ToLower(modulePlural)
+	modulePluralLowercase := f.Word.Underscore(modulePlural)
 	modulePath := fmt.Sprintf("%s/%s", workDir, modulePluralLowercase)
 
 	f.Template.ApiVersion = f.Env.ApiVersion
 	f.Template.PackageName = packageName
 	f.Template.Module = moduleName
-	f.Template.ModuleLowercase = strings.ToLower(module.Name)
+	f.Template.ModuleLowercase = f.Word.Underscore(module.Name)
 	f.Template.ModulePlural = modulePlural
 	f.Template.ModulePluralLowercase = modulePluralLowercase
 	f.Template.Columns = module.Fields
