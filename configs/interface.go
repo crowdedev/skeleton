@@ -3,6 +3,7 @@ package configs
 import (
 	"context"
 	"net/http"
+	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -33,6 +34,9 @@ type (
 		SetCreatedBy(user *User)
 		SetUpdatedBy(user *User)
 		SetDeletedBy(user *User)
+		SetCreatedAt(time time.Time)
+		SetUpdatedAt(time time.Time)
+		SetDeletedAt(time time.Time)
 		IsSoftDelete() bool
 	}
 

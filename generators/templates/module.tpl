@@ -25,7 +25,7 @@ type Module struct {
 	Handler       *handlers.Handler
 	Logger        *handlers.Logger
 	Messenger     *handlers.Messenger
-	Validator     *validations.Todo
+	Validator     *validations.{{.Module}}
 	Cache         *utils.Cache
 	Paginator     *paginations.Pagination
 }

@@ -20,8 +20,7 @@ func (s *{{.Module}}) Name() string {
 }
 
 func (s *{{.Module}}) Create(v interface{}) error {
-	v = s.bind(v)
-	if v, ok := v.(*models.{{.Module}}); ok {
+	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
 		return s.Database.Create(v).Error
 	}
 
@@ -29,11 +28,7 @@ func (s *{{.Module}}) Create(v interface{}) error {
 }
 
 func (s *{{.Module}}) Update(v interface{}, id string) error {
-	v = s.bind(v)
-	if v, ok := v.(*models.{{.Module}}); ok {
-		if err := v.Id.Scan(id); err != nil {
-			return err
-		}
+	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
 		return s.Database.Select("*").Omit("created_at", "created_by", "deleted_at", "deleted_by").Updates(v).Error
 	}
 
@@ -41,11 +36,7 @@ func (s *{{.Module}}) Update(v interface{}, id string) error {
 }
 
 func (s *{{.Module}}) Bind(v interface{}, id string) error {
-	v = s.bind(v)
-	if v, ok := v.(*models.{{.Module}}); ok {
-		if err := v.Id.Scan(id); err != nil {
-			return err
-		}
+	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
 		return s.Database.First(v).Error
 	}
 
@@ -53,8 +44,7 @@ func (s *{{.Module}}) Bind(v interface{}, id string) error {
 }
 
 func (s *{{.Module}}) All(v interface{}) error {
-	v = s.bind(v)
-	if _, ok := v.(*[]models.{{.Module}}); ok {
+	if _, ok := s.bind(v).(*[]models.{{.Module}}); ok {
 		return s.Database.Find(v).Error
 	}
 
@@ -62,8 +52,7 @@ func (s *{{.Module}}) All(v interface{}) error {
 }
 
 func (s *{{.Module}}) Delete(v interface{}, id string) error {
-	v = s.bind(v)
-	if v, ok := v.(*models.{{.Module}}); ok {
+	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
 		if err := v.Id.Scan(id); err != nil {
 			return err
 		}

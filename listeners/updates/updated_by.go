@@ -1,6 +1,8 @@
 package updates
 
 import (
+	"time"
+
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
@@ -14,6 +16,7 @@ func (c *UpdatedBy) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 	data := e.Data.(configs.Model)
 	data.SetUpdatedBy(c.Env.User)
+	data.SetUpdatedAt(time.Now())
 	e.Service.OverrideData(data)
 }
 

@@ -1,6 +1,8 @@
 package creates
 
 import (
+	"time"
+
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
@@ -14,6 +16,7 @@ func (c *CreatedBy) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 	data := e.Data.(configs.Model)
 	data.SetCreatedBy(c.Env.User)
+	data.SetCreatedAt(time.Now())
 	e.Service.OverrideData(data)
 }
 
