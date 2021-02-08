@@ -59,7 +59,7 @@ var Core = []dingo.Def{
 					"sfixed64": "int64",
 					"bool":     "bool",
 					"string":   "string",
-					"bytes":    "bytes",
+					"bytes":    "[]byte",
 				},
 			}, nil
 		},
