@@ -21,7 +21,7 @@ var Dispatcher = []dingo.Def{
 			f configs.Listener,
 		) (*events.Dispatcher, error) {
 			dispatcher := events.Dispatcher{
-				Events: make(map[string]configs.Listener),
+				Events: make(map[string][]configs.Listener),
 			}
 
 			dispatcher.Register([]configs.Listener{a, b, c, d, e, f})

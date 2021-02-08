@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
@@ -56,27 +57,44 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 }
 
 func (h *Handler) Create(v interface{}) error {
-	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, events.NewModelEvent(h.Service.Name(), v, ""))
+	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, events.ModelEvent{
+		Id:      "",
+		Data:    v,
+		Service: h.Service.Name(),
+	})
 
+	fmt.Printf("%+v\n", v)
 	err := h.Service.Create(v)
 	if err != nil {
 		return err
 	}
 
-	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, events.NewModelEvent(h.Service.Name(), v, ""))
+	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, events.ModelEvent{
+		Id:      "",
+		Data:    v,
+		Service: h.Service.Name(),
+	})
 
 	return nil
 }
 
 func (h *Handler) Update(v interface{}, id string) error {
-	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, events.NewModelEvent(h.Service.Name(), v, id))
+	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, events.ModelEvent{
+		Id:      id,
+		Data:    v,
+		Service: h.Service.Name(),
+	})
 
 	err := h.Service.Update(v, id)
 	if err != nil {
 		return err
 	}
 
-	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, events.NewModelEvent(h.Service.Name(), v, id))
+	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, events.ModelEvent{
+		Id:      id,
+		Data:    v,
+		Service: h.Service.Name(),
+	})
 
 	return nil
 }
@@ -90,14 +108,22 @@ func (h *Handler) All(v interface{}) error {
 }
 
 func (h *Handler) Delete(v interface{}, id string) error {
-	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, events.NewModelEvent(h.Service.Name(), v, id))
+	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, events.ModelEvent{
+		Id:      id,
+		Data:    v,
+		Service: h.Service.Name(),
+	})
 
 	err := h.Service.Delete(v, id)
 	if err != nil {
 		return err
 	}
 
-	h.Dispatcher.Dispatch(AFTER_DELETE_EVENT, events.NewModelEvent(h.Service.Name(), v, id))
+	h.Dispatcher.Dispatch(AFTER_DELETE_EVENT, events.ModelEvent{
+		Id:      id,
+		Data:    v,
+		Service: h.Service.Name(),
+	})
 
 	return nil
 }

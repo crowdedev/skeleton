@@ -18,8 +18,8 @@ type Elasticsearch struct {
 func (c *Elasticsearch) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 
-	data, _ := json.Marshal(e.Data())
-	c.Elasticsearch.Index().Index(e.Service()).BodyJson(string(data)).Do(c.Context)
+	data, _ := json.Marshal(e.Data)
+	c.Elasticsearch.Index().Index(e.Service).BodyJson(string(data)).Do(c.Context)
 }
 
 func (u *Elasticsearch) Listen() string {
