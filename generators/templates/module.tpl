@@ -14,7 +14,6 @@ import (
 	models "{{.PackageName}}/{{.ModulePluralLowercase}}/models"
 	validations "{{.PackageName}}/{{.ModulePluralLowercase}}/validations"
 	utils "{{.PackageName}}/utils"
-	uuid "github.com/google/uuid"
 	copier "github.com/jinzhu/copier"
 	elastic "github.com/olivere/elastic/v7"
 )
@@ -26,7 +25,7 @@ type Module struct {
 	Handler       *handlers.Handler
 	Logger        *handlers.Logger
 	Messenger     *handlers.Messenger
-	Validator     *validations.Todo
+	Validator     *validations.{{.Module}}
 	Cache         *utils.Cache
 	Paginator     *paginations.Pagination
 }
@@ -72,6 +71,8 @@ func (m *Module) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.{{
 		data, _ := json.Marshal(v)
 		json.Unmarshal(data, &model)
 		copier.Copy(record, &model)
+
+		record.Id = model.ID
 		records = append(records, record)
 	}
 
@@ -105,7 +106,7 @@ func (m *Module) Create(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	err = m.Handler.Create(&v, uuid.New().String())
+	err = m.Handler.Create(&v)
 	if err != nil {
 		return &grpcs.{{.Module}}Response{
 			Code:    http.StatusBadRequest,
@@ -114,7 +115,7 @@ func (m *Module) Create(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	r.Id = v.Id
+	r.Id = v.ID
 
 	return &grpcs.{{.Module}}Response{
 		Code: http.StatusCreated,
@@ -149,7 +150,7 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	err = m.Handler.Update(&v, v.Id)
+	err = m.Handler.Update(&v, v.ID)
 	if err != nil {
 		return &grpcs.{{.Module}}Response{
 			Code:    http.StatusBadRequest,
@@ -229,7 +230,7 @@ func (m *Module) Consume() {
 
 		m.Logger.Info(fmt.Sprintf("%+v", v))
 
-		err := m.Handler.Update(&v, v.Id)
+		err := m.Handler.Update(&v, v.ID)
 		if err != nil {
 			m.Logger.Error(fmt.Sprintf("%+v", err))
 		}

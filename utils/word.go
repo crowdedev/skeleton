@@ -3,6 +3,8 @@ package utils
 import (
 	"regexp"
 	"strings"
+
+	"github.com/iancoleman/strcase"
 )
 
 type (
@@ -26,4 +28,8 @@ func (w *Word) Underscore(words string) string {
 	words = strings.TrimSuffix(words, "_")
 
 	return words
+}
+
+func (w *Word) Camelcase(word string) string {
+	return strcase.ToCamel(word)
 }

@@ -59,7 +59,7 @@ var Core = []dingo.Def{
 					"sfixed64": "int64",
 					"bool":     "bool",
 					"string":   "string",
-					"bytes":    "bytes",
+					"bytes":    "[]byte",
 				},
 			}, nil
 		},
@@ -137,11 +137,13 @@ var Core = []dingo.Def{
 			env *configs.Env,
 			pluralizer *pluralize.Client,
 			template *configs.Template,
+			word *utils.Word,
 		) (*generators.Factory, error) {
 			return &generators.Factory{
 				Env:        env,
 				Pluralizer: pluralizer,
 				Template:   template,
+				Word:       word,
 				Generators: []configs.Generator{
 					dic,
 					model,

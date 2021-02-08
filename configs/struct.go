@@ -1,24 +1,8 @@
 package configs
 
-import (
-	"time"
-
-	"gorm.io/gorm"
-)
-
 type (
-	Base struct {
-		Id        string         `gorm:"type:varchar(36);primary_key"`
-		CreatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP"`
-		UpdatedAt time.Time      `gorm:"type:timestamp;not null;default:CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"`
-		CreatedBy string         `gorm:"type:varchar(36);default:null"`
-		UpdatedBy string         `gorm:"type:varchar(36);default:null"`
-		DeletedAt gorm.DeletedAt `gorm:"default:null;index"`
-		DeletedBy string         `gorm:"type:varchar(36);default:null"`
-	}
-
 	User struct {
-		ID    string
+		Id    string
 		Email string
 		Role  string
 	}

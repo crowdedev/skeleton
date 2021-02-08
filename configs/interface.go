@@ -3,6 +3,7 @@ package configs
 import (
 	"context"
 	"net/http"
+	"time"
 
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
@@ -33,16 +34,20 @@ type (
 		SetCreatedBy(user *User)
 		SetUpdatedBy(user *User)
 		SetDeletedBy(user *User)
+		SetCreatedAt(time time.Time)
+		SetUpdatedAt(time time.Time)
+		SetDeletedAt(time time.Time)
 		IsSoftDelete() bool
 	}
 
 	Service interface {
 		Name() string
-		Create(value interface{}, id string) error
+		OverrideData(value interface{})
+		Create(value interface{}) error
 		Update(value interface{}, id string) error
 		Bind(value interface{}, id string) error
-		Delete(value interface{}, id string) error
 		All(value interface{}) error
+		Delete(value interface{}, id string) error
 	}
 
 	Module interface {
