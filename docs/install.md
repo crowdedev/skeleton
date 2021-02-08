@@ -14,6 +14,8 @@
 
 - [Elasticsearch](https://www.elastic.co)
 
+- [MongoDB](https://www.mongodb.com)
+
 ## Cara Install
 
 - Clone `git clone https://github.com/crowdeco/skeleton.git project`
