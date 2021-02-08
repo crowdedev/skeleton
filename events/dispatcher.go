@@ -1,14 +1,14 @@
 package events
 
 import (
-	"fmt"
+	"errors"
 	"sort"
 
 	"github.com/crowdeco/skeleton/configs"
 )
 
 type Dispatcher struct {
-	Events map[string]configs.Listener
+	Events map[string][]configs.Listener
 }
 
 func (d *Dispatcher) Register(listeners []configs.Listener) {
@@ -17,20 +17,22 @@ func (d *Dispatcher) Register(listeners []configs.Listener) {
 	})
 
 	for _, listener := range listeners {
-		if _, ok := d.Events[listener.Listen()]; ok {
-			panic(fmt.Sprintf("the '%s' event is already registered", listener.Listen()))
+		if _, ok := d.Events[listener.Listen()]; !ok {
+			d.Events[listener.Listen()] = []configs.Listener{}
 		}
 
-		d.Events[listener.Listen()] = listener
+		d.Events[listener.Listen()] = append(d.Events[listener.Listen()], listener)
 	}
 }
 
 func (d *Dispatcher) Dispatch(name string, event interface{}) error {
 	if _, ok := d.Events[name]; !ok {
-		return fmt.Errorf("the '%s' event is already registered", name)
+		return errors.New("Unregistered event")
 	}
 
-	d.Events[name].Handle(event)
+	for _, listener := range d.Events[name] {
+		listener.Handle(event)
+	}
 
 	return nil
 }
