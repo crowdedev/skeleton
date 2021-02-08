@@ -18,6 +18,7 @@ func main() {
 	module := container.GetCoreTemplateModule()
 	field := container.GetCoreTemplateField()
 	word := container.GetCoreUtilWord()
+	mapType := container.GetCoreConfigType()
 
 	util.Println(`
      ______                                           __                   ______   __                  __              __
@@ -46,7 +47,7 @@ func main() {
 		}
 
 		if more {
-			addColumn(field)
+			addColumn(field, mapType)
 
 			column := configs.FieldTemplate{}
 
@@ -58,7 +59,7 @@ func main() {
 			module.Fields = append(module.Fields, &column)
 
 			field.Name = ""
-			field.Type = ""
+			field.ProtobufType = ""
 
 			index++
 		}
@@ -81,36 +82,22 @@ func main() {
 	}
 }
 
-func addColumn(field *configs.FieldTemplate) {
+func addColumn(field *configs.FieldTemplate, mapType *configs.Type) {
 	err := interact.NewInteraction("Masukkan Nama Kolom?").Resolve(&field.Name)
 	if err != nil {
 		panic(err)
 	}
 
-	err = interact.NewInteraction("Masukkan Tipe Data?",
-		interact.Choice{Display: "bool", Value: "bool"},
-		interact.Choice{Display: "string", Value: "string"},
-		interact.Choice{Display: "byte", Value: "byte"},
-		interact.Choice{Display: "int", Value: "int"},
-		interact.Choice{Display: "int8", Value: "int8"},
-		interact.Choice{Display: "int16", Value: "int16"},
-		interact.Choice{Display: "int32", Value: "int32"},
-		interact.Choice{Display: "int64", Value: "int64"},
-		interact.Choice{Display: "uint", Value: "uint"},
-		interact.Choice{Display: "uint8", Value: "uint8"},
-		interact.Choice{Display: "uint16", Value: "uint16"},
-		interact.Choice{Display: "uint32", Value: "uint32"},
-		interact.Choice{Display: "uint64", Value: "uint64"},
-		interact.Choice{Display: "float32", Value: "float32"},
-		interact.Choice{Display: "float64", Value: "float64"},
-		interact.Choice{Display: "complex64", Value: "complex64"},
-		interact.Choice{Display: "complex128", Value: "complex128"},
-		interact.Choice{Display: "rune", Value: "rune"},
-		interact.Choice{Display: "uintptr", Value: "uintptr"},
-	).Resolve(&field.Type)
+	var types []interact.Choice
+	for k, _ := range mapType.List() {
+		types = append(types, interact.Choice{Display: k, Value: k})
+	}
+
+	err = interact.NewInteraction("Masukkan Tipe Data?", types...).Resolve(&field.ProtobufType)
 	if err != nil {
 		panic(err)
 	}
+	field.GolangType = mapType.Value(field.ProtobufType)
 
 	field.IsRequired = true
 	err = interact.NewInteraction("Apakah Kolom Wajib Diisi?").Resolve(&field.IsRequired)

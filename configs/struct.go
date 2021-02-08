@@ -74,7 +74,8 @@ type (
 	FieldTemplate struct {
 		Name           string
 		NameUnderScore string
-		Type           string
+		ProtobufType   string
+		GolangType     string
 		Index          int
 		IsRequired     bool
 	}
