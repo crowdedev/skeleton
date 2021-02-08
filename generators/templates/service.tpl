@@ -53,16 +53,13 @@ func (s *{{.Module}}) All(v interface{}) error {
 
 func (s *{{.Module}}) Delete(v interface{}, id string) error {
 	if v, ok := s.bind(v).(*models.{{.Module}}); ok {
-		if err := v.Id.Scan(id); err != nil {
-			return err
-		}
 		if err := s.Database.First(v).Error; err != nil {
 			return err
 		}
 
 		if v.IsSoftDelete() {
-			v.DeletedAt = gorm.DeletedAt{Time: time.Now(), Valid: true}
-			v.DeletedBy = s.Env.User.Id
+			v.SetDeletedAt(time.Now())
+            v.SetDeletedBy(s.Env.User)
 			return s.Database.Select("deleted_at", "deleted_by").Updates(v).Error
 		} else {
 			return s.Database.Unscoped().Delete(v).Error

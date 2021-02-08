@@ -72,7 +72,7 @@ func (m *Module) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.{{
 		json.Unmarshal(data, &model)
 		copier.Copy(record, &model)
 
-		record.Id = model.Id.String()
+		record.Id = model.ID
 		records = append(records, record)
 	}
 
@@ -115,7 +115,7 @@ func (m *Module) Create(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	r.Id = v.Id.String()
+	r.Id = v.ID
 
 	return &grpcs.{{.Module}}Response{
 		Code: http.StatusCreated,
@@ -150,7 +150,7 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-	err = m.Handler.Update(&v, v.Id.String())
+	err = m.Handler.Update(&v, v.ID)
 	if err != nil {
 		return &grpcs.{{.Module}}Response{
 			Code:    http.StatusBadRequest,
@@ -230,7 +230,7 @@ func (m *Module) Consume() {
 
 		m.Logger.Info(fmt.Sprintf("%+v", v))
 
-		err := m.Handler.Update(&v, v.Id.String())
+		err := m.Handler.Update(&v, v.ID)
 		if err != nil {
 			m.Logger.Error(fmt.Sprintf("%+v", err))
 		}
