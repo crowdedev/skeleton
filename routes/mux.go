@@ -17,7 +17,7 @@ type MuxRouter struct {
 func (m *MuxRouter) Handle(context context.Context, server *http.ServeMux, client *grpc.ClientConn) *http.ServeMux {
 	server.HandleFunc("/api/docs/", func(w http.ResponseWriter, r *http.Request) {
 		regex := regexp.MustCompile("/api/docs/")
-		http.ServeFile(w, r, regex.ReplaceAllString(r.URL.Path, "swagger/"))
+		http.ServeFile(w, r, regex.ReplaceAllString(r.URL.Path, "swaggers/"))
 	})
 
 	server.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
