@@ -68,3 +68,5 @@ $ go test ./... [-v]
 - [Instalasi](docs/install.md)
 
 - [Awal Memulai](docs/basic_usage.md)
+
+- [Memodifikasi Flow](docs/flow_modification.md)
