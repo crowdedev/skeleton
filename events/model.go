@@ -1,7 +1,9 @@
 package events
 
+import "github.com/crowdeco/skeleton/configs"
+
 type ModelEvent struct {
 	Data    interface{}
 	Id      string
-	Service string
+	Service configs.Service
 }

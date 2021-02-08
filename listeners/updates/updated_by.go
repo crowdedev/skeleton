@@ -14,6 +14,7 @@ func (c *UpdatedBy) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 	data := e.Data.(configs.Model)
 	data.SetUpdatedBy(c.Env.User)
+	e.Service.OverrideData(data)
 }
 
 func (u *UpdatedBy) Listen() string {

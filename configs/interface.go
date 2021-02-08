@@ -38,6 +38,7 @@ type (
 
 	Service interface {
 		Name() string
+		OverrideData(value interface{})
 		Create(value interface{}) error
 		Update(value interface{}, id string) error
 		Bind(value interface{}, id string) error

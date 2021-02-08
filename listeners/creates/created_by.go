@@ -14,6 +14,7 @@ func (c *CreatedBy) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 	data := e.Data.(configs.Model)
 	data.SetCreatedBy(c.Env.User)
+	e.Service.OverrideData(data)
 }
 
 func (u *CreatedBy) Listen() string {

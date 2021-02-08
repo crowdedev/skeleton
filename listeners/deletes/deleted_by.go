@@ -14,6 +14,7 @@ func (c *DeletedBy) Handle(event interface{}) {
 	e := event.(*events.ModelEvent)
 	data := e.Data.(configs.Model)
 	data.SetDeletedBy(c.Env.User)
+	e.Service.OverrideData(data)
 }
 
 func (u *DeletedBy) Listen() string {
