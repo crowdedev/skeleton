@@ -133,12 +133,6 @@
             "in": "query",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "title",
-            "in": "query",
-            "required": false,
-            "type": "string"
           }
         ],
         "tags": [
@@ -170,12 +164,6 @@
           },
           {
             "name": "name",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "title",
             "in": "query",
             "required": false,
             "type": "string"
@@ -296,9 +284,6 @@
           "type": "string"
         },
         "name": {
-          "type": "string"
-        },
-        "title": {
           "type": "string"
         }
       }

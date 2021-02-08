@@ -1,6 +1,7 @@
 package dics
 
 import (
+	"github.com/crowdeco/skeleton/dics/modules"
 	"github.com/sarulabs/dingo/v4"
 )
 
@@ -18,6 +19,10 @@ func (p *Provider) Load() error {
 	}
 
 	if err := p.AddDefSlice(Interface); err != nil {
+		return err
+	}
+
+	if err := p.AddDefSlice(modules.Todo); err != nil {
 		return err
 	}
 
