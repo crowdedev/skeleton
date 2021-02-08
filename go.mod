@@ -13,6 +13,7 @@ require (
 	github.com/google/go-cmp v0.5.4 // indirect
 	github.com/google/uuid v1.1.5
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
+	github.com/iancoleman/strcase v0.1.3
 	github.com/jinzhu/copier v0.2.3
 	github.com/joho/godotenv v1.3.0
 	github.com/olivere/elastic/v7 v7.0.22

@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	configs "github.com/crowdeco/skeleton/configs"
+	"github.com/crowdeco/skeleton/utils"
 	"github.com/gertd/go-pluralize"
 	"golang.org/x/mod/modfile"
 )
@@ -18,12 +19,13 @@ type Factory struct {
 	Pluralizer *pluralize.Client
 	Template   *configs.Template
 	Generators []configs.Generator
+	Word       *utils.Word
 }
 
 func (f *Factory) Generate(module *configs.ModuleTemplate) {
 	workDir, _ := os.Getwd()
 	packageName := f.GetPackageName(workDir)
-	moduleName := strings.Title(module.Name)
+	moduleName := f.Word.Camelcase(module.Name)
 	modulePlural := f.Pluralizer.Plural(moduleName)
 	modulePluralLowercase := strings.ToLower(modulePlural)
 	modulePath := fmt.Sprintf("%s/%s", workDir, modulePluralLowercase)
