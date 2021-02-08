@@ -42,8 +42,6 @@ func NewModule(
 	cache *utils.Cache,
 	paginator *paginations.Pagination,
 ) *Module {
-	handler.SetService(service)
-
 	return &Module{
 		Context:       context,
 		Elasticsearch: elasticsearch,
