@@ -20,7 +20,7 @@ func (u *Elasticsearch) Handle(event interface{}) {
 
 	m := e.Data.(configs.Model)
 	query := elastic.NewBoolQuery()
-	query.Must(elastic.NewTermQuery("id", e.Id))
+	query.Must(elastic.NewTermQuery("Id", e.Id))
 	result, _ := u.Elasticsearch.Search().Index(m.TableName()).Query(query).Do(u.Context)
 	for _, hit := range result.Hits.Hits {
 		u.Elasticsearch.Delete().Index(m.TableName()).Id(hit.Id).Do(u.Context)
