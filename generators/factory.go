@@ -27,7 +27,7 @@ func (f *Factory) Generate(module *configs.ModuleTemplate) {
 	moduleName := f.Word.Camelcase(module.Name)
 	modulePlural := f.Pluralizer.Plural(moduleName)
 	modulePluralLowercase := f.Word.Underscore(modulePlural)
-	modulePath := fmt.Sprintf("%s/%s", workDir, f.Word.Underscore(f.Pluralizer.Plural(module.Name)))
+	modulePath := fmt.Sprintf("%s/%s", workDir, f.Word.Underscore(f.Pluralizer.Plural(moduleName)))
 
 	f.Template.ApiVersion = f.Env.ApiVersion
 	f.Template.PackageName = packageName

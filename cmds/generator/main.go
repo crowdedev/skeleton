@@ -38,6 +38,10 @@ func main() {
 		panic(err)
 	}
 
+	if strings.HasSuffix(module.Name, "test") {
+		panic("Module has 'test' as surfix")
+	}
+
 	index := 2
 	more := true
 	for more {
@@ -71,7 +75,7 @@ func main() {
 		panic(err)
 	}
 
-	_, err = exec.Command("go", "run", "cmd/dic/main.go").Output()
+	_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
 	if err != nil {
 		panic(err)
 	}
