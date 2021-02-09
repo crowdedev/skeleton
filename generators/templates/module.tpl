@@ -188,7 +188,7 @@ func (m *Module) Get(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Module}
 			}, nil
 		}
 
-		m.Cache.Set(r.Id, v)
+		m.Cache.Set(r.Id, &v)
 	}
 
 	copier.Copy(&r, &v)
