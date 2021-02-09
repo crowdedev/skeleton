@@ -14,7 +14,7 @@ type Cache struct {
 }
 
 func (c *Cache) Set(key string, value interface{}) {
-	err := c.Pool.Put(key, value, time.Duration(c.Env.CacheLifetime)*time.Second)
+	err := c.Pool.Put(key, &value, time.Duration(c.Env.CacheLifetime)*time.Second)
 	if err != nil {
 		fmt.Println(err)
 	}
