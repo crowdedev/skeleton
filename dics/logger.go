@@ -13,7 +13,9 @@ var Logger = []dingo.Def{
 			mongodb logrus.Hook,
 		) (*configs.LoggerExtension, error) {
 			return &configs.LoggerExtension{
-				Extensions: []logrus.Hook{mongodb},
+				Extensions: []logrus.Hook{
+					mongodb,
+				},
 			}, nil
 		},
 		Params: dingo.Params{
