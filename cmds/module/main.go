@@ -35,6 +35,9 @@ func main() {
 	if os.Args[0] == "unregister" {
 
 	}
+
+	util.Println("By:")
+	util.Println("𝕒𝕕𝟛𝕟")
 }
 
 func startGenerator(container *dic.Container, util *color.Color) {
