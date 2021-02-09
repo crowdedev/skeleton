@@ -28,7 +28,7 @@ type Handler struct {
 func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
 	query := elastic.NewBoolQuery()
 
-	h.Dispatcher.Dispatch(PAGINATION_EVENT, &events.PaginationEvent{
+	h.Dispatcher.Dispatch(PAGINATION_EVENT, &events.Pagination{
 		Repository: h.Repository,
 		Query:      query,
 		Filters:    paginator.Filters,
@@ -56,7 +56,7 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 }
 
 func (h *Handler) Create(v interface{}) error {
-	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, &events.ModelEvent{
+	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, &events.Model{
 		Data:       v,
 		Repository: h.Repository,
 	})
@@ -66,7 +66,7 @@ func (h *Handler) Create(v interface{}) error {
 		return err
 	}
 
-	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, &events.ModelEvent{
+	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, &events.Model{
 		Data:       v,
 		Repository: h.Repository,
 	})
@@ -75,7 +75,7 @@ func (h *Handler) Create(v interface{}) error {
 }
 
 func (h *Handler) Update(v interface{}, id string) error {
-	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, &events.ModelEvent{
+	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, &events.Model{
 		Id:         id,
 		Data:       v,
 		Repository: h.Repository,
@@ -86,7 +86,7 @@ func (h *Handler) Update(v interface{}, id string) error {
 		return err
 	}
 
-	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, &events.ModelEvent{
+	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, &events.Model{
 		Id:         id,
 		Data:       v,
 		Repository: h.Repository,
@@ -104,7 +104,7 @@ func (h *Handler) All(v interface{}) error {
 }
 
 func (h *Handler) Delete(v interface{}, id string) error {
-	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, &events.ModelEvent{
+	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, &events.Model{
 		Id:         id,
 		Data:       v,
 		Repository: h.Repository,
@@ -115,7 +115,7 @@ func (h *Handler) Delete(v interface{}, id string) error {
 		return err
 	}
 
-	h.Dispatcher.Dispatch(AFTER_DELETE_EVENT, &events.ModelEvent{
+	h.Dispatcher.Dispatch(AFTER_DELETE_EVENT, &events.Model{
 		Id:         id,
 		Data:       v,
 		Repository: h.Repository,

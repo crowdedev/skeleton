@@ -11,7 +11,7 @@ type DeletedBy struct {
 }
 
 func (c *DeletedBy) Handle(event interface{}) {
-	e := event.(*events.ModelEvent)
+	e := event.(*events.Model)
 	data := e.Data.(configs.Model)
 	data.SetDeletedBy(c.Env.User)
 	e.Repository.OverrideData(data)

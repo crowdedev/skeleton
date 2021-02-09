@@ -13,7 +13,7 @@ type CreatedBy struct {
 }
 
 func (c *CreatedBy) Handle(event interface{}) {
-	e := event.(*events.ModelEvent)
+	e := event.(*events.Model)
 	data := e.Data.(configs.Model)
 	data.SetCreatedBy(c.Env.User)
 	data.SetCreatedAt(time.Now())

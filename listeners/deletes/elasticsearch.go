@@ -15,7 +15,7 @@ type Elasticsearch struct {
 }
 
 func (d *Elasticsearch) Handle(event interface{}) {
-	e := event.(*events.ModelEvent)
+	e := event.(*events.Model)
 
 	m := e.Data.(configs.Model)
 	query := elastic.NewMatchQuery("ID", e.Id)

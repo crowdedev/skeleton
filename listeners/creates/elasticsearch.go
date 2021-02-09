@@ -16,7 +16,7 @@ type Elasticsearch struct {
 }
 
 func (c *Elasticsearch) Handle(event interface{}) {
-	e := event.(*events.ModelEvent)
+	e := event.(*events.Model)
 
 	m := e.Data.(configs.Model)
 	data, _ := json.Marshal(e.Data)

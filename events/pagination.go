@@ -6,7 +6,7 @@ import (
 	elastic "github.com/olivere/elastic/v7"
 )
 
-type PaginationEvent struct {
+type Pagination struct {
 	Repository *services.Repository
 	Query      *elastic.BoolQuery
 	Filters    []paginations.Filter

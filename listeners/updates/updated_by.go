@@ -13,7 +13,7 @@ type UpdatedBy struct {
 }
 
 func (c *UpdatedBy) Handle(event interface{}) {
-	e := event.(*events.ModelEvent)
+	e := event.(*events.Model)
 	data := e.Data.(configs.Model)
 	data.SetUpdatedBy(c.Env.User)
 	data.SetUpdatedAt(time.Now())
