@@ -34,5 +34,5 @@ func (c *Cache) Get(key string) (interface{}, bool) {
 		return nil, false
 	}
 
-	return &data, true
+	return data, true
 }
