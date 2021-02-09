@@ -51,6 +51,24 @@ func main() {
 		unregister(container, util, os.Args[2])
 	}
 
+	_, err := exec.Command("sh", "proto_gen.sh").Output()
+	if err != nil {
+		util.Println(err.Error())
+		os.Exit(1)
+	}
+
+	_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
+	if err != nil {
+		util.Println(err.Error())
+		os.Exit(1)
+	}
+
+	_, err = exec.Command("go", "mod", "tidy").Output()
+	if err != nil {
+		util.Println(err.Error())
+		os.Exit(1)
+	}
+
 	util.Println("By:")
 	util.Println("𝕒𝕕𝟛𝕟")
 }
@@ -156,23 +174,6 @@ func register(container *dic.Container, util *color.Color) {
 	}
 
 	generator.Generate(module)
-	_, err = exec.Command("sh", "proto_gen.sh").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
-	}
-
-	_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
-	}
-
-	_, err = exec.Command("go", "mod", "tidy").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
-	}
 
 	workDir, _ := os.Getwd()
 	util.Println("Module berhasil didaftarkan pada file: %s/modules.yaml", workDir)
