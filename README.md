@@ -75,3 +75,5 @@ $ go test ./... [-v]
 - [Mendaftarkan Log Extension](docs/log_extension.md)
 
 - [Menggunakan Fitur Pub/Sub](docs/pub_sub.md)
+
+- [HTTP Middleware](docs/http_middleware.md)
