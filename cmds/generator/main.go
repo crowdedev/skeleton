@@ -97,6 +97,7 @@ func addColumn(field *configs.FieldTemplate, mapType *configs.Type) {
 		types = append(types, interact.Choice{Display: k, Value: k})
 	}
 
+	field.ProtobufType = "string"
 	err = interact.NewInteraction("Masukkan Tipe Data?", types...).Resolve(&field.ProtobufType)
 	if err != nil {
 		panic(err)
