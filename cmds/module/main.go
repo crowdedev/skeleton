@@ -16,23 +16,23 @@ func main() {
 	container, _ := dic.NewContainer()
 	util := container.GetCoreUtilCli()
 
-	if len(os.Args) < 1 {
+	if len(os.Args) < 2 {
 		util.Println("Cara Penggunaan:")
 		util.Println("go run cmds/module/main.go register")
 		util.Println("go run cmds/module/main.g unregister")
 		os.Exit(1)
 	}
 
-	if os.Args[0] != "register" && os.Args[0] != "unregister" {
+	if os.Args[1] != "register" && os.Args[0] != "unregister" {
 		util.Println("Perintah tidak diketahui")
 		os.Exit(1)
 	}
 
-	if os.Args[0] == "register" {
+	if os.Args[1] == "register" {
 		startGenerator(container, util)
 	}
 
-	if os.Args[0] == "unregister" {
+	if os.Args[1] == "unregister" {
 
 	}
 
