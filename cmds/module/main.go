@@ -1,12 +1,16 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"os"
 	"os/exec"
+	"regexp"
 	"strings"
 
 	configs "github.com/crowdeco/skeleton/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
+	"github.com/crowdeco/skeleton/generators"
 	"github.com/fatih/color"
 	"github.com/jinzhu/copier"
 	"github.com/vito/go-interact/interact"
@@ -20,27 +24,65 @@ func main() {
 		util.Println("Cara Penggunaan:")
 		util.Println("go run cmds/module/main.go register")
 		util.Println("go run cmds/module/main.g unregister")
-		os.Exit(1)
 	}
 
 	if os.Args[1] != "register" && os.Args[0] != "unregister" {
 		util.Println("Perintah tidak diketahui")
-		os.Exit(1)
 	}
 
 	if os.Args[1] == "register" {
-		startGenerator(container, util)
+		register(container, util)
 	}
 
 	if os.Args[1] == "unregister" {
-		//@todo unregister module
+		if len(os.Args) < 3 {
+			util.Println("Modul wajib diisi")
+		}
+
+		unregister(container, util, os.Args[2])
 	}
 
 	util.Println("By:")
 	util.Println("𝕒𝕕𝟛𝕟")
 }
 
-func startGenerator(container *dic.Container, util *color.Color) {
+func unregister(container *dic.Container, util *color.Color, module string) {
+	workDir, _ := os.Getwd()
+	word := container.GetCoreUtilWord()
+	config := container.GetCoreConfigParser()
+	pluralizer := container.GetCoreUtilPluralizer()
+	moduleName := word.Camelcase(module)
+
+	yaml := fmt.Sprintf("%s/modules.yaml", workDir)
+	file, _ := ioutil.ReadFile(yaml)
+	modules := string(file)
+
+	provider := fmt.Sprintf("%s/dics/provider.go", workDir)
+	file, _ = ioutil.ReadFile(provider)
+	codeblock := string(file)
+
+	regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*module:%s.*$", word.Underscore(module)))
+	modules = regex.ReplaceAllString(modules, "")
+	ioutil.WriteFile(yaml, []byte(modules), 0644)
+
+	list := config.Parse()
+	if len(list) == 0 {
+		regex = regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", "github.com/crowdeco/skeleton/dics/modules"))
+		codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("    %s", generators.MODULE_IMPORT))
+	}
+
+	regex = regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", generators.MODULE_REGISTER))
+	codeblock = regex.ReplaceAllString(codeblock, "")
+	ioutil.WriteFile(provider, []byte(codeblock), 0644)
+
+	os.RemoveAll(fmt.Sprintf("%s/%s", workDir, word.Underscore(pluralizer.Plural(moduleName))))
+	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, word.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, word.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, word.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/dics/modules/%s.go", workDir, word.Underscore(module)))
+}
+
+func register(container *dic.Container, util *color.Color) {
 	generator := container.GetCoreModuleGenerator()
 	module := container.GetCoreTemplateModule()
 	field := container.GetCoreTemplateField()
