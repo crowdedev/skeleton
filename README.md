@@ -1,5 +1,7 @@
 ## Skeleton
 
+![Skeleton](assets/imgs/register.png)
+
 ## Arsitektur
 
 ![Architecture](assets/imgs/architecture.png)
