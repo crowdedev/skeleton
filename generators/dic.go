@@ -12,7 +12,7 @@ type Dic struct {
 }
 
 func (g *Dic) Generate(template *configs.Template, modulePath string, workDir string, templatePath string) {
-	protoTemplate, _ := engine.ParseFiles(fmt.Sprintf("%s/%s/dic.tpl", workDir, templatePath))
+	dicTemplate, _ := engine.ParseFiles(fmt.Sprintf("%s/%s/dic.tpl", workDir, templatePath))
 	dicPath := fmt.Sprintf("%s/dics/modules", workDir)
 	os.MkdirAll(dicPath, 0755)
 
@@ -21,5 +21,5 @@ func (g *Dic) Generate(template *configs.Template, modulePath string, workDir st
 		panic(err)
 	}
 
-	protoTemplate.Execute(dicFile, template)
+	dicTemplate.Execute(dicFile, template)
 }

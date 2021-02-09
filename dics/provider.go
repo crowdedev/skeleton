@@ -1,6 +1,7 @@
 package dics
 
 import (
+	//@modules:import
 	"github.com/sarulabs/dingo/v4"
 )
 
@@ -28,6 +29,7 @@ func (p *Provider) Load() error {
 	if err := p.AddDefSlice(Middleware); err != nil {
 		return err
 	}
+	//@modules:register
 
 	return nil
 }
