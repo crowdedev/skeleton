@@ -12,7 +12,7 @@ Listener interface {
 }
 ```
 
-Berikut adalah daftar event yang terdapat dalam **Skeleton** (terdapat dalam file [`handler.go`](ttps://github.com/crowdeco/skeleton/blob/main/handlers/handler.go))
+Berikut adalah daftar event yang terdapat dalam **Skeleton** (terdapat dalam file [`handler.go`](ttps://github.com/crowdeco/skeleton/blob/main/handlers/handler.go)
 
 ```go
 const PAGINATION_EVENT = "event.pagination"
