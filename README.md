@@ -50,7 +50,8 @@ go run cmds/app/main.go
 - Generator
 
 ```
-go run cmds/generator/main.go
+go run cmds/module/main.go register
+go run cmds/module/main.go unregister
 ```
 
 ## Testing

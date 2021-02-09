@@ -1,20 +1,8 @@
 ## Memulai Skeleton
 
-- Buat modul baru dengan perintah `go run cmds/generator/main.go`
+- Buat modul baru dengan perintah `go run cmds/module/main.go register`
 
 - Ikuti setiap langkah yang ada, maka **Skeleton** akan membuatkan modul untukmu secara otomatis dan menambahkan modulmu pada file `modules.yaml`
-
-- Daftarkan modul ke sistem pada file `dics/provider.go`
-
-```go
-	if err := p.AddDefSlice(modules.<NamaModul>); err != nil {
-		return err
-	}
-```
-
-`NamaModul` adalah nama variabel pada file `dics/modules/<modul>.go`, bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/dics/provider.go)
-
-- Update DI Container dengan `go run cmds/dic/main.go`
 
 - Jalankan aplikasi `go run cmds/app/main.go`
 
