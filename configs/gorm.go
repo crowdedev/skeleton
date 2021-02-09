@@ -10,7 +10,7 @@ import (
 
 type Base struct {
 	ID        string `gorm:"primaryKey;autoIncrement:false"`
-	Counter   uint64 `gorm:"primaryKey;autoIncrement:true"`
+	Counter   uint64 `gorm:"index;autoIncrement:true"`
 	CreatedAt sql.NullTime
 	UpdatedAt sql.NullTime
 	CreatedBy sql.NullString

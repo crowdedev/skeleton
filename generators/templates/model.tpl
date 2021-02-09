@@ -1,11 +1,7 @@
 package models
 
 import (
-    "database/sql"
-	"time"
-
 	configs "{{.PackageName}}/configs"
-	"gorm.io/gorm"
 )
 
 type {{.Module}} struct {
