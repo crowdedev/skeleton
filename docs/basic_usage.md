@@ -2,7 +2,7 @@
 
 - Buat modul baru dengan perintah `go run cmds/module/main.go register`
 
-![Register Module](assets/img/register.png)
+![Register Module](assets/imgs/register.png)
 
 - Ikuti setiap langkah yang ada, maka **Skeleton** akan membuatkan modul untukmu secara otomatis dan menambahkan modulmu pada file `modules.yaml`
 
