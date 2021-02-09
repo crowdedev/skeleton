@@ -7,7 +7,7 @@ import (
 )
 
 type PaginationEvent struct {
-	Service *services.Service
-	Query   *elastic.BoolQuery
-	Filters []paginations.Filter
+	Repository *services.Repository
+	Query      *elastic.BoolQuery
+	Filters    []paginations.Filter
 }

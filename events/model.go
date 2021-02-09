@@ -5,7 +5,7 @@ import (
 )
 
 type ModelEvent struct {
-	Data    interface{}
-	Id      string
-	Service *services.Service
+	Data       interface{}
+	Id         string
+	Repository *services.Repository
 }

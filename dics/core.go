@@ -359,7 +359,7 @@ var Core = []dingo.Def{
 			"Context":       dingo.Service("core:context:background"),
 			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
 			"Dispatcher":    dingo.Service("core:event:dispatcher"),
-			"Service":       dingo.Service("core:service:service"),
+			"Repository":    dingo.Service("core:service:repository"),
 		},
 	},
 	{
@@ -463,8 +463,8 @@ var Core = []dingo.Def{
 		Build: (*paginations.Pagination)(nil),
 	},
 	{
-		Name:  "core:service:service",
-		Build: (*services.Service)(nil),
+		Name:  "core:service:repository",
+		Build: (*services.Repository)(nil),
 		Params: dingo.Params{
 			"Env":      dingo.Service("core:config:env"),
 			"Database": dingo.Service("core:connection:database"),

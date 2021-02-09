@@ -22,16 +22,16 @@ type Handler struct {
 	Context       context.Context
 	Elasticsearch *elastic.Client
 	Dispatcher    *events.Dispatcher
-	Service       *services.Service
+	Repository    *services.Repository
 }
 
 func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
 	query := elastic.NewBoolQuery()
 
 	h.Dispatcher.Dispatch(PAGINATION_EVENT, &events.PaginationEvent{
-		Service: h.Service,
-		Query:   query,
-		Filters: paginator.Filters,
+		Repository: h.Repository,
+		Query:      query,
+		Filters:    paginator.Filters,
 	})
 
 	var result []interface{}
@@ -57,18 +57,18 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 
 func (h *Handler) Create(v interface{}) error {
 	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, &events.ModelEvent{
-		Data:    v,
-		Service: h.Service,
+		Data:       v,
+		Repository: h.Repository,
 	})
 
-	err := h.Service.Create(v)
+	err := h.Repository.Create(v)
 	if err != nil {
 		return err
 	}
 
 	h.Dispatcher.Dispatch(AFTER_CREATE_EVENT, &events.ModelEvent{
-		Data:    v,
-		Service: h.Service,
+		Data:       v,
+		Repository: h.Repository,
 	})
 
 	return nil
@@ -76,49 +76,49 @@ func (h *Handler) Create(v interface{}) error {
 
 func (h *Handler) Update(v interface{}, id string) error {
 	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, &events.ModelEvent{
-		Id:      id,
-		Data:    v,
-		Service: h.Service,
+		Id:         id,
+		Data:       v,
+		Repository: h.Repository,
 	})
 
-	err := h.Service.Update(v)
+	err := h.Repository.Update(v)
 	if err != nil {
 		return err
 	}
 
 	h.Dispatcher.Dispatch(AFTER_UPDATE_EVENT, &events.ModelEvent{
-		Id:      id,
-		Data:    v,
-		Service: h.Service,
+		Id:         id,
+		Data:       v,
+		Repository: h.Repository,
 	})
 
 	return nil
 }
 
 func (h *Handler) Bind(v interface{}, id string) error {
-	return h.Service.Bind(v, id)
+	return h.Repository.Bind(v, id)
 }
 
 func (h *Handler) All(v interface{}) error {
-	return h.Service.All(v)
+	return h.Repository.All(v)
 }
 
 func (h *Handler) Delete(v interface{}, id string) error {
 	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, &events.ModelEvent{
-		Id:      id,
-		Data:    v,
-		Service: h.Service,
+		Id:         id,
+		Data:       v,
+		Repository: h.Repository,
 	})
 
-	err := h.Service.Delete(v, id)
+	err := h.Repository.Delete(v, id)
 	if err != nil {
 		return err
 	}
 
 	h.Dispatcher.Dispatch(AFTER_DELETE_EVENT, &events.ModelEvent{
-		Id:      id,
-		Data:    v,
-		Service: h.Service,
+		Id:         id,
+		Data:       v,
+		Repository: h.Repository,
 	})
 
 	return nil

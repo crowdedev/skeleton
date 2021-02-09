@@ -17,7 +17,7 @@ func (c *UpdatedBy) Handle(event interface{}) {
 	data := e.Data.(configs.Model)
 	data.SetUpdatedBy(c.Env.User)
 	data.SetUpdatedAt(time.Now())
-	e.Service.OverrideData(data)
+	e.Repository.OverrideData(data)
 }
 
 func (u *UpdatedBy) Listen() string {
