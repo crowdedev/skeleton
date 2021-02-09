@@ -176,7 +176,7 @@ func register(container *dic.Container, util *color.Color) {
 	generator.Generate(module)
 
 	workDir, _ := os.Getwd()
-	util.Println("Module berhasil didaftarkan pada file: %s/modules.yaml", workDir)
+	util.Println(fmt.Sprintf("Module berhasil didaftarkan pada file: %s/modules.yaml", workDir))
 }
 
 func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs.Type) {
