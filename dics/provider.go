@@ -1,3 +1,4 @@
+// Don't change anything in this file, this file used by Skeleton Module Manager
 package dics
 
 import (
