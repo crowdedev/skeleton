@@ -125,6 +125,7 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 	m.Logger.Info(fmt.Sprintf("%+v", r))
 
 	v := models.{{.Module}}{}
+    hold := v
 	copier.Copy(&v, &r)
 
 	ok, err := m.Validator.Validate(&v)
@@ -137,8 +138,7 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 		}, nil
 	}
 
-    temp := models.{{.Module}}{}
-	err = m.Handler.Bind(&temp, r.Id)
+	err = m.Handler.Bind(&hold, r.Id)
 	if err != nil {
 		m.Logger.Info(fmt.Sprintf("Data with ID '%s' Not found.", r.Id))
 
@@ -150,8 +150,8 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 	}
 
     v.ID = r.Id
-	v.SetCreatedBy(&configs.User{Id: temp.CreatedBy.String})
-	v.SetCreatedAt(temp.CreatedAt.Time)
+	v.SetCreatedBy(&configs.User{Id: hold.CreatedBy.String})
+	v.SetCreatedAt(hold.CreatedAt.Time)
 	err = m.Handler.Update(&v, v.ID)
 	if err != nil {
 		return &grpcs.{{.Module}}Response{
@@ -160,6 +160,7 @@ func (m *Module) Update(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 			Message: err.Error(),
 		}, nil
 	}
+    m.Cache.Invalidate(r.Id)
 
 	return &grpcs.{{.Module}}Response{
 		Code: http.StatusOK,
@@ -187,7 +188,7 @@ func (m *Module) Get(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Module}
 			}, nil
 		}
 
-		m.Cache.Set(r.Id, &v)
+		m.Cache.Set(r.Id, v)
 	}
 
 	copier.Copy(&r, &v)

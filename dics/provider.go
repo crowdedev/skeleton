@@ -21,5 +21,13 @@ func (p *Provider) Load() error {
 		return err
 	}
 
+	if err := p.AddDefSlice(Logger); err != nil {
+		return err
+	}
+
+	if err := p.AddDefSlice(Middleware); err != nil {
+		return err
+	}
+
 	return nil
 }

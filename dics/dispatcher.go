@@ -3,9 +3,6 @@ package dics
 import (
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
-	creates "github.com/crowdeco/skeleton/listeners/creates"
-	deletes "github.com/crowdeco/skeleton/listeners/deletes"
-	updates "github.com/crowdeco/skeleton/listeners/updates"
 	"github.com/sarulabs/dingo/v4"
 )
 
@@ -35,51 +32,6 @@ var Dispatcher = []dingo.Def{
 			"3": dingo.Service("core:listener:create:created_by"),
 			"4": dingo.Service("core:listener:update:updated_by"),
 			"5": dingo.Service("core:listener:delete:deleted_by"),
-		},
-	},
-	{
-		Name:  "core:listener:create:elasticsearch",
-		Build: (*creates.Elasticsearch)(nil),
-		Params: dingo.Params{
-			"Context":       dingo.Service("core:context:background"),
-			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
-		},
-	},
-	{
-		Name:  "core:listener:update:elasticsearch",
-		Build: (*updates.Elasticsearch)(nil),
-		Params: dingo.Params{
-			"Context":       dingo.Service("core:context:background"),
-			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
-		},
-	},
-	{
-		Name:  "core:listener:delete:elasticsearch",
-		Build: (*deletes.Elasticsearch)(nil),
-		Params: dingo.Params{
-			"Context":       dingo.Service("core:context:background"),
-			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
-		},
-	},
-	{
-		Name:  "core:listener:create:created_by",
-		Build: (*creates.CreatedBy)(nil),
-		Params: dingo.Params{
-			"Env": dingo.Service("core:config:env"),
-		},
-	},
-	{
-		Name:  "core:listener:update:updated_by",
-		Build: (*updates.UpdatedBy)(nil),
-		Params: dingo.Params{
-			"Env": dingo.Service("core:config:env"),
-		},
-	},
-	{
-		Name:  "core:listener:delete:deleted_by",
-		Build: (*deletes.DeletedBy)(nil),
-		Params: dingo.Params{
-			"Env": dingo.Service("core:config:env"),
 		},
 	},
 }

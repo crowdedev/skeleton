@@ -15,10 +15,13 @@ import (
 	generators "github.com/crowdeco/skeleton/generators"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
+	creates "github.com/crowdeco/skeleton/listeners/creates"
+	deletes "github.com/crowdeco/skeleton/listeners/deletes"
+	updates "github.com/crowdeco/skeleton/listeners/updates"
 	middlewares "github.com/crowdeco/skeleton/middlewares"
 	paginations "github.com/crowdeco/skeleton/paginations"
 	routes "github.com/crowdeco/skeleton/routes"
-	"github.com/crowdeco/skeleton/services"
+	services "github.com/crowdeco/skeleton/services"
 	utils "github.com/crowdeco/skeleton/utils"
 	"github.com/fatih/color"
 	"github.com/gadelkareem/cachita"
@@ -247,6 +250,51 @@ var Core = []dingo.Def{
 		},
 	},
 	{
+		Name:  "core:listener:create:elasticsearch",
+		Build: (*creates.Elasticsearch)(nil),
+		Params: dingo.Params{
+			"Context":       dingo.Service("core:context:background"),
+			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
+		},
+	},
+	{
+		Name:  "core:listener:update:elasticsearch",
+		Build: (*updates.Elasticsearch)(nil),
+		Params: dingo.Params{
+			"Context":       dingo.Service("core:context:background"),
+			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
+		},
+	},
+	{
+		Name:  "core:listener:delete:elasticsearch",
+		Build: (*deletes.Elasticsearch)(nil),
+		Params: dingo.Params{
+			"Context":       dingo.Service("core:context:background"),
+			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
+		},
+	},
+	{
+		Name:  "core:listener:create:created_by",
+		Build: (*creates.CreatedBy)(nil),
+		Params: dingo.Params{
+			"Env": dingo.Service("core:config:env"),
+		},
+	},
+	{
+		Name:  "core:listener:update:updated_by",
+		Build: (*updates.UpdatedBy)(nil),
+		Params: dingo.Params{
+			"Env": dingo.Service("core:config:env"),
+		},
+	},
+	{
+		Name:  "core:listener:delete:deleted_by",
+		Build: (*deletes.DeletedBy)(nil),
+		Params: dingo.Params{
+			"Env": dingo.Service("core:config:env"),
+		},
+	},
+	{
 		Name:  "core:interface:database",
 		Build: (*interfaces.Database)(nil),
 	},
@@ -278,15 +326,15 @@ var Core = []dingo.Def{
 	},
 	{
 		Name: "core:handler:logger",
-		Build: func(env *configs.Env) (*handlers.Logger, error) {
-			logger := logrus.New()
+		Build: func(
+			env *configs.Env,
+			logger *logrus.Logger,
+			extension *configs.LoggerExtension,
+		) (*handlers.Logger, error) {
 			logger.SetFormatter(&logrus.JSONFormatter{})
 
-			mongodb, err := mongodb.NewHooker(fmt.Sprintf("%s:%d", env.MongoDbHost, env.MongoDbPort), env.MongoDbName, "logs")
-			if err == nil {
-				logger.AddHook(mongodb)
-			} else {
-				return nil, err
+			for _, e := range extension.Extensions {
+				logger.AddHook(e)
 			}
 
 			return &handlers.Logger{
@@ -312,21 +360,6 @@ var Core = []dingo.Def{
 			"Elasticsearch": dingo.Service("core:connection:elasticsearch"),
 			"Dispatcher":    dingo.Service("core:event:dispatcher"),
 			"Service":       dingo.Service("core:service:service"),
-		},
-	},
-	{
-		Name: "core:handler:middleware",
-		Build: func(
-			auth configs.Middleware,
-		) (*handlers.Middleware, error) {
-			return &handlers.Middleware{
-				Middlewares: []configs.Middleware{
-					auth,
-				},
-			}, nil
-		},
-		Params: dingo.Params{
-			"0": dingo.Service("core:middleware:auth"),
 		},
 	},
 	{
@@ -372,6 +405,23 @@ var Core = []dingo.Def{
 		Name: "core:grpc:server",
 		Build: func() (*grpc.Server, error) {
 			return grpc.NewServer(), nil
+		},
+	},
+	{
+		Name: "core:log:logger",
+		Build: func() (*logrus.Logger, error) {
+			return logrus.New(), nil
+		},
+	},
+	{
+		Name: "core:logger:extension:mongodb",
+		Build: func(env *configs.Env) (logrus.Hook, error) {
+			mongodb, err := mongodb.NewHooker(fmt.Sprintf("%s:%d", env.MongoDbHost, env.MongoDbPort), env.MongoDbName, "logs")
+			if err != nil {
+				return nil, err
+			}
+
+			return mongodb, nil
 		},
 	},
 	{
