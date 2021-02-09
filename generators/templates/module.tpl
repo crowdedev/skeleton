@@ -224,24 +224,6 @@ func (m *Module) Delete(c context.Context, r *grpcs.{{.Module}}) (*grpcs.{{.Modu
 }
 
 func (m *Module) Consume() {
-	v := models.{{.Module}}{}
-	messages, err := m.Messenger.Consume(v.TableName())
-	if err != nil {
-		m.Logger.Error(fmt.Sprintf("%+v", err))
-	}
-
-	for message := range messages {
-		json.Unmarshal(message.Payload, &v)
-
-		m.Logger.Info(fmt.Sprintf("%+v", v))
-
-		err := m.Handler.Update(&v, v.ID)
-		if err != nil {
-			m.Logger.Error(fmt.Sprintf("%+v", err))
-		}
-
-		message.Ack()
-	}
 }
 
 func (m *Module) Populete() {
