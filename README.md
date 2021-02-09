@@ -70,3 +70,7 @@ $ go test ./... [-v]
 - [Awal Memulai](docs/basic_usage.md)
 
 - [Memodifikasi Flow](docs/flow_modification.md)
+
+- [Mendaftarkan Log Extension](docs/log_extension.md)
+
+- [Menggunakan Fitur Pub/Sub](docs/pub_sub.md)
