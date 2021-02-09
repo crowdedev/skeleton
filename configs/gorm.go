@@ -2,13 +2,14 @@ package configs
 
 import (
 	"database/sql"
+	"time"
 
-	uuid "github.com/google/uuid"
+	"github.com/google/uuid"
 	gorm "gorm.io/gorm"
 )
 
 type Base struct {
-	ID        string
+	ID        string `gorm:"primaryKey;autoIncrement:false"`
 	Counter   uint64 `gorm:"primaryKey;autoIncrement:true"`
 	CreatedAt sql.NullTime
 	UpdatedAt sql.NullTime
@@ -18,33 +19,29 @@ type Base struct {
 	DeletedBy sql.NullString
 }
 
-// Get/Set
-
 func (b *Base) SetCreatedBy(user *User) {
-	m.CreatedBy = sql.NullString{String: user.Id, Valid: true}
+	b.CreatedBy = sql.NullString{String: user.Id, Valid: true}
 }
 
 func (b *Base) SetUpdatedBy(user *User) {
-	m.UpdatedBy = sql.NullString{String: user.Id, Valid: true}
+	b.UpdatedBy = sql.NullString{String: user.Id, Valid: true}
 }
 
 func (b *Base) SetDeletedBy(user *User) {
-	m.DeletedBy = sql.NullString{String: user.Id, Valid: true}
+	b.DeletedBy = sql.NullString{String: user.Id, Valid: true}
 }
 
 func (b *Base) SetCreatedAt(time time.Time) {
-	m.CreatedAt = sql.NullTime{Time: time, Valid: true}
+	b.CreatedAt = sql.NullTime{Time: time, Valid: true}
 }
 
 func (b *Base) SetUpdatedAt(time time.Time) {
-	m.UpdatedAt = sql.NullTime{Time: time, Valid: true}
+	b.UpdatedAt = sql.NullTime{Time: time, Valid: true}
 }
 
 func (b *Base) SetDeletedAt(time time.Time) {
-	m.DeletedAt = gorm.DeletedAt{Time: time, Valid: true}
+	b.DeletedAt = gorm.DeletedAt{Time: time, Valid: true}
 }
-
-// Hooks
 
 func (b *Base) BeforeCreate(tx *gorm.DB) (err error) {
 	b.ID = uuid.New().String()
