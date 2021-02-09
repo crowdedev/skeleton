@@ -33,7 +33,7 @@ func main() {
 	}
 
 	if os.Args[1] == "unregister" {
-
+		//@todo unregister module
 	}
 
 	util.Println("By:")
