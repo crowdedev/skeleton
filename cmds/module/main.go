@@ -99,6 +99,11 @@ func startGenerator(container *dic.Container, util *color.Color) {
 		}
 	}
 
+	if len(module.Fields) < 1 {
+		util.Println("Harus ada minimal satu kolom dalam tabel")
+		os.Exit(1)
+	}
+
 	generator.Generate(module)
 	_, err = exec.Command("sh", "proto_gen.sh").Output()
 	if err != nil {
