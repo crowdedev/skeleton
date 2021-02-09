@@ -88,18 +88,17 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	file, _ = ioutil.ReadFile(provider)
 	codeblock := string(file)
 
-	regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*module:%s.*$", word.Underscore(module)))
-	modules = regex.ReplaceAllString(modules, "")
+	modRegex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*module:%s.*$", word.Underscore(module)))
+	modules = modRegex.ReplaceAllString(modules, "")
 	ioutil.WriteFile(yaml, []byte(modules), 0644)
 
 	list := config.Parse()
 	if len(list) == 0 {
-		regex = regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", "github.com/crowdeco/skeleton/dics/modules"))
-		codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("    %s", generators.MODULE_IMPORT))
+		regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", "github.com/crowdeco/skeleton/dics/modules"))
+		codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("\n    %s", generators.MODULE_IMPORT))
 	}
 
-	regex = regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", generators.MODULE_REGISTER))
-	codeblock = regex.ReplaceAllString(codeblock, "")
+	codeblock = modRegex.ReplaceAllString(codeblock, "")
 	ioutil.WriteFile(provider, []byte(codeblock), 0644)
 
 	os.RemoveAll(fmt.Sprintf("%s/%s", workDir, word.Underscore(pluralizer.Plural(moduleName))))
