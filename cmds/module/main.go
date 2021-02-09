@@ -23,7 +23,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if os.Args[0] != "register" || os.Args[0] != "unregister" {
+	if os.Args[0] != "register" && os.Args[0] != "unregister" {
 		util.Println("Perintah tidak diketahui")
 		os.Exit(1)
 	}
