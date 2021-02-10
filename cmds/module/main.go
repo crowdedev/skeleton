@@ -114,10 +114,8 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	modules = modRegex.ReplaceAllString(modules, "")
 	ioutil.WriteFile(yaml, []byte(modules), 0644)
 
-	if len(list) == 0 {
-		regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", fmt.Sprintf("%s/%s", packageName, modulePlural)))
-		codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("\n    %s", generators.MODULE_IMPORT))
-	}
+	regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", fmt.Sprintf("%s/%s", packageName, modulePlural)))
+	codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("\n    %s", generators.MODULE_IMPORT))
 
 	codeblock = modRegex.ReplaceAllString(codeblock, "")
 	ioutil.WriteFile(provider, []byte(codeblock), 0644)
