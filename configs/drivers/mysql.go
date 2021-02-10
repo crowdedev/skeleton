@@ -18,10 +18,13 @@ func (d *Mysql) Connect(host string, port int, user string, password string, dbn
 
 	conn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true&loc=Local", user, password, host, port, dbname)
 	if debug {
-		db, err = gorm.Open(driver.Open(conn), &gorm.Config{})
+		db, err = gorm.Open(driver.Open(conn), &gorm.Config{
+			SkipDefaultTransaction: true,
+		})
 	} else {
 		db, err = gorm.Open(driver.Open(conn), &gorm.Config{
-			Logger: logger.Default.LogMode(logger.Silent),
+			SkipDefaultTransaction: true,
+			Logger:                 logger.Default.LogMode(logger.Silent),
 		})
 	}
 

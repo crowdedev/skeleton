@@ -18,10 +18,13 @@ func (d *PostgreSql) Connect(host string, port int, user string, password string
 
 	conn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%d sslmode=disable TimeZone=Asia/Jakarta", host, user, password, dbname, port)
 	if debug {
-		db, err = gorm.Open(driver.Open(conn), &gorm.Config{})
+		db, err = gorm.Open(driver.Open(conn), &gorm.Config{
+			SkipDefaultTransaction: true,
+		})
 	} else {
 		db, err = gorm.Open(driver.Open(conn), &gorm.Config{
-			Logger: logger.Default.LogMode(logger.Silent),
+			Logger:                 logger.Default.LogMode(logger.Silent),
+			SkipDefaultTransaction: true,
 		})
 	}
 
