@@ -56,6 +56,7 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 }
 
 func (h *Handler) Create(v interface{}) error {
+	h.Repository.StartTransaction()
 	h.Dispatcher.Dispatch(BEFORE_CREATE_EVENT, &events.Model{
 		Data:       v,
 		Repository: h.Repository,
@@ -63,6 +64,8 @@ func (h *Handler) Create(v interface{}) error {
 
 	err := h.Repository.Create(v)
 	if err != nil {
+		h.Repository.Rollback()
+
 		return err
 	}
 
@@ -70,11 +73,13 @@ func (h *Handler) Create(v interface{}) error {
 		Data:       v,
 		Repository: h.Repository,
 	})
+	h.Repository.Commit()
 
 	return nil
 }
 
 func (h *Handler) Update(v interface{}, id string) error {
+	h.Repository.StartTransaction()
 	h.Dispatcher.Dispatch(BEFORE_UPDATE_EVENT, &events.Model{
 		Id:         id,
 		Data:       v,
@@ -83,6 +88,8 @@ func (h *Handler) Update(v interface{}, id string) error {
 
 	err := h.Repository.Update(v)
 	if err != nil {
+		h.Repository.Rollback()
+
 		return err
 	}
 
@@ -91,6 +98,7 @@ func (h *Handler) Update(v interface{}, id string) error {
 		Data:       v,
 		Repository: h.Repository,
 	})
+	h.Repository.Commit()
 
 	return nil
 }
@@ -104,6 +112,7 @@ func (h *Handler) All(v interface{}) error {
 }
 
 func (h *Handler) Delete(v interface{}, id string) error {
+	h.Repository.StartTransaction()
 	h.Dispatcher.Dispatch(BEFORE_DELETE_EVENT, &events.Model{
 		Id:         id,
 		Data:       v,
@@ -112,6 +121,8 @@ func (h *Handler) Delete(v interface{}, id string) error {
 
 	err := h.Repository.Delete(v, id)
 	if err != nil {
+		h.Repository.Rollback()
+
 		return err
 	}
 
@@ -120,6 +131,7 @@ func (h *Handler) Delete(v interface{}, id string) error {
 		Data:       v,
 		Repository: h.Repository,
 	})
+	h.Repository.Commit()
 
 	return nil
 }

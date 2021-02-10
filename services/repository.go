@@ -12,40 +12,52 @@ type Repository struct {
 	overridedData interface{}
 }
 
-func (s *Repository) Create(v interface{}) error {
-	return s.Database.Create(s.bind(v)).Error
+func (r *Repository) StartTransaction() {
+	r.Database = r.Database.Begin()
 }
 
-func (s *Repository) Update(v interface{}) error {
-	return s.Database.Save(s.bind(v)).Error
+func (r *Repository) Commit() {
+	r.Database = r.Database.Commit()
 }
 
-func (s *Repository) Bind(v interface{}, id string) error {
-	return s.Database.Where("id = ?", id).First(v).Error
+func (r *Repository) Rollback() {
+	r.Database = r.Database.Rollback()
 }
 
-func (s *Repository) All(v interface{}) error {
-	return s.Database.Find(v).Error
+func (r *Repository) Create(v interface{}) error {
+	return r.Database.Create(r.bind(v)).Error
 }
 
-func (s *Repository) Delete(v interface{}, id string) error {
+func (r *Repository) Update(v interface{}) error {
+	return r.Database.Save(r.bind(v)).Error
+}
+
+func (r *Repository) Bind(v interface{}, id string) error {
+	return r.Database.Where("id = ?", id).First(v).Error
+}
+
+func (r *Repository) All(v interface{}) error {
+	return r.Database.Find(v).Error
+}
+
+func (r *Repository) Delete(v interface{}, id string) error {
 	m := v.(configs.Model)
 	if m.IsSoftDelete() {
-		s.Database.Save(v)
+		r.Database.Save(v)
 
-		return s.Database.Where("id = ?", id).Delete(v).Error
+		return r.Database.Where("id = ?", id).Delete(v).Error
 	}
 
-	return s.Database.Unscoped().Where("id = ?", id).Delete(v).Error
+	return r.Database.Unscoped().Where("id = ?", id).Delete(v).Error
 }
 
-func (s *Repository) OverrideData(v interface{}) {
-	s.overridedData = v
+func (r *Repository) OverrideData(v interface{}) {
+	r.overridedData = v
 }
 
-func (s *Repository) bind(v interface{}) interface{} {
-	if s.overridedData != nil {
-		v = s.overridedData
+func (r *Repository) bind(v interface{}) interface{} {
+	if r.overridedData != nil {
+		v = r.overridedData
 	}
 
 	return v
