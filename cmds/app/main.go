@@ -32,6 +32,12 @@ func main() {
 		extensions = append(extensions, container.Get(c).(logrus.Hook))
 	}
 
+	var routes []configs.Route
+	for _, c := range parser.ParseRoutes() {
+		routes = append(routes, container.Get(c).(configs.Route))
+	}
+
+	container.GetCoreRouterMux().Register(routes)
 	container.GetCoreLoggerExtension().Register(extensions)
 	container.GetCoreHandlerMiddleware().Register(middlewares)
 	container.GetCoreEventDispatcher().Register(listeners)

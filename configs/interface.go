@@ -68,6 +68,12 @@ type (
 		Priority() int
 	}
 
+	Route interface {
+		Path() string
+		Handle(w http.ResponseWriter, r *http.Request)
+		SetClient(client *grpc.ClientConn)
+	}
+
 	Middleware interface {
 		Attach(request *http.Request, response http.ResponseWriter) bool
 		Priority() int

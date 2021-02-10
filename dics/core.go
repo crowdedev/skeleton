@@ -439,6 +439,14 @@ var Core = []dingo.Def{
 		Build: (*routes.GRpcGateway)(nil),
 	},
 	{
+		Name:  "core:routes:api-doc",
+		Build: (*routes.ApiDoc)(nil),
+	},
+	{
+		Name:  "core:routes:health",
+		Build: (*routes.Health)(nil),
+	},
+	{
 		Name: "core:http:mux",
 		Build: func() (*http.ServeMux, error) {
 			return http.NewServeMux(), nil
