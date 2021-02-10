@@ -37,6 +37,7 @@ func (f *Factory) Generate(module *configs.ModuleTemplate) {
 	f.Template.ModulePluralLowercase = modulePluralLowercase
 	f.Template.Columns = module.Fields
 
+	os.MkdirAll(modulePath, 0755)
 	for _, generator := range f.Generators {
 		generator.Generate(f.Template, modulePath, workDir, f.Env.TemplateLocation)
 	}
