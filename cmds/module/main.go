@@ -10,10 +10,11 @@ import (
 
 	configs "github.com/crowdeco/skeleton/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
-	"github.com/crowdeco/skeleton/generators"
+	generators "github.com/crowdeco/skeleton/generators"
 	"github.com/fatih/color"
 	"github.com/jinzhu/copier"
 	"github.com/vito/go-interact/interact"
+	"golang.org/x/mod/modfile"
 )
 
 func main() {
@@ -78,6 +79,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	word := container.GetCoreUtilWord()
 	pluralizer := container.GetCoreUtilPluralizer()
 	moduleName := word.Camelcase(pluralizer.Singular(module))
+	modulePlural := word.Underscore(pluralizer.Plural(moduleName))
 	list := config.Parse()
 
 	exist := false
@@ -94,7 +96,12 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	}
 
 	workDir, _ := os.Getwd()
+	mod, err := ioutil.ReadFile(fmt.Sprintf("%s/go.mod", workDir))
+	if err != nil {
+		panic(err)
+	}
 
+	packageName := modfile.ModulePath(mod)
 	yaml := fmt.Sprintf("%s/modules.yaml", workDir)
 	file, _ := ioutil.ReadFile(yaml)
 	modules := string(file)
@@ -108,14 +115,14 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	ioutil.WriteFile(yaml, []byte(modules), 0644)
 
 	if len(list) == 0 {
-		regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", "github.com/crowdeco/skeleton/dics/modules"))
+		regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", fmt.Sprintf("%s/%s", packageName, modulePlural)))
 		codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("\n    %s", generators.MODULE_IMPORT))
 	}
 
 	codeblock = modRegex.ReplaceAllString(codeblock, "")
 	ioutil.WriteFile(provider, []byte(codeblock), 0644)
 
-	os.RemoveAll(fmt.Sprintf("%s/%s", workDir, word.Underscore(pluralizer.Plural(moduleName))))
+	os.RemoveAll(fmt.Sprintf("%s/%s", workDir, modulePlural))
 	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, word.Underscore(module)))

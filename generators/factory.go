@@ -27,7 +27,7 @@ func (f *Factory) Generate(module *configs.ModuleTemplate) {
 	moduleName := f.Word.Camelcase(module.Name)
 	modulePlural := f.Pluralizer.Plural(moduleName)
 	modulePluralLowercase := f.Word.Underscore(modulePlural)
-	modulePath := fmt.Sprintf("%s/%s", workDir, f.Word.Underscore(f.Pluralizer.Plural(moduleName)))
+	modulePath := fmt.Sprintf("%s/%s", workDir, modulePluralLowercase)
 
 	f.Template.ApiVersion = f.Env.ApiVersion
 	f.Template.PackageName = packageName
@@ -47,10 +47,10 @@ func (f *Factory) GetDefaultTemplatePath() string {
 }
 
 func (f *Factory) GetPackageName(workDir string) string {
-	goModBytes, err := ioutil.ReadFile(fmt.Sprintf("%s/go.mod", workDir))
+	mod, err := ioutil.ReadFile(fmt.Sprintf("%s/go.mod", workDir))
 	if err != nil {
 		panic(err)
 	}
 
-	return modfile.ModulePath(goModBytes)
+	return modfile.ModulePath(mod)
 }

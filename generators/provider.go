@@ -8,8 +8,8 @@ import (
 	configs "github.com/crowdeco/skeleton/configs"
 )
 
-const MODULE_IMPORT = "//@modules:import"
-const MODULE_REGISTER = "//@modules:register"
+const MODULE_IMPORT = "@modules:import"
+const MODULE_REGISTER = "@modules:register"
 
 type Provider struct {
 }
@@ -37,12 +37,13 @@ func (p *Provider) Generate(template *configs.Template, modulePath string, workD
 	}
 
 	if !skipImport {
-		contents[importIdx] = fmt.Sprintf("    modules %q", "github.com/crowdeco/skeleton/dics/modules")
+		contents[importIdx] = fmt.Sprintf(`//%s
+            modules %q`, template.Module, MODULE_IMPORT, fmt.Sprintf("%s/%s", template.PackageName, template.ModulePluralLowercase))
 	}
 
 	contents[moduleIdx] = fmt.Sprintf(`
     /*@module:%s*/if err := p.AddDefSlice(modules.%s); err != nil {return err}
-    %s`, template.ModuleLowercase, template.Module, MODULE_REGISTER)
+    //%s`, template.ModuleLowercase, template.Module, MODULE_REGISTER)
 
 	body := strings.Join(contents, "\n")
 
