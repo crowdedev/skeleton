@@ -8,20 +8,24 @@ import (
 type Repository struct {
 	Env           *configs.Env
 	Database      *gorm.DB
+	dbPool        *gorm.DB
 	TableName     string
 	overridedData interface{}
 }
 
 func (r *Repository) StartTransaction() {
+	r.dbPool = r.Database
 	r.Database = r.Database.Begin()
 }
 
 func (r *Repository) Commit() {
 	r.Database = r.Database.Commit()
+	r.Database = r.dbPool
 }
 
 func (r *Repository) Rollback() {
 	r.Database = r.Database.Rollback()
+	r.Database = r.dbPool
 }
 
 func (r *Repository) Create(v interface{}) error {
