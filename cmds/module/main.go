@@ -106,6 +106,8 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/dics/modules/%s.go", workDir, word.Underscore(module)))
+
+	util.Println("Module berhasil dihapus")
 }
 
 func register(container *dic.Container, util *color.Color) {
