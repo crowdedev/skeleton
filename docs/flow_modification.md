@@ -24,8 +24,8 @@ const BEFORE_DELETE_EVENT = "event.before_delete"
 const AFTER_DELETE_EVENT = "event.after_delete"
 ```
 
-- Daftarkan struct pada DIC (selanjutnya disebut **service**) pada folder `dics/modules/<module>.go`, bila bingung bisa lihat contoh definisi dari `core:listener:create:elasticsearch` pada file [`dics/core.go`](https://github.com/crowdeco/skeleton/blob/main/dics/core.go#L260)
+- Daftarkan struct pada DIC (selanjutnya disebut **service**) pada folder `dics/<module>.go`, bila bingung bisa baca dokumentasi dari [Dingo](https://github.com/sarulabs/dingo)
 
-- Daftarkan service pada file `dics/dispatcher.go` 
+- Daftarkan service pada file `listeners.yaml` 
 
 - Rebuild DIC dengan perintah `go run cmds/dic/main.go`

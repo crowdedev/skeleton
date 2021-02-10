@@ -11,8 +11,8 @@ Middleware interface {
 }
 ```
 
-- Daftarkan struct pada DIC (selanjutnya disebut **service**) pada folder `dics/modules/<module>.go`, bila bingung bisa lihat contoh definisi dari `core:middleware:auth` pada file [`dics/core.go`](https://github.com/crowdeco/skeleton/blob/main/dics/core.go#L391)
+- Daftarkan struct pada DIC (selanjutnya disebut **service**) pada folder `dics/<module>.go`, bila bingung bisa baca dokumentasi dari [Dingo](https://github.com/sarulabs/dingo)
 
-- Daftarkan service pada file `dics/middleware.go` 
+- Daftarkan service pada file `middlewares.yaml` 
 
 - Rebuild DIC dengan perintah `go run cmds/dic/main.go`
