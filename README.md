@@ -79,3 +79,7 @@ $ go test ./... [-v]
 - [Menggunakan Fitur Pub/Sub](docs/pub_sub.md)
 
 - [HTTP Middleware](docs/http_middleware.md)
+
+- [Security](docs/security.md)
+
+- [Custom Route](docs/custom_route.md)

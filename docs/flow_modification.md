@@ -1,6 +1,6 @@
 # Cara memodifikasi alur menggunakan event listener
 
-- Buat file `listeners/serach.go`
+- Buat file folder modul misal `listeners/serach.go`
 
 - Buat struct sesuai interface berikut:
 
