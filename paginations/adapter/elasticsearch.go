@@ -11,24 +11,29 @@ import (
 
 type (
 	ElasticsearchAdapter struct {
-		context context.Context
-		client  *elastic.Client
-		index   string
-		query   *elastic.BoolQuery
+		context    context.Context
+		client     *elastic.Client
+		index      string
+		pageQuery  *elastic.BoolQuery
+		totalQuery *elastic.BoolQuery
 	}
 )
 
 func NewElasticsearchAdapter(context context.Context, client *elastic.Client, index string, query *elastic.BoolQuery) paginator.Adapter {
+	totalQuery := elastic.NewBoolQuery()
+	*totalQuery = *query
+
 	return &ElasticsearchAdapter{
-		context: context,
-		client:  client,
-		index:   index,
-		query:   query,
+		context:    context,
+		client:     client,
+		index:      index,
+		pageQuery:  query,
+		totalQuery: totalQuery,
 	}
 }
 
 func (es *ElasticsearchAdapter) Nums() (int64, error) {
-	result, err := es.client.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).Do(es.context)
+	result, err := es.client.Search().Index(es.index).IgnoreUnavailable(true).Query(es.totalQuery).Do(es.context)
 	if err != nil {
 		log.Printf("%s", err.Error())
 		return 0, nil
@@ -38,9 +43,9 @@ func (es *ElasticsearchAdapter) Nums() (int64, error) {
 }
 
 func (es *ElasticsearchAdapter) Slice(offset, length int, data interface{}) error {
-	es.query.Must(elastic.NewRangeQuery("Counter").From(offset).To(length))
+	es.pageQuery.Must(elastic.NewRangeQuery("Counter").From(offset).To(length + offset))
 
-	result, err := es.client.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).Do(es.context)
+	result, err := es.client.Search().Index(es.index).IgnoreUnavailable(true).Query(es.pageQuery).Size(length).Do(es.context)
 	if err != nil {
 		log.Printf("%s", err.Error())
 		return nil
