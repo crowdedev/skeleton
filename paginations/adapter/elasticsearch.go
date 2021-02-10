@@ -14,11 +14,11 @@ type (
 		context context.Context
 		client  *elastic.Client
 		index   string
-		query   elastic.Query
+		query   *elastic.BoolQuery
 	}
 )
 
-func NewElasticsearchAdapter(context context.Context, client *elastic.Client, index string, query elastic.Query) paginator.Adapter {
+func NewElasticsearchAdapter(context context.Context, client *elastic.Client, index string, query *elastic.BoolQuery) paginator.Adapter {
 	return &ElasticsearchAdapter{
 		context: context,
 		client:  client,
@@ -38,7 +38,9 @@ func (es *ElasticsearchAdapter) Nums() (int64, error) {
 }
 
 func (es *ElasticsearchAdapter) Slice(offset, length int, data interface{}) error {
-	result, err := es.client.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).From(offset).Size(length).Do(es.context)
+	es.query.Must(elastic.NewRangeQuery("Counter").From(offset).To(length))
+
+	result, err := es.client.Search().Index(es.index).IgnoreUnavailable(true).Query(es.query).Do(es.context)
 	if err != nil {
 		log.Printf("%s", err.Error())
 		return nil
