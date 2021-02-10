@@ -74,11 +74,26 @@ func main() {
 }
 
 func unregister(container *dic.Container, util *color.Color, module string) {
-	workDir, _ := os.Getwd()
-	word := container.GetCoreUtilWord()
 	config := container.GetCoreConfigParser()
+	word := container.GetCoreUtilWord()
 	pluralizer := container.GetCoreUtilPluralizer()
-	moduleName := word.Camelcase(module)
+	moduleName := word.Camelcase(pluralizer.Singular(module))
+	list := config.Parse()
+
+	exist := false
+	for _, v := range list {
+		if v == fmt.Sprintf("module:%s", word.Underscore(module)) {
+			exist = true
+			break
+		}
+	}
+
+	if !exist {
+		util.Println("Module tidak terdaftar")
+		return
+	}
+
+	workDir, _ := os.Getwd()
 
 	yaml := fmt.Sprintf("%s/modules.yaml", workDir)
 	file, _ := ioutil.ReadFile(yaml)
@@ -92,7 +107,6 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	modules = modRegex.ReplaceAllString(modules, "")
 	ioutil.WriteFile(yaml, []byte(modules), 0644)
 
-	list := config.Parse()
 	if len(list) == 0 {
 		regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", "github.com/crowdeco/skeleton/dics/modules"))
 		codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("\n    %s", generators.MODULE_IMPORT))
