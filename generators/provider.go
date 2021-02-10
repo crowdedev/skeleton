@@ -38,7 +38,7 @@ func (p *Provider) Generate(template *configs.Template, modulePath string, workD
 
 	if !skipImport {
 		contents[importIdx] = fmt.Sprintf(`    //%s
-    %s %q`, MODULE_IMPORT, template.ModuleLowercase, fmt.Sprintf("%s/%s", template.PackageName, template.ModulePluralLowercase))
+    %s %q`, MODULE_IMPORT, template.ModuleLowercase, fmt.Sprintf("%s/%s/dics", template.PackageName, template.ModulePluralLowercase))
 	}
 
 	contents[moduleIdx] = fmt.Sprintf(`
