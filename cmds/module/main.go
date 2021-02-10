@@ -10,7 +10,6 @@ import (
 
 	configs "github.com/crowdeco/skeleton/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
-	generators "github.com/crowdeco/skeleton/generators"
 	"github.com/fatih/color"
 	"github.com/jinzhu/copier"
 	"github.com/vito/go-interact/interact"
@@ -115,7 +114,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	ioutil.WriteFile(yaml, []byte(modules), 0644)
 
 	regex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*%s.*$", fmt.Sprintf("%s/%s", packageName, modulePlural)))
-	codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("\n    %s", generators.MODULE_IMPORT))
+	codeblock = regex.ReplaceAllString(codeblock, fmt.Sprintf("\n    %s", ""))
 
 	codeblock = modRegex.ReplaceAllString(codeblock, "")
 	ioutil.WriteFile(provider, []byte(codeblock), 0644)
