@@ -1,0 +1,7 @@
+listeners:
+    - core:listener:create:elasticsearch
+    - core:listener:update:elasticsearch
+    - core:listener:delete:elasticsearch
+    - core:listener:create:created_by
+    - core:listener:update:updated_by
+    - core:listener:delete:deleted_by

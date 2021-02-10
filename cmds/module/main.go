@@ -79,7 +79,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	pluralizer := container.GetCoreUtilPluralizer()
 	moduleName := word.Camelcase(pluralizer.Singular(module))
 	modulePlural := word.Underscore(pluralizer.Plural(moduleName))
-	list := config.Parse()
+	list := config.ParseModules()
 
 	exist := false
 	for _, v := range list {

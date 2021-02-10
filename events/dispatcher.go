@@ -12,6 +12,7 @@ type Dispatcher struct {
 }
 
 func (d *Dispatcher) Register(listeners []configs.Listener) {
+	d.Events = make(map[string][]configs.Listener)
 	sort.Slice(listeners, func(i, j int) bool {
 		return listeners[i].Priority() > listeners[j].Priority()
 	})

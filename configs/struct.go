@@ -1,7 +1,5 @@
 package configs
 
-import "github.com/sirupsen/logrus"
-
 type (
 	User struct {
 		Id    string
@@ -49,10 +47,6 @@ type (
 		ModulePlural          string
 		ModulePluralLowercase string
 		Columns               []*FieldTemplate
-	}
-
-	LoggerExtension struct {
-		Extensions []logrus.Hook
 	}
 
 	ModuleTemplate struct {

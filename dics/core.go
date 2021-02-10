@@ -1,3 +1,4 @@
+// Don't change anything in this file, this file used by Skeleton Module Manager
 package dics
 
 import (
@@ -12,6 +13,7 @@ import (
 	amqp "github.com/ThreeDotsLabs/watermill-amqp/pkg/amqp"
 	configs "github.com/crowdeco/skeleton/configs"
 	drivers "github.com/crowdeco/skeleton/configs/drivers"
+	events "github.com/crowdeco/skeleton/events"
 	generators "github.com/crowdeco/skeleton/generators"
 	handlers "github.com/crowdeco/skeleton/handlers"
 	interfaces "github.com/crowdeco/skeleton/interfaces"
@@ -207,6 +209,39 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:database:driver:postgresql",
 		Build: (*drivers.PostgreSql)(nil),
+	},
+	{
+		Name: "core:application",
+		Build: func(
+			database configs.Application,
+			elasticsearch configs.Application,
+			grpc configs.Application,
+			queue configs.Application,
+			rest configs.Application,
+		) (*interfaces.Application, error) {
+			return &interfaces.Application{
+				Applications: []configs.Application{database, elasticsearch, grpc, queue, rest},
+			}, nil
+		},
+		Params: dingo.Params{
+			"0": dingo.Service("core:interface:database"),
+			"1": dingo.Service("core:interface:elasticsearch"),
+			"2": dingo.Service("core:interface:grpc"),
+			"3": dingo.Service("core:interface:queue"),
+			"4": dingo.Service("core:interface:rest"),
+		},
+	},
+	{
+		Name:  "core:event:dispatcher",
+		Build: (*events.Dispatcher)(nil),
+	},
+	{
+		Name:  "core:handler:middleware",
+		Build: (*handlers.Middleware)(nil),
+	},
+	{
+		Name:  "core:logger:extension",
+		Build: (*configs.LoggerExtension)(nil),
 	},
 	{
 		Name: "core:connection:database",
