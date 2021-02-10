@@ -120,6 +120,7 @@ var Core = []dingo.Def{
 			env.HeaderUserId = os.Getenv("HEADER_USER_ID")
 			env.HeaderUserEmail = os.Getenv("HEADER_USER_EMAIL")
 			env.HeaderUserRole = os.Getenv("HEADER_USER_ROLE")
+			env.MaximumRole, _ = strconv.Atoi(os.Getenv("MAXIMUM_ROLE"))
 
 			env.CacheLifetime, _ = strconv.Atoi(os.Getenv("CACHE_LIFETIME"))
 

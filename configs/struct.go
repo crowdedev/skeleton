@@ -4,7 +4,7 @@ type (
 	User struct {
 		Id    string
 		Email string
-		Role  string
+		Role  int
 	}
 
 	Env struct {
@@ -34,6 +34,7 @@ type (
 		HeaderUserId       string
 		HeaderUserEmail    string
 		HeaderUserRole     string
+		MaximumRole        int
 		CacheLifetime      int
 		User               *User
 		TemplateLocation   string

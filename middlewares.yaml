@@ -1,2 +1,2 @@
 middlewares:
-    - core:middleware:auth
+    # - core:middleware:auth
