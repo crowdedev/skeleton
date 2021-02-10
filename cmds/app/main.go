@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/crowdeco/skeleton/configs"
-	"github.com/crowdeco/skeleton/generated/dic"
+	configs "github.com/crowdeco/skeleton/configs"
+	dic "github.com/crowdeco/skeleton/generated/dic"
 	"github.com/sirupsen/logrus"
 )
 
