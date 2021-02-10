@@ -42,8 +42,8 @@ func (p *Provider) Generate(template *configs.Template, modulePath string, workD
 	}
 
 	contents[moduleIdx] = fmt.Sprintf(`
-    /*@module:%s*/if err := p.AddDefSlice(modules.%s); err != nil {return err}
-    //%s`, template.ModuleLowercase, template.Module, MODULE_REGISTER)
+    /*@module:%s*/if err := p.AddDefSlice(%s.%s); err != nil {return err}
+    //%s`, template.ModuleLowercase, template.ModuleLowercase, template.Module, MODULE_REGISTER)
 
 	body := strings.Join(contents, "\n")
 
