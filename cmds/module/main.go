@@ -90,7 +90,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	}
 
 	if !exist {
-		util.Println("Module tidak terdaftar")
+		util.Println("Modul tidak terdaftar")
 		return
 	}
 
@@ -124,7 +124,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, word.Underscore(module)))
 
-	util.Println("Module berhasil dihapus")
+	util.Println("Modul berhasil dihapus")
 }
 
 func register(container *dic.Container, util *color.Color) {
@@ -147,14 +147,14 @@ func register(container *dic.Container, util *color.Color) {
 
 `)
 
-	err := interact.NewInteraction("Masukkan Nama Table?").Resolve(&module.Name)
+	err := interact.NewInteraction("Masukkan Nama Modul?").Resolve(&module.Name)
 	if err != nil {
 		util.Println(err.Error())
 		os.Exit(1)
 	}
 
 	if strings.HasSuffix(module.Name, "test") {
-		util.Println("Module has 'test' as surfix")
+		util.Println("Modul mengandung kata 'test'")
 		os.Exit(1)
 	}
 
