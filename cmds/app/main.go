@@ -42,5 +42,7 @@ func main() {
 	container.GetCoreHandlerMiddleware().Register(middlewares)
 	container.GetCoreEventDispatcher().Register(listeners)
 	container.GetCoreRouterGateway().Register(servers)
+
+	// Engine ready... It's time to fly!!!
 	container.GetCoreApplication().Run(servers)
 }
