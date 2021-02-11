@@ -522,6 +522,9 @@ var Core = []dingo.Def{
 	{
 		Name:  "core:pagination:paginator",
 		Build: (*paginations.Pagination)(nil),
+	}, {
+		Name:  "core:pagination:request",
+		Build: (*paginations.Request)(nil),
 	},
 	{
 		Name:  "core:service:repository",

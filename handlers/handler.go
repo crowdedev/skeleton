@@ -25,7 +25,7 @@ type Handler struct {
 	Repository    *services.Repository
 }
 
-func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.PaginationMeta, []interface{}) {
+func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Metadata, []interface{}) {
 	query := elastic.NewBoolQuery()
 
 	h.Dispatcher.Dispatch(PAGINATION_EVENT, &events.Pagination{
@@ -45,7 +45,7 @@ func (h *Handler) Paginate(paginator paginations.Pagination) (paginations.Pagina
 		next = -1
 	}
 
-	return paginations.PaginationMeta{
+	return paginations.Metadata{
 		Record:   len(result),
 		Page:     paginator.Page,
 		Previous: paginator.Page - 1,

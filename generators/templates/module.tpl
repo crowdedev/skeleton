@@ -28,6 +28,7 @@ type Module struct {
 	Validator     *validations.{{.Module}}
 	Cache         *utils.Cache
 	Paginator     *paginations.Pagination
+	Request       *paginations.Request
 }
 
 func NewModule(
@@ -41,6 +42,7 @@ func NewModule(
 	validator *validations.{{.Module}},
 	cache *utils.Cache,
 	paginator *paginations.Pagination,
+	request *paginations.Request,
 ) *Module {
 	return &Module{
 		Context:       context,
@@ -52,6 +54,7 @@ func NewModule(
 		Validator:     validator,
 		Cache:         cache,
 		Paginator:     paginator,
+		Request:       request,
 	}
 }
 
@@ -61,7 +64,8 @@ func (m *Module) GetPaginated(c context.Context, r *grpcs.Pagination) (*grpcs.{{
 	model := models.{{.Module}}{}
 	m.Paginator.Model = model.TableName()
 
-	m.Paginator.Handle(r)
+    copier.Copy(m.Request, r)
+	m.Paginator.Handle(m.Request)
 
 	metadata, result := m.Handler.Paginate(*m.Paginator)
 	for _, v := range result {
