@@ -1,6 +1,8 @@
 package paginations
 
 import (
+	"strings"
+
 	grpcs "github.com/crowdeco/skeleton/protos/builds"
 	paginator "github.com/vcraescu/go-paginator/v2"
 )
@@ -39,9 +41,11 @@ func (p *Pagination) Handle(pagination *grpcs.Pagination) {
 		pagination.Limit = 17
 	}
 
-	for k, v := range pagination.Fields {
-		if v != "" {
-			p.Filters = append(p.Filters, Filter{Field: v, Value: pagination.Values[k]})
+	if len(pagination.Fields) == len(pagination.Values) {
+		for k, v := range pagination.Fields {
+			if v != "" {
+				p.Filters = append(p.Filters, Filter{Field: strings.Title(v), Value: pagination.Values[k]})
+			}
 		}
 	}
 

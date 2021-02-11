@@ -1,4 +1,5 @@
 listeners:
+    - core:listener:filter:elasticsearch
     - core:listener:create:elasticsearch
     - core:listener:update:elasticsearch
     - core:listener:delete:elasticsearch

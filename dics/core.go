@@ -19,6 +19,7 @@ import (
 	interfaces "github.com/crowdeco/skeleton/interfaces"
 	creates "github.com/crowdeco/skeleton/listeners/creates"
 	deletes "github.com/crowdeco/skeleton/listeners/deletes"
+	filters "github.com/crowdeco/skeleton/listeners/paginations"
 	updates "github.com/crowdeco/skeleton/listeners/updates"
 	middlewares "github.com/crowdeco/skeleton/middlewares"
 	paginations "github.com/crowdeco/skeleton/paginations"
@@ -342,6 +343,10 @@ var Core = []dingo.Def{
 		Params: dingo.Params{
 			"Env": dingo.Service("core:config:env"),
 		},
+	},
+	{
+		Name:  "core:listener:filter:elasticsearch",
+		Build: (*filters.Filter)(nil),
 	},
 	{
 		Name:  "core:interface:database",

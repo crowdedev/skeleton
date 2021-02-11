@@ -170,6 +170,7 @@ func register(container *dic.Container, util *color.Color) {
 		if more {
 			addColumn(util, field, mapType)
 
+			field.Name = strings.Replace(field.Name, " ", "", -1)
 			column := configs.FieldTemplate{}
 
 			copier.Copy(&column, field)
