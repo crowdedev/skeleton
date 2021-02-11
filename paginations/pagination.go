@@ -14,12 +14,14 @@ type (
 	}
 
 	Pagination struct {
-		Limit   int
-		Page    int
-		Filters []Filter
-		Search  string
-		Pager   paginator.Paginator
-		Model   string
+		Limit      int
+		Page       int
+		UseCounter bool
+		Counter    uint64
+		Filters    []Filter
+		Search     string
+		Pager      paginator.Paginator
+		Model      string
 	}
 
 	PaginationMeta struct {
@@ -48,6 +50,11 @@ func (p *Pagination) Handle(pagination *grpcs.Pagination) {
 				p.Filters = append(p.Filters, Filter{Field: strings.Title(v), Value: pagination.Values[k]})
 			}
 		}
+	}
+
+	if pagination.Counter > 0 {
+		p.UseCounter = true
+		p.Counter = pagination.Counter
 	}
 
 	p.Limit = int(pagination.Limit)
