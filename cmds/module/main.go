@@ -12,11 +12,13 @@ import (
 	dic "github.com/crowdeco/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/jinzhu/copier"
+	"github.com/joho/godotenv"
 	"github.com/vito/go-interact/interact"
 	"golang.org/x/mod/modfile"
 )
 
 func main() {
+	godotenv.Load()
 	container, _ := dic.NewContainer()
 	util := container.GetBimaUtilCli()
 
@@ -74,12 +76,12 @@ func main() {
 }
 
 func unregister(container *dic.Container, util *color.Color, module string) {
-	config := container.GetBimaConfigParser()
+	moduleParser := container.GetBimaConfigParserModule()
 	word := container.GetBimaUtilWord()
 	pluralizer := container.GetBimaUtilPluralizer()
 	moduleName := word.Camelcase(pluralizer.Singular(module))
 	modulePlural := word.Underscore(pluralizer.Plural(moduleName))
-	list := config.ParseModules()
+	list := moduleParser.Parse()
 
 	exist := false
 	for _, v := range list {

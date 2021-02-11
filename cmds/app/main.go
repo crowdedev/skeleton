@@ -12,30 +12,29 @@ import (
 func main() {
 	godotenv.Load()
 	container, _ := dic.NewContainer()
-	parser := container.GetBimaConfigParser()
 
 	var servers []configs.Server
-	for _, c := range parser.ParseModules() {
+	for _, c := range container.GetBimaConfigParserModule().Parse() {
 		servers = append(servers, container.Get(fmt.Sprintf("%s:server", c)).(configs.Server))
 	}
 
 	var listeners []configs.Listener
-	for _, c := range parser.ParseListeners() {
+	for _, c := range container.GetBimaConfigParserListener().Parse() {
 		listeners = append(listeners, container.Get(c).(configs.Listener))
 	}
 
 	var middlewares []configs.Middleware
-	for _, c := range parser.ParseMiddlewares() {
+	for _, c := range container.GetBimaConfigParserMiddleware().Parse() {
 		middlewares = append(middlewares, container.Get(c).(configs.Middleware))
 	}
 
 	var extensions []logrus.Hook
-	for _, c := range parser.ParseLoggers() {
+	for _, c := range container.GetBimaConfigParserLogger().Parse() {
 		extensions = append(extensions, container.Get(c).(logrus.Hook))
 	}
 
 	var routes []configs.Route
-	for _, c := range parser.ParseRoutes() {
+	for _, c := range container.GetBimaConfigParserRoute().Parse() {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
 

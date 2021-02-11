@@ -1,3 +1,3 @@
 routes:
-    - core:routes:api-doc
-    - core:routes:health
+    - bima:routes:api-doc
+    - bima:routes:health
