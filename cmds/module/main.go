@@ -46,18 +46,6 @@ func main() {
 			util.Println(err.Error())
 			os.Exit(1)
 		}
-
-		_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
-		if err != nil {
-			util.Println(err.Error())
-			os.Exit(1)
-		}
-
-		_, err = exec.Command("go", "mod", "tidy").Output()
-		if err != nil {
-			util.Println(err.Error())
-			os.Exit(1)
-		}
 	}
 
 	if os.Args[1] == "unregister" {
@@ -69,6 +57,18 @@ func main() {
 		}
 
 		unregister(container, util, os.Args[2])
+	}
+
+	_, err := exec.Command("go", "run", "cmds/dic/main.go").Output()
+	if err != nil {
+		util.Println(err.Error())
+		os.Exit(1)
+	}
+
+	_, err = exec.Command("go", "mod", "tidy").Output()
+	if err != nil {
+		util.Println(err.Error())
+		os.Exit(1)
 	}
 
 	util.Println("By:")
@@ -107,7 +107,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	file, _ := ioutil.ReadFile(yaml)
 	modules := string(file)
 
-	provider := fmt.Sprintf("%s/dics/provider.go", workDir)
+	provider := fmt.Sprintf("%s/configs/provider.go", workDir)
 	file, _ = ioutil.ReadFile(provider)
 	codeblock := string(file)
 
