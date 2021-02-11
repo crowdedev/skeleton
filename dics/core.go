@@ -282,7 +282,13 @@ var Core = []dingo.Def{
 	{
 		Name: "core:connection:elasticsearch",
 		Build: func(env *configs.Env) (*elastic.Client, error) {
-			client, err := elastic.NewClient(elastic.SetURL(fmt.Sprintf("%s:%d", env.ElasticsearchHost, env.ElasticsearchPort)), elastic.SetSniff(false), elastic.SetHealthcheck(false))
+			client, err := elastic.NewClient(
+				elastic.SetURL(fmt.Sprintf("%s:%d", env.ElasticsearchHost, env.ElasticsearchPort)),
+				elastic.SetSniff(false),
+				elastic.SetHealthcheck(false),
+				elastic.SetGzip(true),
+			)
+
 			if err != nil {
 				return nil, err
 			}
@@ -375,7 +381,6 @@ var Core = []dingo.Def{
 			extension *configs.LoggerExtension,
 		) (*handlers.Logger, error) {
 			logger.SetFormatter(&logrus.JSONFormatter{})
-
 			for _, e := range extension.Extensions {
 				logger.AddHook(e)
 			}
