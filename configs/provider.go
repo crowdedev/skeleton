@@ -1,8 +1,10 @@
 // Don't change anything in this file, this file used by Skeleton Module Manager
+// Don't change this file
 package dics
 
 import (
-	//@modules:import
+    //@modules:import
+	"github.com/crowdeco/bima/dics"
 	"github.com/sarulabs/dingo/v4"
 )
 
@@ -11,10 +13,10 @@ type Provider struct {
 }
 
 func (p *Provider) Load() error {
-	if err := p.AddDefSlice(Core); err != nil {
+	if err := p.AddDefSlice(dics.Container); err != nil {
 		return err
 	}
-	//@modules:register
+    //@modules:register
 
 	return nil
 }

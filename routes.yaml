@@ -1,3 +1,0 @@
-routes:
-    - core:routes:api-doc
-    - core:routes:health

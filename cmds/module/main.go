@@ -8,17 +8,19 @@ import (
 	"regexp"
 	"strings"
 
-	configs "github.com/crowdeco/skeleton/configs"
+	configs "github.com/crowdeco/bima/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/jinzhu/copier"
+	"github.com/joho/godotenv"
 	"github.com/vito/go-interact/interact"
 	"golang.org/x/mod/modfile"
 )
 
 func main() {
+	godotenv.Load()
 	container, _ := dic.NewContainer()
-	util := container.GetCoreUtilCli()
+	util := container.GetBimaUtilCli()
 
 	if len(os.Args) < 2 {
 		util.Println("Cara Penggunaan:")
@@ -38,6 +40,12 @@ func main() {
 
 	if os.Args[1] == "register" {
 		register(container, util)
+
+		_, err := exec.Command("sh", "proto_gen.sh").Output()
+		if err != nil {
+			util.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if os.Args[1] == "unregister" {
@@ -51,13 +59,7 @@ func main() {
 		unregister(container, util, os.Args[2])
 	}
 
-	_, err := exec.Command("sh", "proto_gen.sh").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
-	}
-
-	_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
+	_, err := exec.Command("go", "run", "cmds/dic/main.go").Output()
 	if err != nil {
 		util.Println(err.Error())
 		os.Exit(1)
@@ -74,12 +76,12 @@ func main() {
 }
 
 func unregister(container *dic.Container, util *color.Color, module string) {
-	config := container.GetCoreConfigParser()
-	word := container.GetCoreUtilWord()
-	pluralizer := container.GetCoreUtilPluralizer()
+	moduleParser := container.GetBimaConfigParserModule()
+	word := container.GetBimaUtilWord()
+	pluralizer := container.GetBimaUtilPluralizer()
 	moduleName := word.Camelcase(pluralizer.Singular(module))
 	modulePlural := word.Underscore(pluralizer.Plural(moduleName))
-	list := config.ParseModules()
+	list := moduleParser.Parse()
 
 	exist := false
 	for _, v := range list {
@@ -101,11 +103,11 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	}
 
 	packageName := modfile.ModulePath(mod)
-	yaml := fmt.Sprintf("%s/modules.yaml", workDir)
+	yaml := fmt.Sprintf("%s/configs/modules.yaml", workDir)
 	file, _ := ioutil.ReadFile(yaml)
 	modules := string(file)
 
-	provider := fmt.Sprintf("%s/dics/provider.go", workDir)
+	provider := fmt.Sprintf("%s/configs/provider.go", workDir)
 	file, _ = ioutil.ReadFile(provider)
 	codeblock := string(file)
 
@@ -128,11 +130,11 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 }
 
 func register(container *dic.Container, util *color.Color) {
-	generator := container.GetCoreModuleGenerator()
-	module := container.GetCoreTemplateModule()
-	field := container.GetCoreTemplateField()
-	word := container.GetCoreUtilWord()
-	mapType := container.GetCoreConfigType()
+	generator := container.GetBimaModuleGenerator()
+	module := container.GetBimaTemplateModule()
+	field := container.GetBimaTemplateField()
+	word := container.GetBimaUtilWord()
+	mapType := container.GetBimaConfigType()
 
 	util.Println(`
     ______                                           __                   ______   __                  __              __
