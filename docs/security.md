@@ -6,4 +6,4 @@ Untuk mensetting header, kamu dapat mengaturnya pada `.env` yaitu `HEADER_USER_I
 
 ## Mengaktifkan Security Middleware
 
-Secara default, fitur security yang dijelaskan di atas tidak diaktifkan (disable) dan untuk mengaktifkannya, kamu cukup menghapus komentar pada file `middlewares.yaml` baris `core:middleware:auth`.
+Secara default, fitur security yang dijelaskan di atas tidak diaktifkan (disable) dan untuk mengaktifkannya, kamu cukup menghapus komentar pada file `configs/middlewares.yaml` baris `bima:middleware:auth`.

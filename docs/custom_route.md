@@ -13,6 +13,6 @@ Route interface {
 ```
 - Daftarkan struct pada DIC (selanjutnya disebut **service**) pada folder `dics/<module>.go`, bila bingung bisa baca dokumentasi dari [Dingo](https://github.com/sarulabs/dingo)
 
-- Daftarkan service pada file `routes.yaml`
+- Daftarkan service pada file `configs/routes.yaml`
 
 - Rebuild DIC dengan perintah `go run cmds/dic/main.go`

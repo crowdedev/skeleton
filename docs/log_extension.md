@@ -4,6 +4,6 @@
 
 Untuk mendaftarkan log extension, cukup membuatnya sebagai service pada `dics/<module>.go`, bila bingung bisa baca dokumentasi dari [Dingo](https://github.com/sarulabs/dingo)
 
-- Daftarkan service pada file `loggers.yaml`
+- Daftarkan service pada file `configs/loggers.yaml`
 
 - Rebuild DIC dengan perintah `go run cmds/dic/main.go`
