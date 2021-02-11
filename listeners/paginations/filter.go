@@ -1,6 +1,8 @@
 package paginations
 
 import (
+	"fmt"
+
 	configs "github.com/crowdeco/skeleton/configs"
 	events "github.com/crowdeco/skeleton/events"
 	handlers "github.com/crowdeco/skeleton/handlers"
@@ -16,7 +18,9 @@ func (u *Filter) Handle(event interface{}) {
 	filters := e.Filters
 
 	for _, v := range filters {
-		query.Must(elastic.NewMatchQuery(v.Field, v.Value))
+		q := elastic.NewWildcardQuery(v.Field, fmt.Sprintf("*%s*", v.Value))
+		q.Boost(1.0)
+		query.Must(q)
 	}
 }
 

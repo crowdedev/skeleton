@@ -42,7 +42,7 @@ func (es *ElasticsearchAdapter) Nums() (int64, error) {
 	return result.TotalHits(), nil
 }
 
-func (es *ElasticsearchAdapter) Slice(offset, length int, data interface{}) error {
+func (es *ElasticsearchAdapter) Slice(offset int, length int, data interface{}) error {
 	es.pageQuery.Must(elastic.NewRangeQuery("Counter").From(offset).To(length + offset))
 
 	result, err := es.client.Search().Index(es.index).IgnoreUnavailable(true).Query(es.pageQuery).Size(length).Do(es.context)

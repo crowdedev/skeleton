@@ -41,6 +41,7 @@ func (p *Pagination) Handle(pagination *grpcs.Pagination) {
 		pagination.Limit = 17
 	}
 
+	p.Filters = nil
 	if len(pagination.Fields) == len(pagination.Values) {
 		for k, v := range pagination.Fields {
 			if v != "" {
