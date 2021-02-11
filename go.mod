@@ -8,7 +8,6 @@ require (
 	github.com/fatih/color v1.10.0
 	github.com/gadelkareem/cachita v0.2.1
 	github.com/gertd/go-pluralize v0.1.7
-	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/golang/protobuf v1.4.3
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.0.1
 	github.com/jinzhu/copier v0.2.3
@@ -22,7 +21,6 @@ require (
 	github.com/vcraescu/go-paginator/v2 v2.0.0
 	github.com/vito/go-interact v1.0.0
 	golang.org/x/mod v0.3.0
-	google.golang.org/genproto v0.0.0-20201214200347-8c77b98c765d
 	google.golang.org/grpc v1.33.2
 	google.golang.org/protobuf v1.25.0
 	gorm.io/gorm v1.20.8
