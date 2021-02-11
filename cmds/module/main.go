@@ -40,6 +40,24 @@ func main() {
 
 	if os.Args[1] == "register" {
 		register(container, util)
+
+		_, err := exec.Command("sh", "proto_gen.sh").Output()
+		if err != nil {
+			util.Println(err.Error())
+			os.Exit(1)
+		}
+
+		_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
+		if err != nil {
+			util.Println(err.Error())
+			os.Exit(1)
+		}
+
+		_, err = exec.Command("go", "mod", "tidy").Output()
+		if err != nil {
+			util.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if os.Args[1] == "unregister" {
@@ -51,24 +69,6 @@ func main() {
 		}
 
 		unregister(container, util, os.Args[2])
-	}
-
-	_, err := exec.Command("sh", "proto_gen.sh").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
-	}
-
-	_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
-	}
-
-	_, err = exec.Command("go", "mod", "tidy").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
 	}
 
 	util.Println("By:")
@@ -103,7 +103,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	}
 
 	packageName := modfile.ModulePath(mod)
-	yaml := fmt.Sprintf("%s/modules.yaml", workDir)
+	yaml := fmt.Sprintf("%s/configs/modules.yaml", workDir)
 	file, _ := ioutil.ReadFile(yaml)
 	modules := string(file)
 
