@@ -8,7 +8,7 @@ import (
 	"regexp"
 	"strings"
 
-	configs "github.com/crowdeco/skeleton/configs"
+	configs "github.com/crowdeco/bima/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/jinzhu/copier"
@@ -18,7 +18,7 @@ import (
 
 func main() {
 	container, _ := dic.NewContainer()
-	util := container.GetCoreUtilCli()
+	util := container.GetBimaUtilCli()
 
 	if len(os.Args) < 2 {
 		util.Println("Cara Penggunaan:")
@@ -74,9 +74,9 @@ func main() {
 }
 
 func unregister(container *dic.Container, util *color.Color, module string) {
-	config := container.GetCoreConfigParser()
-	word := container.GetCoreUtilWord()
-	pluralizer := container.GetCoreUtilPluralizer()
+	config := container.GetBimaConfigParser()
+	word := container.GetBimaUtilWord()
+	pluralizer := container.GetBimaUtilPluralizer()
 	moduleName := word.Camelcase(pluralizer.Singular(module))
 	modulePlural := word.Underscore(pluralizer.Plural(moduleName))
 	list := config.ParseModules()
@@ -128,11 +128,11 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 }
 
 func register(container *dic.Container, util *color.Color) {
-	generator := container.GetCoreModuleGenerator()
-	module := container.GetCoreTemplateModule()
-	field := container.GetCoreTemplateField()
-	word := container.GetCoreUtilWord()
-	mapType := container.GetCoreConfigType()
+	generator := container.GetBimaModuleGenerator()
+	module := container.GetBimaTemplateModule()
+	field := container.GetBimaTemplateField()
+	word := container.GetBimaUtilWord()
+	mapType := container.GetBimaConfigType()
 
 	util.Println(`
     ______                                           __                   ______   __                  __              __

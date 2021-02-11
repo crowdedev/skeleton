@@ -3,14 +3,16 @@ package main
 import (
 	"fmt"
 
-	configs "github.com/crowdeco/skeleton/configs"
+	configs "github.com/crowdeco/bima/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
+	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
 
 func main() {
+	godotenv.Load()
 	container, _ := dic.NewContainer()
-	parser := container.GetCoreConfigParser()
+	parser := container.GetBimaConfigParser()
 
 	var servers []configs.Server
 	for _, c := range parser.ParseModules() {
@@ -37,12 +39,12 @@ func main() {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
 
-	container.GetCoreRouterMux().Register(routes)
-	container.GetCoreLoggerExtension().Register(extensions)
-	container.GetCoreHandlerMiddleware().Register(middlewares)
-	container.GetCoreEventDispatcher().Register(listeners)
-	container.GetCoreRouterGateway().Register(servers)
+	container.GetBimaRouterMux().Register(routes)
+	container.GetBimaLoggerExtension().Register(extensions)
+	container.GetBimaHandlerMiddleware().Register(middlewares)
+	container.GetBimaEventDispatcher().Register(listeners)
+	container.GetBimaRouterGateway().Register(servers)
 
 	// Engine ready... It's time to fly!!!
-	container.GetCoreApplication().Run(servers)
+	container.GetBimaApplication().Run(servers)
 }

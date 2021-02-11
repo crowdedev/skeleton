@@ -1,0 +1,2 @@
+loggers:
+    - bima:logger:extension:mongodb
