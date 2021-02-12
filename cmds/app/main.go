@@ -43,8 +43,16 @@ func main() {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
 
-	util.Println("🔥 Engine Start...")
-	time.Sleep(3 * time.Second)
+	util.Println("⌛ Starting Engine...")
+	time.Sleep(300 * time.Millisecond)
+	util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+	time.Sleep(300 * time.Millisecond)
+	util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+	time.Sleep(300 * time.Millisecond)
+	util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+	time.Sleep(300 * time.Millisecond)
+	util.Println("🔥 Engine Ready...")
+	time.Sleep(1500 * time.Millisecond)
 
 	container.GetBimaRouterMux().Register(routes)
 	container.GetBimaLoggerExtension().Register(extensions)
