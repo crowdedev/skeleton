@@ -43,6 +43,8 @@ func main() {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
 
+	util.Printf("✓ ")
+	fmt.Printf("Total pessanger %d\n", len(servers))
 	util.Println("⌛ Starting Engine...")
 	time.Sleep(300 * time.Millisecond)
 	util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
