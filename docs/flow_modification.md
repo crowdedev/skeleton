@@ -22,6 +22,8 @@ const BEFORE_UPDATE_EVENT = "event.before_update"
 const AFTER_UPDATE_EVENT = "event.after_update"
 const BEFORE_DELETE_EVENT = "event.before_delete"
 const AFTER_DELETE_EVENT = "event.after_delete"
+const BEFORE_REQUEST = "event.before_request"
+const AFTER_REQUEST = "event.after_request"
 ```
 
 - Daftarkan struct pada DIC (selanjutnya disebut **service**) pada folder `dics/<module>.go`, bila bingung bisa baca dokumentasi dari [Dingo](https://github.com/sarulabs/dingo)
