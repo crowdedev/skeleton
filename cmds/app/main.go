@@ -11,10 +11,12 @@ import (
 )
 
 func main() {
-	fmt.Println("Engine Checking and Configuring...")
 	godotenv.Load()
 	container, _ := dic.NewContainer()
 	util := container.GetBimaUtilCli()
+
+	util.Println("✍  Engine Checking and Configuring...")
+	time.Sleep(1 * time.Second)
 
 	var servers []configs.Server
 	for _, c := range container.GetBimaConfigParserModule().Parse() {
@@ -41,7 +43,8 @@ func main() {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
 
-	util.Println("Engine Start...")
+	util.Println("🔥 Engine Start...")
+	time.Sleep(3 * time.Second)
 
 	container.GetBimaRouterMux().Register(routes)
 	container.GetBimaLoggerExtension().Register(extensions)
@@ -49,11 +52,10 @@ func main() {
 	container.GetBimaEventDispatcher().Register(listeners)
 	container.GetBimaRouterGateway().Register(servers)
 
-	util.Println("Developer, prepare for take-off please...")
+	util.Println("🚀 Taking Off...")
+	time.Sleep(1 * time.Second)
 
-	time.Sleep(3 * time.Second)
-
-	util.Println("Enjoy the flight...")
+	util.Println("🎧 🎧 🎧 Enjoy The Flight 🎧 🎧 🎧")
 
 	container.GetBimaApplication().Run(servers)
 }
