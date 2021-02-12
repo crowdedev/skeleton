@@ -12,7 +12,7 @@ Listener interface {
 }
 ```
 
-Berikut adalah daftar event yang terdapat dalam **Skeleton** (terdapat dalam file [`handler.go`](https://github.com/crowdeco/skeleton/blob/main/handlers/handler.go#L13))
+Berikut adalah daftar event yang terdapat dalam **Skeleton** (terdapat dalam file [`events.go`](https://github.com/crowdeco/bima/blob/main/events/event.go))
 
 ```go
 const PAGINATION_EVENT = "event.pagination"
@@ -22,8 +22,8 @@ const BEFORE_UPDATE_EVENT = "event.before_update"
 const AFTER_UPDATE_EVENT = "event.after_update"
 const BEFORE_DELETE_EVENT = "event.before_delete"
 const AFTER_DELETE_EVENT = "event.after_delete"
-const BEFORE_REQUEST = "event.before_request"
-const AFTER_REQUEST = "event.after_request"
+const REQUEST_EVENT = "event.request"
+const RESPONSE_EVENT = "event.response"
 ```
 
 - Daftarkan struct pada DIC (selanjutnya disebut **service**) pada folder `dics/<module>.go`, bila bingung bisa baca dokumentasi dari [Dingo](https://github.com/sarulabs/dingo)
