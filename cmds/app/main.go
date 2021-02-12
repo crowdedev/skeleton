@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	configs "github.com/crowdeco/bima/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
@@ -10,8 +11,10 @@ import (
 )
 
 func main() {
+	fmt.Println("Engine Checking and Configuring...")
 	godotenv.Load()
 	container, _ := dic.NewContainer()
+	util := container.GetBimaUtilCli()
 
 	var servers []configs.Server
 	for _, c := range container.GetBimaConfigParserModule().Parse() {
@@ -38,12 +41,19 @@ func main() {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
 
+	util.Println("Engine Start...")
+
 	container.GetBimaRouterMux().Register(routes)
 	container.GetBimaLoggerExtension().Register(extensions)
 	container.GetBimaHandlerMiddleware().Register(middlewares)
 	container.GetBimaEventDispatcher().Register(listeners)
 	container.GetBimaRouterGateway().Register(servers)
 
-	// Engine ready... It's time to fly!!!
+	util.Println("Developer, prepare for take-off please...")
+
+	time.Sleep(3 * time.Second)
+
+	util.Println("Enjoy the flight...")
+
 	container.GetBimaApplication().Run(servers)
 }

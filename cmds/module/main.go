@@ -148,22 +148,12 @@ func register(container *dic.Container, util *color.Color) {
    $$$$$$/  $$/        $$$$$$/   $$$$$/$$$$/   $$$$$$$/  $$$$$$$/        $$$$$$/  $$/   $$/  $$$$$$$/ $$/  $$$$$$$/    $$$$/   $$$$$$/  $$/   $$/
 
 `)
-
-	err := interact.NewInteraction("Masukkan Nama Modul?").Resolve(&module.Name)
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
-	}
-
-	if strings.HasSuffix(module.Name, "test") {
-		util.Println("Modul mengandung kata 'test'")
-		os.Exit(1)
-	}
+	moduleName(util, module)
 
 	index := 2
 	more := true
 	for more {
-		err = interact.NewInteraction("Tambah Kolom?").Resolve(&more)
+		err := interact.NewInteraction("Tambah Kolom?").Resolve(&more)
 		if err != nil {
 			util.Println(err.Error())
 			os.Exit(1)
@@ -207,6 +197,11 @@ func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs
 		os.Exit(1)
 	}
 
+	if field.Name == "" {
+		util.Println("Nama Kolom tidak boleh kosong")
+		addColumn(util, field, mapType)
+	}
+
 	var types []interact.Choice
 	for k := range mapType.List() {
 		types = append(types, interact.Choice{Display: k, Value: k})
@@ -225,5 +220,23 @@ func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs
 	if err != nil {
 		util.Println(err.Error())
 		os.Exit(1)
+	}
+}
+
+func moduleName(util *color.Color, module *configs.ModuleTemplate) {
+	err := interact.NewInteraction("Masukkan Nama Modul?").Resolve(&module.Name)
+	if err != nil {
+		util.Println(err.Error())
+		os.Exit(1)
+	}
+
+	if strings.HasSuffix(module.Name, "test") {
+		util.Println("Modul mengandung kata 'test'")
+		moduleName(util, module)
+	}
+
+	if module.Name == "" {
+		util.Println("Nama Modul tidak boleh kosong")
+		moduleName(util, module)
 	}
 }
