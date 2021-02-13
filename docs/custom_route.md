@@ -7,7 +7,8 @@
 ```go
 Route interface {
     Path() string
-    Handle(w http.ResponseWriter, r *http.Request)
+    Method() string
+    Handle(w http.ResponseWriter, r *http.Request, params map[string]string)
     SetClient(client *grpc.ClientConn)
 }
 ```
