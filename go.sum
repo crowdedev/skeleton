@@ -60,10 +60,6 @@ github.com/coreos/go-systemd v0.0.0-20190321100706-95778dfbb74e/go.mod h1:F5haX7
 github.com/coreos/go-systemd v0.0.0-20190719114852-fd7a80b32e1f/go.mod h1:F5haX7vjVVG0kc13fIWeqUViNPyEJxv/OmvnBo0Yme4=
 github.com/creack/pty v1.1.7 h1:6pwm8kMQKCmgUg0ZHTm5+/YvRK0s3THD/28+T6/kk4A=
 github.com/creack/pty v1.1.7/go.mod h1:lj5s0c3V2DBrqTV7llrYr5NG6My20zk30Fl46Y7DoTY=
-github.com/crowdeco/bima v1.3.1 h1:QRctwZheIzrvKjlQkKq8FW5T0LVz03STNCh0XR3ez/s=
-github.com/crowdeco/bima v1.3.1/go.mod h1:8bfkm540JZGgSQ6yhQPvVRqrdN4vdmzV2kgIV3xXslc=
-github.com/crowdeco/bima v1.3.2 h1:5PV39yDbVCPhiyO6IIaswG7Hgi8IJsJr1ijkwJJyXnM=
-github.com/crowdeco/bima v1.3.2/go.mod h1:8bfkm540JZGgSQ6yhQPvVRqrdN4vdmzV2kgIV3xXslc=
 github.com/crowdeco/bima v1.3.3 h1:F1WDa2ZsgsO6f0QkdR136fOwXCiJdqnSBtnb1aoOelI=
 github.com/crowdeco/bima v1.3.3/go.mod h1:gMl+Heg0eng5LH7RhzwVovRGYaUfl5xfjY3G05yxd+8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
