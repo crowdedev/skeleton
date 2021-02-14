@@ -33,6 +33,7 @@ cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
+github.com/NYTimes/gziphandler v1.1.1/go.mod h1:n/CVRwUEOgIxrgPvAQhUUr9oeUtvrhMomdKFjzJNB0c=
 github.com/ThreeDotsLabs/watermill v1.0.2/go.mod h1:vZCPh7eN0P7r2qKau4SfmcUZ83+3JXWkRl4BiWUlqFw=
 github.com/ThreeDotsLabs/watermill v1.1.1 h1:+9NXqWQvplzxBru2CIInvVOZeKUnM+Nysg42fInl5sY=
 github.com/ThreeDotsLabs/watermill v1.1.1/go.mod h1:Qd1xNFxolCAHCzcMrm6RnjW0manbvN+DJVWc1MWRFlI=
@@ -62,6 +63,8 @@ github.com/crowdeco/bima v1.3.1 h1:QRctwZheIzrvKjlQkKq8FW5T0LVz03STNCh0XR3ez/s=
 github.com/crowdeco/bima v1.3.1/go.mod h1:8bfkm540JZGgSQ6yhQPvVRqrdN4vdmzV2kgIV3xXslc=
 github.com/crowdeco/bima v1.3.2 h1:5PV39yDbVCPhiyO6IIaswG7Hgi8IJsJr1ijkwJJyXnM=
 github.com/crowdeco/bima v1.3.2/go.mod h1:8bfkm540JZGgSQ6yhQPvVRqrdN4vdmzV2kgIV3xXslc=
+github.com/crowdeco/bima v1.3.3 h1:F1WDa2ZsgsO6f0QkdR136fOwXCiJdqnSBtnb1aoOelI=
+github.com/crowdeco/bima v1.3.3/go.mod h1:gMl+Heg0eng5LH7RhzwVovRGYaUfl5xfjY3G05yxd+8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
