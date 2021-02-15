@@ -1,4 +1,5 @@
 FROM golang:alpine
+
 RUN apk update && apk add --no-cache git
 RUN adduser -D -g '' appuser
 WORKDIR $GOPATH/src/app
