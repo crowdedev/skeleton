@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.0
-	github.com/crowdeco/bima v1.3.3
+	github.com/crowdeco/bima v1.3.4
 	github.com/fatih/color v1.10.0
 	github.com/gadelkareem/cachita v0.2.1
 	github.com/gertd/go-pluralize v0.1.7
