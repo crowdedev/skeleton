@@ -8,7 +8,7 @@
 
 - [Protobuf Compiler](https://grpc.io/docs/protoc-installation)
 
-- Database (`mysql` atau `postgresql`)
+- Database (`mysql`, `sqlserver` atau `postgresql`)
 
 - AMQP ([RabbitMQ](https://www.rabbitmq.com))
 
