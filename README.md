@@ -2,9 +2,9 @@
 
 ![Skeleton](assets/imgs/register.png)
 
-![Run App](../assets/imgs/app.png)
+![Run App](assets/imgs/app.png)
 
-![Swagger](../assets/imgs/swagger.png)
+![Swagger](assets/imgs/swagger.png)
 
 ## Arsitektur
 
