@@ -2,8 +2,7 @@
 package dics
 
 import (
-    //@modules:import
-    todo "github.com/crowdeco/skeleton/todos/dics"
+	//@modules:import
 	"github.com/crowdeco/bima/dics"
 	"github.com/sarulabs/dingo/v4"
 )
@@ -16,9 +15,7 @@ func (p *Provider) Load() error {
 	if err := p.AddDefSlice(dics.Container); err != nil {
 		return err
 	}
-
-    /*@module:todo*/if err := p.AddDefSlice(todo.Todo); err != nil {return err}
-    //@modules:register
+	//@modules:register
 
 	return nil
 }
