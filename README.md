@@ -2,6 +2,10 @@
 
 ![Skeleton](assets/imgs/register.png)
 
+![Run App](../assets/imgs/app.png)
+
+![Swagger](../assets/imgs/swagger.png)
+
 ## Arsitektur
 
 ![Architecture](assets/imgs/architecture.png)
