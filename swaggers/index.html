@@ -32,28 +32,29 @@
 
   <body>
     <div id="swagger-ui"></div>
-
+    <script src="./jquery.min.js" charset="UTF-8"> </script>
     <script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
     <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script>
-    window.onload = function() {
-      // Begin Swagger UI call region
-      const ui = SwaggerUIBundle({
-        url: "apidocs.swagger.json",
-        dom_id: '#swagger-ui',
-        deepLinking: true,
-        presets: [
-          SwaggerUIBundle.presets.apis,
-          SwaggerUIStandalonePreset
-        ],
-        plugins: [
-          SwaggerUIBundle.plugins.DownloadUrl
-        ],
-        layout: "StandaloneLayout"
-      })
-      // End Swagger UI call region
+    let modules = $.getJSON("modules.json")
+    window.onload = function () {
+        console.log(modules)
+        const ui = SwaggerUIBundle({
+            urls: modules.responseJSON,
+            enableCORS: true,
+            dom_id: '#swagger-ui',
+            deepLinking: true,
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIStandalonePreset
+            ],
+            plugins: [
+                SwaggerUIBundle.plugins.DownloadUrl
+            ],
+            layout: "StandaloneLayout"
+        })
 
-      window.ui = ui
+        window.ui = ui
     }
   </script>
   </body>
