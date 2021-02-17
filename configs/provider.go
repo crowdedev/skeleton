@@ -2,7 +2,7 @@
 package dics
 
 import (
-	//@modules:import
+    //@modules:import
 	"github.com/crowdeco/bima/dics"
 	"github.com/sarulabs/dingo/v4"
 )
@@ -15,7 +15,7 @@ func (p *Provider) Load() error {
 	if err := p.AddDefSlice(dics.Container); err != nil {
 		return err
 	}
-	//@modules:register
+    //@modules:register
 
 	return nil
 }

@@ -1,56 +1,30 @@
 {
     "swagger": "2.0",
     "info": {
-      "title": "{{.ServiceName}}",
-      "version": "{{.ApiVersion}}"
+      "title": "Crowde Skeleton",
+      "version": "Bima@v1.6.9"
     },
-    "host": "{{.ServiceHost}}:{{.HttpPort}}",
-    "schemes": [
-      "http",
-      "https"
-    ],
     "consumes": [
-      "application/json"
+      "text/html"
     ],
     "produces": [
-      "application/json"
+      "text/html"
     ],
-    "paths": {},
-    "definitions": {
-      "protobufAny": {
-        "type": "object",
-        "properties": {
-          "typeUrl": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string",
-            "format": "byte"
-          }
-        }
-      },
-      "rpcStatus": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          },
-          "details": {
-            "type": "array",
-            "items": {
-              "$ref": "#/definitions/protobufAny"
+    "paths": {
+        "/health": {
+            "get": {
+                "operationId": "Health_Check",
+                "responses": {
+                    "200": {},
+                    "default": {}
+                },
+                "parameters": [],
+                "tags": [
+                    "Bima"
+                ]
             }
-          }
         }
-      }
     },
-    "securityDefinitions": {
-      "BasicAuth": {
-        "type": "basic"
-      }
-    }
+    "definitions": {},
+    "securityDefinitions": {}
   }

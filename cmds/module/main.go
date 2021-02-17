@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -102,9 +103,23 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 		panic(err)
 	}
 
+	jsonModules := fmt.Sprintf("%s/swaggers/modules.json", workDir)
+	file, _ := ioutil.ReadFile(jsonModules)
+	modulesJson := []configs.ModuleJson{}
+	registered := modulesJson
+	json.Unmarshal(file, &modulesJson)
+	for _, v := range modulesJson {
+		if v.Name != moduleName {
+			registered = append(registered, v)
+		}
+	}
+
+	registeredByte, _ := json.Marshal(registered)
+	ioutil.WriteFile(jsonModules, registeredByte, 0644)
+
 	packageName := modfile.ModulePath(mod)
 	yaml := fmt.Sprintf("%s/configs/modules.yaml", workDir)
-	file, _ := ioutil.ReadFile(yaml)
+	file, _ = ioutil.ReadFile(yaml)
 	modules := string(file)
 
 	provider := fmt.Sprintf("%s/configs/provider.go", workDir)
@@ -125,6 +140,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, word.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/swaggers/%s.swagger.json", workDir, word.Underscore(module)))
 
 	util.Println("Modul berhasil dihapus")
 }
