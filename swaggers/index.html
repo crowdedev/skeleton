@@ -36,25 +36,25 @@
     <script src="./swagger-ui-bundle.js" charset="UTF-8"> </script>
     <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script>
-    let modules = $.getJSON("modules.json")
     window.onload = function () {
-        console.log(modules)
-        const ui = SwaggerUIBundle({
-            urls: modules.responseJSON,
-            enableCORS: true,
-            dom_id: '#swagger-ui',
-            deepLinking: true,
-            presets: [
-                SwaggerUIBundle.presets.apis,
-                SwaggerUIStandalonePreset
-            ],
-            plugins: [
-                SwaggerUIBundle.plugins.DownloadUrl
-            ],
-            layout: "StandaloneLayout"
-        })
+        $.getJSON("./modules.json", function(data) {
+            const ui = SwaggerUIBundle({
+                urls: data,
+                enableCORS: true,
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout"
+            })
 
-        window.ui = ui
+            window.ui = ui
+        })
     }
   </script>
   </body>
