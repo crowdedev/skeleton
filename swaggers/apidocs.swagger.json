@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
       "title": "Crowde Skeleton",
-      "version": "Bima@v1.6.9"
+      "version": "Bima@v1.6.10"
     },
     "consumes": [
       "text/html"
@@ -20,7 +20,7 @@
                 },
                 "parameters": [],
                 "tags": [
-                    "Bima"
+                    "Health"
                 ]
             }
         }
