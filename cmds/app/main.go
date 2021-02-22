@@ -14,9 +14,12 @@ func main() {
 	godotenv.Load()
 	container, _ := dic.NewContainer()
 	util := container.GetBimaUtilCli()
+	env := container.GetBimaConfigEnv()
 
-	util.Println("✍  Engine Checking and Configuring...")
-	time.Sleep(1 * time.Second)
+	if env.Debug {
+		util.Println("✍  Engine Checking and Configuring...")
+		time.Sleep(1 * time.Second)
+	}
 
 	var servers []configs.Server
 	for _, c := range container.GetBimaConfigParserModule().Parse() {
@@ -43,18 +46,20 @@ func main() {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
 
-	util.Printf("✓ ")
-	fmt.Printf("Total pessanger %d\n", len(servers))
-	util.Println("⌛ Starting Engine...")
-	time.Sleep(300 * time.Millisecond)
-	util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-	time.Sleep(300 * time.Millisecond)
-	util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-	time.Sleep(300 * time.Millisecond)
-	util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-	time.Sleep(300 * time.Millisecond)
-	util.Println("🔥 Engine Ready...")
-	time.Sleep(1500 * time.Millisecond)
+	if env.Debug {
+		util.Printf("✓ ")
+		fmt.Printf("Total pessanger %d\n", len(servers))
+		util.Println("⌛ Starting Engine...")
+		time.Sleep(300 * time.Millisecond)
+		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+		time.Sleep(300 * time.Millisecond)
+		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+		time.Sleep(300 * time.Millisecond)
+		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
+		time.Sleep(300 * time.Millisecond)
+		util.Println("🔥 Engine Ready...")
+		time.Sleep(1500 * time.Millisecond)
+	}
 
 	container.GetBimaRouterMux().Register(routes)
 	container.GetBimaLoggerExtension().Register(extensions)
@@ -62,10 +67,12 @@ func main() {
 	container.GetBimaEventDispatcher().Register(listeners)
 	container.GetBimaRouterGateway().Register(servers)
 
-	util.Println("🚀 Taking Off...")
-	time.Sleep(1 * time.Second)
+	if env.Debug {
+		util.Println("🚀 Taking Off...")
+		time.Sleep(1 * time.Second)
 
-	util.Println("🎧 🎧 🎧 Enjoy The Flight 🎧 🎧 🎧")
+		util.Println("🎧 🎧 🎧 Enjoy The Flight 🎧 🎧 🎧")
+	}
 
 	container.GetBimaApplication().Run(servers)
 }
