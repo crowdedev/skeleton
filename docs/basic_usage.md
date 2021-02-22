@@ -1,5 +1,7 @@
 ## Memulai Skeleton
 
+- Pastikan DI Container terupdate `go run cmds/dic/main.go`
+
 - Buat modul baru dengan perintah `go run cmds/module/main.go register`
 
 ![Register Module](../assets/imgs/register.png)
