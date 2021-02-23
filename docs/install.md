@@ -22,13 +22,16 @@
 
 - Masuk ke project `cd project`
 
+- Jalankan perintah `go run cmds/dic/main.go`
+
 - Install tool
 
 ```bash
 go install \
     github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
     github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
-    github.com/golang/protobuf/protoc-gen-go
+    google.golang.org/protobuf/cmd/protoc-gen-go \
+    google.golang.org/grpc/cmd/protoc-gen-go-grpc
 ```
 
 - Install dependency `go mod tidy`
