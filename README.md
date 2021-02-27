@@ -80,3 +80,7 @@ $ go test ./... [-v]
 - [Security](docs/security.md)
 
 - [Custom Route](docs/custom_route.md)
+
+- [List Dependency Injection](docs/dic.md)
+
+- [Cara Aman Upgrade Aplikasi](upgrade.md)

@@ -77,12 +77,13 @@ func main() {
 }
 
 func unregister(container *dic.Container, util *color.Color, module string) {
+	workDir, _ := os.Getwd()
 	moduleParser := container.GetBimaConfigParserModule()
 	word := container.GetBimaUtilWord()
 	pluralizer := container.GetBimaUtilPluralizer()
 	moduleName := word.Camelcase(pluralizer.Singular(module))
 	modulePlural := word.Underscore(pluralizer.Plural(moduleName))
-	list := moduleParser.Parse()
+	list := moduleParser.Parse(workDir)
 
 	exist := false
 	for _, v := range list {
@@ -97,7 +98,6 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 		return
 	}
 
-	workDir, _ := os.Getwd()
 	mod, err := ioutil.ReadFile(fmt.Sprintf("%s/go.mod", workDir))
 	if err != nil {
 		panic(err)

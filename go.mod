@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.0
-	github.com/crowdeco/bima v1.7.5
+	github.com/crowdeco/bima v1.8.2
 	github.com/fatih/color v1.10.0
 	github.com/gadelkareem/cachita v0.2.1
 	github.com/gertd/go-pluralize v0.1.7
@@ -22,7 +22,6 @@ require (
 	github.com/vito/go-interact v1.0.0
 	golang.org/x/mod v0.3.0
 	google.golang.org/grpc v1.33.2
-	google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.0.0
 	google.golang.org/protobuf v1.25.0
 	gorm.io/gorm v1.20.11
 )
