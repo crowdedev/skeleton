@@ -218,13 +218,23 @@ func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs
 		addColumn(util, field, mapType)
 	}
 
-	var types []interact.Choice
-	for k := range mapType.List() {
-		types = append(types, interact.Choice{Display: k, Value: k})
-	}
-
 	field.ProtobufType = "string"
-	err = interact.NewInteraction("Masukkan Tipe Data?", types...).Resolve(&field.ProtobufType)
+	err = interact.NewInteraction("Masukkan Tipe Data?",
+		interact.Choice{Display: "double", Value: "double"},
+		interact.Choice{Display: "float", Value: "float"},
+		interact.Choice{Display: "int32", Value: "int32"},
+		interact.Choice{Display: "int64", Value: "int64"},
+		interact.Choice{Display: "uint32", Value: "uint32"},
+		interact.Choice{Display: "sint32", Value: "sint32"},
+		interact.Choice{Display: "sint64", Value: "sint64"},
+		interact.Choice{Display: "fixed32", Value: "fixed32"},
+		interact.Choice{Display: "fixed64", Value: "fixed64"},
+		interact.Choice{Display: "sfixed32", Value: "sfixed32"},
+		interact.Choice{Display: "sfixed64", Value: "sfixed64"},
+		interact.Choice{Display: "bool", Value: "bool"},
+		interact.Choice{Display: "string", Value: "string"},
+		interact.Choice{Display: "bytes", Value: "bytes"},
+	).Resolve(&field.ProtobufType)
 	if err != nil {
 		util.Println(err.Error())
 		os.Exit(1)
