@@ -47,6 +47,18 @@ func main() {
 			util.Println(err.Error())
 			os.Exit(1)
 		}
+
+		_, err = exec.Command("go", "mod", "tidy").Output()
+		if err != nil {
+			util.Println(err.Error())
+			os.Exit(1)
+		}
+
+		_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
+		if err != nil {
+			util.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	if os.Args[1] == "unregister" {
@@ -58,18 +70,18 @@ func main() {
 		}
 
 		unregister(container, util, os.Args[2])
-	}
 
-	_, err := exec.Command("go", "mod", "tidy").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
-	}
+		_, err := exec.Command("go", "run", "cmds/dic/main.go").Output()
+		if err != nil {
+			util.Println(err.Error())
+			os.Exit(1)
+		}
 
-	_, err = exec.Command("go", "run", "cmds/dic/main.go").Output()
-	if err != nil {
-		util.Println(err.Error())
-		os.Exit(1)
+		_, err = exec.Command("go", "mod", "tidy").Output()
+		if err != nil {
+			util.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	util.Println("By:")
