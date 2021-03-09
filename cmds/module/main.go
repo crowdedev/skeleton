@@ -9,7 +9,7 @@ import (
 	"regexp"
 	"strings"
 
-	configs "github.com/crowdeco/bima/configs"
+	configs "github.com/crowdeco/bima/v2/configs"
 	dic "github.com/crowdeco/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/jinzhu/copier"

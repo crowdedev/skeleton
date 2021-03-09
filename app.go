@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/crowdeco/bima/configs"
+	"github.com/crowdeco/bima/v2/configs"
 	"github.com/crowdeco/skeleton/generated/dic"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
@@ -52,6 +52,16 @@ func Run() {
 	for _, c := range container.GetBimaConfigParserRoute().Parse(workDir) {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
+
+	extension := container.GetBimaPlugin()
+	extension.Scan(fmt.Sprintf("%s/plugins", workDir))
+
+	upgrades = append(upgrades, extension.GetUpgrades()...)
+	servers = append(servers, extension.GetServers()...)
+	listeners = append(listeners, extension.GetListeners()...)
+	middlewares = append(middlewares, extension.GetMiddlewares()...)
+	extensions = append(extensions, extension.GetLoggers()...)
+	routes = append(routes, extension.GetRoutes()...)
 
 	upgrader := container.GetBimaUpgrader()
 	upgrader.Register(upgrades)
