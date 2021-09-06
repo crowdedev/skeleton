@@ -12,7 +12,7 @@ Listener interface {
 }
 ```
 
-Berikut adalah daftar event yang terdapat dalam **Skeleton** (terdapat dalam file [`events.go`](https://github.com/crowdeco/bima/blob/main/events/event.go))
+Berikut adalah daftar event yang terdapat dalam **Skeleton** (terdapat dalam file [`events.go`](https://github.com/KejawenLab/bima/blob/main/events/event.go))
 
 ```go
 const PAGINATION_EVENT = "event.pagination"

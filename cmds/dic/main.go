@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	dics "github.com/crowdeco/skeleton/configs"
+	dics "github.com/KejawenLab/skeleton/configs"
 	"github.com/sarulabs/dingo/v4"
 )
 

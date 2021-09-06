@@ -5,8 +5,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/crowdeco/bima/v2/configs"
-	"github.com/crowdeco/skeleton/generated/dic"
+	"github.com/KejawenLab/bima/v2/configs"
+	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )

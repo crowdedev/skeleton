@@ -19,6 +19,6 @@ Dan bila kamu membuka halaman Dokumentasi Api maka tampilannya adalah sebagai be
 
 ![Swagger](../assets/imgs/swagger.png)
 
-- Modulmu dapat diakses via `http://localhost:<APP_PORT>/api/[API_VERSION]/<modul-plural>` `modul-plural` adalah bentuk plural dari nama modul yang kamu masukkan, kamu juga dapat melihatnya pada file `protos/<modul>.proto`, bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/crowdeco/skeleton-todo/blob/main/protos/todo.proto#L34)
+- Modulmu dapat diakses via `http://localhost:<APP_PORT>/api/[API_VERSION]/<modul-plural>` `modul-plural` adalah bentuk plural dari nama modul yang kamu masukkan, kamu juga dapat melihatnya pada file `protos/<modul>.proto`, bila bingung, bisa melihat contoh pada [skeleton-todo](https://github.com/KejawenLab/skeleton-todo/blob/main/protos/todo.proto#L34)
 
 - Untuk menghapus module, kamu dapat jalankan perintah `go run cmds/module/main.go unregister <modul>`

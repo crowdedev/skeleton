@@ -18,7 +18,7 @@
 
 ## Cara Install
 
-- Clone `git clone https://github.com/crowdeco/skeleton.git project`
+- Clone `git clone https://github.com/KejawenLab/skeleton.git project`
 
 - Masuk ke project `cd project`
 

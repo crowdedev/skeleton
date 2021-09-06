@@ -3,7 +3,7 @@ package dics
 
 import (
 	//@modules:import
-	"github.com/crowdeco/bima/v2/dics"
+	"github.com/KejawenLab/bima/v2/dics"
 	"github.com/sarulabs/dingo/v4"
 )
 

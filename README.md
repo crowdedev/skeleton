@@ -61,7 +61,7 @@ $ go test ./... [-v]
 
 ## Contoh
 
-- [Todo Application](https://github.com/crowdeco/skeleton-todo)
+- [Todo Application](https://github.com/KejawenLab/skeleton-todo)
 
 ## Dokumentasi
 
