@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-      "title": "Crowde Skeleton",
-      "version": "Bima@v1.6.10"
+      "title": "KejawenLab Bima Skeleton",
+      "version": "Bima@v2.0.12"
     },
     "consumes": [
       "text/html"

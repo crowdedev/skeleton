@@ -34,8 +34,8 @@ cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
-github.com/KejawenLab/bima/v2 v2.0.11 h1:pFo9Rh9oXAvSjLmWWVQq1iiaxFL6NaQigbX9zSU0kqc=
-github.com/KejawenLab/bima/v2 v2.0.11/go.mod h1:x1NjzHEdozusqbhtGQ5TVe0VUmE4RNgRpvYalymzsIA=
+github.com/KejawenLab/bima/v2 v2.0.12 h1:5CDaTc3LeWCmDodW9RIFuBdnVmhgPs78urK9UusOOvQ=
+github.com/KejawenLab/bima/v2 v2.0.12/go.mod h1:x1NjzHEdozusqbhtGQ5TVe0VUmE4RNgRpvYalymzsIA=
 github.com/OneOfOne/xxhash v1.2.2/go.mod h1:HSdplMjZKSmBqAxg5vPj2TmRDmfkzw+cTzAElWljhcU=
 github.com/ThreeDotsLabs/watermill v1.0.2/go.mod h1:vZCPh7eN0P7r2qKau4SfmcUZ83+3JXWkRl4BiWUlqFw=
 github.com/ThreeDotsLabs/watermill v1.1.1 h1:+9NXqWQvplzxBru2CIInvVOZeKUnM+Nysg42fInl5sY=

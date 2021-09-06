@@ -3,7 +3,7 @@ module github.com/KejawenLab/skeleton
 go 1.14
 
 require (
-	github.com/KejawenLab/bima/v2 v2.0.11
+	github.com/KejawenLab/bima/v2 v2.0.12
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.0
 	github.com/fatih/color v1.10.0
 	github.com/gadelkareem/cachita v0.2.1
