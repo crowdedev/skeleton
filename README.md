@@ -30,12 +30,7 @@
 
 ## Tool
 
-```
-$ go install \
-    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
-    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
-    github.com/golang/protobuf/protoc-gen-go
-```
+Skeleton menggunakan [gRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway), untuk menginstall tools gRPC Gateway, kamu dapat mengikuti petunjuk pada dokumentasi resminya atau kamu dapat mengikuti tahapan instalasi Skeleton. Bila kamu berhasil menginstall Skeleton sesuai dengan langkah yang diberikan, maka secara secara otomatis, tools gRPC Gateway pun akan terinstall.
 
 ## Perintah
 
@@ -85,3 +80,7 @@ $ go test ./... [-v]
 - [Security](docs/security.md)
 
 - [Custom Route](docs/custom_route.md)
+
+- [List Dependency Injection](docs/dic.md)
+
+- [Cara Aman Upgrade Aplikasi](upgrade.md)

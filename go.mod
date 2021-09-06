@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.0
-	github.com/crowdeco/bima v1.7.3
+	github.com/crowdeco/bima/v2 v2.0.6
 	github.com/fatih/color v1.10.0
 	github.com/gadelkareem/cachita v0.2.1
 	github.com/gertd/go-pluralize v0.1.7
@@ -18,7 +18,7 @@ require (
 	github.com/onsi/gomega v1.10.5 // indirect
 	github.com/sarulabs/di/v2 v2.4.0
 	github.com/sarulabs/dingo/v4 v4.0.2
-	github.com/sirupsen/logrus v1.7.0
+	github.com/sirupsen/logrus v1.8.0
 	github.com/vcraescu/go-paginator/v2 v2.0.0
 	github.com/vito/go-interact v1.0.0
 	golang.org/x/mod v0.4.2
