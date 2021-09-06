@@ -138,7 +138,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 
 	os.RemoveAll(fmt.Sprintf("%s/%s", workDir, modulePlural))
 	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, word.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, word.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s_grpc.pb.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/swaggers/%s.swagger.json", workDir, word.Underscore(module)))
 
