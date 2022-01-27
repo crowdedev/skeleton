@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/KejawenLab/bima/v2/configs"
-	"github.com/KejawenLab/skeleton/generated/dic"
+	dic "github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
@@ -19,13 +19,8 @@ func Run() {
 	env := container.GetBimaConfigEnv()
 
 	if env.Debug {
-		util.Println("✍  Engine Checking and Configuring...")
+		util.Println("✓  Engine Checking and Configuring...")
 		time.Sleep(1 * time.Second)
-	}
-
-	var upgrades []configs.Upgrade
-	for _, c := range container.GetBimaConfigParserUpgrade().Parse(workDir) {
-		upgrades = append(upgrades, container.Get(c).(configs.Upgrade))
 	}
 
 	var servers []configs.Server
@@ -52,20 +47,6 @@ func Run() {
 	for _, c := range container.GetBimaConfigParserRoute().Parse(workDir) {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
-
-	extension := container.GetBimaPlugin()
-	extension.Scan(fmt.Sprintf("%s/plugins", workDir))
-
-	upgrades = append(upgrades, extension.GetUpgrades()...)
-	servers = append(servers, extension.GetServers()...)
-	listeners = append(listeners, extension.GetListeners()...)
-	middlewares = append(middlewares, extension.GetMiddlewares()...)
-	extensions = append(extensions, extension.GetLoggers()...)
-	routes = append(routes, extension.GetRoutes()...)
-
-	upgrader := container.GetBimaUpgrader()
-	upgrader.Register(upgrades)
-	upgrader.Run()
 
 	if env.Debug {
 		util.Printf("✓ ")

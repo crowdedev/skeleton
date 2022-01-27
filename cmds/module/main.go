@@ -151,6 +151,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	os.RemoveAll(fmt.Sprintf("%s/%s", workDir, modulePlural))
 	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s_grpc.pb.go", workDir, word.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, word.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/swaggers/%s.swagger.json", workDir, word.Underscore(module)))
 
@@ -164,18 +165,7 @@ func register(container *dic.Container, util *color.Color) {
 	word := container.GetBimaUtilWord()
 	mapType := container.GetBimaConfigType()
 
-	util.Println(`
-    ______                                           __                   ______   __                  __              __
-   /      \                                         /  |                 /      \ /  |                /  |            /  |
-  /$$$$$$  |  ______    ______   __   __   __   ____$$ |  ______        /$$$$$$  |$$ |   __   ______  $$ |  ______   _$$ |_     ______   _______
-  $$ |  $$/  /      \  /      \ /  | /  | /  | /    $$ | /      \       $$ \__$$/ $$ |  /  | /      \ $$ | /      \ / $$   |   /      \ /       \
-  $$ |      /$$$$$$  |/$$$$$$  |$$ | $$ | $$ |/$$$$$$$ |/$$$$$$  |      $$      \ $$ |_/$$/ /$$$$$$  |$$ |/$$$$$$  |$$$$$$/   /$$$$$$  |$$$$$$$  |
-  $$ |   __ $$ |  $$/ $$ |  $$ |$$ | $$ | $$ |$$ |  $$ |$$    $$ |       $$$$$$  |$$   $$<  $$    $$ |$$ |$$    $$ |  $$ | __ $$ |  $$ |$$ |  $$ |
-  $$ \__/  |$$ |      $$ \__$$ |$$ \_$$ \_$$ |$$ \__$$ |$$$$$$$$/       /  \__$$ |$$$$$$  \ $$$$$$$$/ $$ |$$$$$$$$/   $$ |/  |$$ \__$$ |$$ |  $$ |
-  $$    $$/ $$ |      $$    $$/ $$   $$   $$/ $$    $$ |$$       |      $$    $$/ $$ | $$  |$$       |$$ |$$       |  $$  $$/ $$    $$/ $$ |  $$ |
-   $$$$$$/  $$/        $$$$$$/   $$$$$/$$$$/   $$$$$$$/  $$$$$$$/        $$$$$$/  $$/   $$/  $$$$$$$/ $$/  $$$$$$$/    $$$$/   $$$$$$/  $$/   $$/
-
-`)
+	util.Println("Welcome to KejawenLab Skeleton Module Generator")
 	moduleName(util, module)
 
 	index := 2
