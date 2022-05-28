@@ -1,8 +1,5 @@
 listeners:
-    - bima:listener:filter:elasticsearch
-    - bima:listener:create:elasticsearch
-    - bima:listener:update:elasticsearch
-    - bima:listener:delete:elasticsearch
+    - bima:listener:filter:gorm
     - bima:listener:create:created_by
     - bima:listener:update:updated_by
     - bima:listener:delete:deleted_by

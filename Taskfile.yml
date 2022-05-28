@@ -10,10 +10,13 @@ tasks:
             - go run cmds/app/main.go
     clean:
         cmds:
+            - go run cmds/dic/main.go
             - go mod tidy
     update:
         cmds:
+            - go run cmds/dic/main.go
             - go get -u
     generate:
         cmds:
+            - go run cmds/dic/main.go
             - sh proto_gen.sh
