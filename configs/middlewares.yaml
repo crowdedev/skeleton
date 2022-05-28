@@ -1,3 +1,4 @@
 middlewares:
     - bima:middleware:recovery
-    # - bima:middleware:auth
+    - bima:middleware:requestid
+    - bima:middleware:auth
