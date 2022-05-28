@@ -2,6 +2,7 @@ version: '3'
 tasks:
     module:
         cmds:
+            - go run cmds/dic/main.go
             - go run cmds/module/main.go {{.CLI_ARGS}}
     serve:
         cmds:

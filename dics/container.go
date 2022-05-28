@@ -14,7 +14,7 @@ var Container = []dingo.Def{
 			"Context":    dingo.Service("bima:context:background"),
 			"Dispatcher": dingo.Service("bima:event:dispatcher"),
 			"Repository": dingo.Service("bima:service:repository"),
-			"Adapter":    dingo.Service("bima:pagination:adapter:elasticsearch"),
+			"Adapter":    dingo.Service("bima:pagination:adapter:gorm"),
 		},
 	},
 }
