@@ -10,12 +10,12 @@ tasks:
             - go run cmds/app/main.go
     clean:
         cmds:
-            - go run cmds/dic/main.go
             - go mod tidy
+            - go run cmds/dic/main.go
     update:
         cmds:
-            - go run cmds/dic/main.go
             - go get -u
+            - go run cmds/dic/main.go
     generate:
         cmds:
             - go run cmds/dic/main.go
