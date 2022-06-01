@@ -13,8 +13,8 @@ var Container = []dingo.Def{
 			"Env":        dingo.Service("bima:config:env"),
 			"Context":    dingo.Service("bima:context:background"),
 			"Dispatcher": dingo.Service("bima:event:dispatcher"),
-			"Repository": dingo.Service("bima:service:repository"),
-			"Adapter":    dingo.Service("bima:pagination:adapter:gorm"),
+			"Repository": dingo.Service("bima:service:repository:mongo"),
+			"Adapter":    dingo.Service("bima:pagination:adapter:mongo"),
 		},
 	},
 }
