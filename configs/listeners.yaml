@@ -1,5 +1,2 @@
 listeners:
     - bima:listener:filter:mongo
-    - bima:listener:create:created_by
-    - bima:listener:update:updated_by
-    - bima:listener:delete:deleted_by
