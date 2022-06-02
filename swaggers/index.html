@@ -39,7 +39,7 @@
     window.onload = function () {
         $.getJSON("./modules.json", function(data) {
             if (data.length === 0) {
-                data.push({name: "Crowde Skeleton", url: "./apidocs.swagger.json"})
+                data.push({name: "Bima Skeleton", url: "./apidocs.swagger.json"})
             }
 
             const ui = SwaggerUIBundle({

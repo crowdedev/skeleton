@@ -2,15 +2,13 @@ module github.com/KejawenLab/skeleton
 
 go 1.17
 
-replace github.com/KejawenLab/bima/v2 v2.2.9 => ../bima
-
 require (
-	github.com/KejawenLab/bima/v2 v2.2.9
+	github.com/KejawenLab/bima/v2 v2.2.10
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gadelkareem/cachita v0.2.3
 	github.com/gertd/go-pluralize v0.2.1
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.2
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.3
 	github.com/jinzhu/copier v0.3.5
 	github.com/joho/godotenv v1.4.0
 	github.com/olivere/elastic/v7 v7.0.32
@@ -72,14 +70,14 @@ require (
 	go.mongodb.org/mongo-driver v1.9.1 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/net v0.0.0-20220531201128-c960675eff93 // indirect
-	golang.org/x/sync v0.0.0-20220513210516-0976fa681c29 // indirect
+	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
 	golang.org/x/term v0.0.0-20220411215600-e5f449aeb171 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/tools v0.1.10 // indirect
 	golang.org/x/xerrors v0.0.0-20220517211312-f3a8303e98df // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20220531173845-685668d2de03 // indirect
+	google.golang.org/genproto v0.0.0-20220601144221-27df5f98adab // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.3.4 // indirect
