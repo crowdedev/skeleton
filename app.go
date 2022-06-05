@@ -20,7 +20,7 @@ func Run() {
 
 	if env.Debug {
 		util.Println("✓  Engine Checking and Configuring...")
-		time.Sleep(1 * time.Second)
+		time.Sleep(500 * time.Millisecond)
 	}
 
 	var servers []configs.Server
@@ -52,15 +52,15 @@ func Run() {
 		util.Printf("✓ ")
 		fmt.Printf("Total pessanger %d\n", len(servers))
 		util.Println("⌛ Starting Engine...")
-		time.Sleep(300 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-		time.Sleep(300 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-		time.Sleep(300 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-		time.Sleep(300 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		util.Println("🔥 Engine Ready...")
-		time.Sleep(1500 * time.Millisecond)
+		time.Sleep(1 * time.Second)
 	}
 
 	container.GetBimaRouterMux().Register(routes)
@@ -71,7 +71,7 @@ func Run() {
 
 	if env.Debug {
 		util.Println("🚀 Taking Off...")
-		time.Sleep(1 * time.Second)
+		time.Sleep(300 * time.Millisecond)
 
 		util.Println("🎧 🎧 🎧 Enjoy The Flight 🎧 🎧 🎧")
 	}

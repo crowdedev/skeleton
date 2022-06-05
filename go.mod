@@ -3,7 +3,7 @@ module github.com/KejawenLab/skeleton
 go 1.17
 
 require (
-	github.com/KejawenLab/bima/v2 v2.2.12
+	github.com/KejawenLab/bima/v2 v2.2.15
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gadelkareem/cachita v0.2.3
@@ -50,7 +50,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/kamva/mgm/v3 v3.4.1 // indirect
-	github.com/klauspost/compress v1.15.5 // indirect
+	github.com/klauspost/compress v1.15.6 // indirect
 	github.com/klauspost/pgzip v1.2.5 // indirect
 	github.com/lithammer/shortuuid/v3 v3.0.7 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
@@ -77,7 +77,7 @@ require (
 	golang.org/x/tools v0.1.10 // indirect
 	golang.org/x/xerrors v0.0.0-20220517211312-f3a8303e98df // indirect
 	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/genproto v0.0.0-20220601144221-27df5f98adab // indirect
+	google.golang.org/genproto v0.0.0-20220602131408-e326c6e8e9c8 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/mysql v1.3.4 // indirect

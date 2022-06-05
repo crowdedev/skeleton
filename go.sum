@@ -37,6 +37,10 @@ github.com/CAFxX/httpcompression v0.0.8 h1:UBWojERnpCS6X7whJkGGZeCC3ruZBRwkwkcnf
 github.com/CAFxX/httpcompression v0.0.8/go.mod h1:bVd1taHK1vYb5SWe9lwNDCqrfj2ka+C1Zx7JHzxuHnU=
 github.com/KejawenLab/bima/v2 v2.2.12 h1:HNrQEWWjeLv5p+eKQxusqbsBSbgElq1Ute4GinT+J8I=
 github.com/KejawenLab/bima/v2 v2.2.12/go.mod h1:spuCf/LSDbweL9bhTa9v+S5KB+jEiD97nxT+Z6glBGc=
+github.com/KejawenLab/bima/v2 v2.2.14 h1:jWICiuuh8lq5JXGCbewBF/cZ13WlfQoGez4Q33xSwDA=
+github.com/KejawenLab/bima/v2 v2.2.14/go.mod h1:spuCf/LSDbweL9bhTa9v+S5KB+jEiD97nxT+Z6glBGc=
+github.com/KejawenLab/bima/v2 v2.2.15 h1:cvkJ3KeDM2avPBVcpZOorWe3cLKw//Ve9NKQx+jedjM=
+github.com/KejawenLab/bima/v2 v2.2.15/go.mod h1:spuCf/LSDbweL9bhTa9v+S5KB+jEiD97nxT+Z6glBGc=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/ThreeDotsLabs/watermill v1.2.0-rc.6/go.mod h1:QLZSaklpSZ/7yv288LL2DFOgCEi86VYEmQvzmaMlHoA=
@@ -338,6 +342,8 @@ github.com/klauspost/compress v1.13.6/go.mod h1:/3/Vjq9QcHkK5uEr5lBEmyoZ1iFhe47e
 github.com/klauspost/compress v1.14.1/go.mod h1:/3/Vjq9QcHkK5uEr5lBEmyoZ1iFhe47etQ6QUkpK6sk=
 github.com/klauspost/compress v1.15.5 h1:qyCLMz2JCrKADihKOh9FxnW3houKeNsp2h5OEz0QSEA=
 github.com/klauspost/compress v1.15.5/go.mod h1:PhcZ0MbTNciWF3rruxRgKxI5NkcHHrHUDtV4Yw2GlzU=
+github.com/klauspost/compress v1.15.6 h1:6D9PcO8QWu0JyaQ2zUMmu16T1T+zjjEpP91guRsvDfY=
+github.com/klauspost/compress v1.15.6/go.mod h1:PhcZ0MbTNciWF3rruxRgKxI5NkcHHrHUDtV4Yw2GlzU=
 github.com/klauspost/pgzip v1.2.5 h1:qnWYvvKqedOF2ulHpMG72XQol4ILEJ8k2wwRl/Km8oE=
 github.com/klauspost/pgzip v1.2.5/go.mod h1:Ch1tH69qFZu15pkjo5kYi6mth2Zzwzt50oCQKQE9RUs=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
@@ -839,6 +845,8 @@ google.golang.org/genproto v0.0.0-20220519153652-3a47de7e79bd/go.mod h1:RAyBrSAP
 google.golang.org/genproto v0.0.0-20220527130721-00d5c0f3be58/go.mod h1:yKyY4AMRwFiC8yMMNaMi+RkCnjZJt9LoWuvhXjMs+To=
 google.golang.org/genproto v0.0.0-20220601144221-27df5f98adab h1:YYs5818GyaApJxN5iyBnJxr7FUDrKpcXX+GaPrv0Cms=
 google.golang.org/genproto v0.0.0-20220601144221-27df5f98adab/go.mod h1:yKyY4AMRwFiC8yMMNaMi+RkCnjZJt9LoWuvhXjMs+To=
+google.golang.org/genproto v0.0.0-20220602131408-e326c6e8e9c8 h1:qRu95HZ148xXw+XeZ3dvqe85PxH4X8+jIo0iRPKcEnM=
+google.golang.org/genproto v0.0.0-20220602131408-e326c6e8e9c8/go.mod h1:yKyY4AMRwFiC8yMMNaMi+RkCnjZJt9LoWuvhXjMs+To=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.20.1/go.mod h1:10oTOabMzJvdu6/UiuZezV6QK5dSlG84ov/aaiqXj38=
 google.golang.org/grpc v1.21.1/go.mod h1:oYelfM1adQP15Ek0mdvEgi9Df8B9CZIaU1084ijfRaM=
