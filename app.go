@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/KejawenLab/bima/v2/configs"
-	dic "github.com/KejawenLab/skeleton/generated/dic"
+	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"

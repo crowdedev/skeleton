@@ -9,8 +9,9 @@ import (
 	"regexp"
 	"strings"
 
-	configs "github.com/KejawenLab/bima/v2/configs"
-	dic "github.com/KejawenLab/skeleton/generated/dic"
+	"github.com/KejawenLab/bima/v2/configs"
+	"github.com/KejawenLab/bima/v2/utils"
+	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/jinzhu/copier"
 	"github.com/joho/godotenv"
@@ -21,7 +22,7 @@ import (
 func main() {
 	godotenv.Load()
 	container, _ := dic.NewContainer()
-	util := container.GetBimaUtilCli()
+	util := color.New(color.FgCyan, color.Bold)
 
 	if len(os.Args) < 2 {
 		util.Println("Cara Penggunaan:")
@@ -91,15 +92,14 @@ func main() {
 func unregister(container *dic.Container, util *color.Color, module string) {
 	workDir, _ := os.Getwd()
 	moduleParser := container.GetBimaConfigParserModule()
-	word := container.GetBimaUtilWord()
 	pluralizer := container.GetBimaUtilPluralizer()
-	moduleName := word.Camelcase(pluralizer.Singular(module))
-	modulePlural := word.Underscore(pluralizer.Plural(moduleName))
+	moduleName := utils.Camelcase(pluralizer.Singular(module))
+	modulePlural := utils.Underscore(pluralizer.Plural(moduleName))
 	list := moduleParser.Parse(workDir)
 
 	exist := false
 	for _, v := range list {
-		if v == fmt.Sprintf("module:%s", word.Underscore(module)) {
+		if v == fmt.Sprintf("module:%s", utils.Underscore(module)) {
 			exist = true
 			break
 		}
@@ -138,7 +138,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	file, _ = ioutil.ReadFile(provider)
 	codeblock := string(file)
 
-	modRegex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*module:%s.*$", word.Underscore(module)))
+	modRegex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*module:%s.*$", utils.Underscore(module)))
 	modules = modRegex.ReplaceAllString(modules, "")
 	ioutil.WriteFile(yaml, []byte(modules), 0644)
 
@@ -149,11 +149,11 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	ioutil.WriteFile(provider, []byte(codeblock), 0644)
 
 	os.RemoveAll(fmt.Sprintf("%s/%s", workDir, modulePlural))
-	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, word.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/protos/builds/%s_grpc.pb.go", workDir, word.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, word.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, word.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/swaggers/%s.swagger.json", workDir, word.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, utils.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s_grpc.pb.go", workDir, utils.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, utils.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, utils.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/swaggers/%s.swagger.json", workDir, utils.Underscore(module)))
 
 	util.Println("Modul berhasil dihapus")
 }
@@ -162,7 +162,6 @@ func register(container *dic.Container, util *color.Color) {
 	generator := container.GetBimaModuleGenerator()
 	module := container.GetBimaTemplateModule()
 	field := container.GetBimaTemplateField()
-	word := container.GetBimaUtilWord()
 	mapType := container.GetBimaConfigType()
 
 	util.Println("Welcome to KejawenLab Skeleton Module Generator")
@@ -187,7 +186,7 @@ func register(container *dic.Container, util *color.Color) {
 
 			column.Index = index
 			column.Name = strings.Title(column.Name)
-			column.NameUnderScore = word.Underscore(column.Name)
+			column.NameUnderScore = utils.Underscore(column.Name)
 			module.Fields = append(module.Fields, &column)
 
 			field.Name = ""
