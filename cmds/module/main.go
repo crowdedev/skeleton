@@ -28,14 +28,14 @@ func main() {
 		util.Println("go run cmds/module/main.go register")
 		util.Println("go run cmds/module/main.g unregister")
 		util.Println("By:")
-		util.Println("𝕒𝕕𝟛𝕟")
+		util.Println("ad3n")
 		os.Exit(1)
 	}
 
 	if os.Args[1] != "register" && os.Args[1] != "unregister" {
 		util.Println("Perintah tidak diketahui")
 		util.Println("By:")
-		util.Println("𝕒𝕕𝟛𝕟")
+		util.Println("ad3n")
 		os.Exit(1)
 	}
 
@@ -65,7 +65,7 @@ func main() {
 		if len(os.Args) < 3 {
 			util.Println("Modul wajib diisi")
 			util.Println("By:")
-			util.Println("𝕒𝕕𝟛𝕟")
+			util.Println("ad3n")
 			os.Exit(1)
 		}
 
@@ -85,7 +85,7 @@ func main() {
 	}
 
 	util.Println("By:")
-	util.Println("𝕒𝕕𝟛𝕟")
+	util.Println("ad3n")
 }
 
 func unregister(container *dic.Container, util *color.Color, module string) {

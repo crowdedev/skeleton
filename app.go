@@ -7,6 +7,7 @@ import (
 
 	"github.com/KejawenLab/bima/v2/configs"
 	dic "github.com/KejawenLab/skeleton/generated/dic"
+	"github.com/fatih/color"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
@@ -15,7 +16,7 @@ func Run() {
 	workDir, _ := os.Getwd()
 	godotenv.Load()
 	container, _ := dic.NewContainer()
-	util := container.GetBimaUtilCli()
+	util := color.New(color.FgCyan, color.Bold)
 	env := container.GetBimaConfigEnv()
 
 	if env.Debug {
