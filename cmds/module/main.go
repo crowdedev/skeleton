@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/KejawenLab/bima/v2/configs"
+	"github.com/KejawenLab/bima/v2/parsers"
 	"github.com/KejawenLab/bima/v2/utils"
 	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/fatih/color"
@@ -91,11 +92,10 @@ func main() {
 
 func unregister(container *dic.Container, util *color.Color, module string) {
 	workDir, _ := os.Getwd()
-	moduleParser := container.GetBimaConfigParserModule()
 	pluralizer := container.GetBimaUtilPluralizer()
 	moduleName := utils.Camelcase(pluralizer.Singular(module))
 	modulePlural := utils.Underscore(pluralizer.Plural(moduleName))
-	list := moduleParser.Parse(workDir)
+	list := parsers.ParseModule(workDir)
 
 	exist := false
 	for _, v := range list {

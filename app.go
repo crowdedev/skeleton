@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/KejawenLab/bima/v2/configs"
+	"github.com/KejawenLab/bima/v2/parsers"
 	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/joho/godotenv"
@@ -25,27 +26,27 @@ func Run() {
 	}
 
 	var servers []configs.Server
-	for _, c := range container.GetBimaConfigParserModule().Parse(workDir) {
+	for _, c := range parsers.ParseModule(workDir) {
 		servers = append(servers, container.Get(fmt.Sprintf("%s:server", c)).(configs.Server))
 	}
 
 	var listeners []configs.Listener
-	for _, c := range container.GetBimaConfigParserListener().Parse(workDir) {
+	for _, c := range parsers.ParseListener(workDir) {
 		listeners = append(listeners, container.Get(c).(configs.Listener))
 	}
 
 	var middlewares []configs.Middleware
-	for _, c := range container.GetBimaConfigParserMiddleware().Parse(workDir) {
+	for _, c := range parsers.ParseMiddleware(workDir) {
 		middlewares = append(middlewares, container.Get(c).(configs.Middleware))
 	}
 
 	var extensions []logrus.Hook
-	for _, c := range container.GetBimaConfigParserLogger().Parse(workDir) {
+	for _, c := range parsers.ParseLogger(workDir) {
 		extensions = append(extensions, container.Get(c).(logrus.Hook))
 	}
 
 	var routes []configs.Route
-	for _, c := range container.GetBimaConfigParserRoute().Parse(workDir) {
+	for _, c := range parsers.ParseRoute(workDir) {
 		routes = append(routes, container.Get(c).(configs.Route))
 	}
 
