@@ -42,7 +42,6 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ### Create New Module
 
-
 - Run `task module -- register`
 
 - Follow the instructions 
@@ -57,4 +56,29 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ![Module Swagger](assets/imgs/module-swagger.png)
 
-## Register Request Filter
+### Register Request Filter
+
+By default, you can not filter anything by query params. All of query params is ignored until you add filter by registering it in `configs/listeners.yaml`. Bima provide some filters depend on driver that you choose. For example, when you choose mysql, you can add in `configs/listeners.yaml` `bima:listener:filter:gorm` filter. Your listener file will be like below:
+
+```yaml
+listeners:
+    - bima:listener:filter:gorm
+
+```
+
+Gorm filter defined in [gorm_filter.go](https://github.com/KejawenLab/bima/blob/main/listeners/paginations/gorm_filter.go), if you think the logic is not covering your needs, you can create your own filter by follow the `Listener` interface that decribed below
+
+```go
+Listener interface {
+    Handle(event interface{}) interface{}
+    Listen() string
+    Priority() int
+}
+```
+
+and then you can registering it into dependency injection container in `<module>/dics/<module>.go`. We use [Dingo](https://github.com/sarulabs/dingo) as DI Container and may you can read the documentation before you registering your filter.
+
+
+After that, you can add your filter to `configs/listeners.yaml` as definition name in your DI Container.
+
+### Add New Route
