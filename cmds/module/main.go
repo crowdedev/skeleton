@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"os"
 	"os/exec"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
@@ -123,7 +125,12 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	json.Unmarshal(file, &modulesJson)
 	for _, v := range modulesJson {
 		if v.Name != moduleName {
-			v.Url = fmt.Sprintf("%s?v=%s", v.Url, time.Now().Format(time.RFC3339Nano))
+			mUrl, _ := url.Parse(v.Url)
+			query := mUrl.Query()
+
+			query.Set("v", strconv.Itoa(int(time.Now().UnixMicro())))
+			mUrl.RawQuery = query.Encode()
+			v.Url = mUrl.String()
 			registered = append(registered, v)
 		}
 	}
