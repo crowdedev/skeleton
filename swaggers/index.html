@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>Swagger UI</title>
+    <title>Bima Skeleton Api Documentation</title>
     <link rel="stylesheet" type="text/css" href="./swagger-ui.css" >
     <link rel="icon" type="image/png" href="./favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="./favicon-16x16.png" sizes="16x16" />
@@ -39,7 +39,7 @@
     window.onload = function () {
         $.getJSON("./modules.json", function(data) {
             if (data.length === 0) {
-                data.push({name: "Bima Skeleton", url: "./apidocs.swagger.json"})
+                data.push({name: "Health Check", url: "./apidocs.swagger.json"})
             }
 
             const ui = SwaggerUIBundle({
