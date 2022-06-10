@@ -2,3 +2,4 @@
 !generated/.gitignore
 generated/*
 swaggers/apidocs-swagger.json
+*/**/.DS_Store
