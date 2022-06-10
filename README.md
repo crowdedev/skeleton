@@ -1,84 +1,41 @@
 ## Skeleton
 
-![Skeleton](assets/imgs/register.png)
+Skeleton is a boilerplate, RESTful generator based on [Bima](https://github.com/KejawenLab/bima)
 
-![Run App](assets/imgs/app.png)
+### Video
 
-![Swagger](assets/imgs/swagger.png)
+Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
-## Arsitektur
+### Requirements
 
-![Architecture](assets/imgs/architecture.png)
+- Go 1.17 or above
 
-## Request Flow
+- Git
 
-![Request Flow](assets/imgs/flow.png)
+- [Taskfile](taskfile.dev)
 
-![Request Explaination](assets/imgs/explain.png)
+- RDBMS or MongoDB for database storage
 
-## Flow Pagination
+- Elasticsearch (Optional)
 
-![Pagination](assets/imgs/paginated.png)
+- MongoDB (for Logging Extension - Optional)
 
-## Flow Create/Update/Delete
+- RabbitMQ (Optional)
 
-![Create/Update/Delete](assets/imgs/create.png)
+### Basic Usage
 
-## Flow Get
+- Download using skeleton using git by running `git clone https://github.com/KejawenLab/skeleton.git`
 
-![Get](assets/imgs/get.png)
+- Download dependencies using `task update` command
 
-## Tool
+- Copy `env.example` to `.env` and changes some value
 
-Skeleton menggunakan [gRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway), untuk menginstall tools gRPC Gateway, kamu dapat mengikuti petunjuk pada dokumentasi resminya atau kamu dapat mengikuti tahapan instalasi Skeleton. Bila kamu berhasil menginstall Skeleton sesuai dengan langkah yang diberikan, maka secara secara otomatis, tools gRPC Gateway pun akan terinstall.
+- Run using `task serve` like below
 
-## Perintah
+![Default Empty](assets/imgs/empty-run.png)
 
-- Build Dependency Graph
+- Open your browser and open `http://localhost:7777` or port assigned by you
 
-```
-go run cmds/dic/main.go
-```
+![Swagger](assets/imgs/empty-swagger.png)
 
-- Application
-
-```
-go run cmds/app/main.go
-```
-
-- Generator
-
-```
-go run cmds/module/main.go register
-go run cmds/module/main.go unregister
-```
-
-## Testing
-
-```
-$ go test ./... [-v]
-```
-
-## Contoh
-
-- [Todo Application](https://github.com/KejawenLab/skeleton-todo)
-
-## Dokumentasi
-
-- [Instalasi](docs/install.md)
-
-- [Awal Memulai](docs/basic_usage.md)
-
-- [Memodifikasi Flow](docs/flow_modification.md)
-
-- [Mendaftarkan Log Extension](docs/log_extension.md)
-
-- [Menggunakan Fitur Pub/Sub](docs/pub_sub.md)
-
-- [HTTP Middleware](docs/http_middleware.md)
-
-- [Security](docs/security.md)
-
-- [Custom Route](docs/custom_route.md)
-
-- [List Dependency Injection](docs/dic.md)
+### Create New Module
