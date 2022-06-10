@@ -28,9 +28,11 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 - Download dependencies using `task update` command
 
+- Create database
+
 - Copy `env.example` to `.env` and changes some value
 
-- Run using `task serve` like below
+- Run using `task serve`
 
 ![Default Empty](assets/imgs/empty-run.png)
 
@@ -39,3 +41,18 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 ![Swagger](assets/imgs/empty-swagger.png)
 
 ### Create New Module
+
+
+- Run `task module -- register`
+
+- Follow the instructions 
+
+![Module Register](assets/imgs/module-register.png)
+
+- Bima will generate `todos` folder as your module space, creating `protos/todo.proto`, register your module in `configs/modules.yaml` and register your Dependency Injection defined in `todos/dics/todo.go` to `provider.go`
+
+- Refresh your browser
+
+![Module Swagger](assets/imgs/module-swagger.png)
+
+## Register Request Filter
