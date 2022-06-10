@@ -29,7 +29,7 @@ func main() {
 	util := color.New(color.FgCyan, color.Bold)
 
 	if len(os.Args) < 2 {
-		util.Println("Cara Penggunaan:")
+		util.Println("Usage:")
 		util.Println("go run cmds/module/main.go register")
 		util.Println("go run cmds/module/main.g unregister")
 		util.Println("By:")
@@ -38,7 +38,7 @@ func main() {
 	}
 
 	if os.Args[1] != "register" && os.Args[1] != "unregister" {
-		util.Println("Perintah tidak diketahui")
+		util.Println("Command unknown")
 		util.Println("By:")
 		util.Println("ad3n")
 		os.Exit(1)
@@ -68,7 +68,7 @@ func main() {
 
 	if os.Args[1] == "unregister" {
 		if len(os.Args) < 3 {
-			util.Println("Modul wajib diisi")
+			util.Println("Module name is required")
 			util.Println("By:")
 			util.Println("ad3n")
 			os.Exit(1)
@@ -109,7 +109,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	}
 
 	if !exist {
-		util.Println("Modul tidak terdaftar")
+		util.Println("Module is not registered")
 		return
 	}
 
@@ -164,7 +164,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, utils.Underscore(module)))
 	os.Remove(fmt.Sprintf("%s/swaggers/%s.swagger.json", workDir, utils.Underscore(module)))
 
-	util.Println("Modul berhasil dihapus")
+	util.Println("Module deleted")
 }
 
 func register(container *dic.Container, util *color.Color) {
@@ -173,13 +173,13 @@ func register(container *dic.Container, util *color.Color) {
 	field := container.GetBimaTemplateField()
 	mapType := container.GetBimaConfigType()
 
-	util.Println("Welcome to KejawenLab Skeleton Module Generator")
+	util.Println("Welcome to Bima Skeleton Module Generator")
 	moduleName(util, module)
 
 	index := 2
 	more := true
 	for more {
-		err := interact.NewInteraction("Tambah Kolom?").Resolve(&more)
+		err := interact.NewInteraction("Add new column?").Resolve(&more)
 		if err != nil {
 			util.Println(err.Error())
 			os.Exit(1)
@@ -206,30 +206,30 @@ func register(container *dic.Container, util *color.Color) {
 	}
 
 	if len(module.Fields) < 1 {
-		util.Println("Harus ada minimal satu kolom dalam tabel")
+		util.Println("You must have at least one column in table")
 		os.Exit(1)
 	}
 
 	generator.Generate(module)
 
 	workDir, _ := os.Getwd()
-	util.Println(fmt.Sprintf("Module berhasil didaftarkan pada file: %s/modules.yaml", workDir))
+	util.Println(fmt.Sprintf("Module registered in %s/modules.yaml", workDir))
 }
 
 func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs.Type) {
-	err := interact.NewInteraction("Masukkan Nama Kolom?").Resolve(&field.Name)
+	err := interact.NewInteraction("Input column name?").Resolve(&field.Name)
 	if err != nil {
 		util.Println(err.Error())
 		os.Exit(1)
 	}
 
 	if field.Name == "" {
-		util.Println("Nama Kolom tidak boleh kosong")
+		util.Println("Column name is required")
 		addColumn(util, field, mapType)
 	}
 
 	field.ProtobufType = "string"
-	err = interact.NewInteraction("Masukkan Tipe Data?",
+	err = interact.NewInteraction("Input data type?",
 		interact.Choice{Display: "double", Value: "double"},
 		interact.Choice{Display: "float", Value: "float"},
 		interact.Choice{Display: "int32", Value: "int32"},
@@ -252,7 +252,7 @@ func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs
 	field.GolangType = mapType.Value(field.ProtobufType)
 
 	field.IsRequired = true
-	err = interact.NewInteraction("Apakah Kolom Wajib Diisi?").Resolve(&field.IsRequired)
+	err = interact.NewInteraction("Is column required?").Resolve(&field.IsRequired)
 	if err != nil {
 		util.Println(err.Error())
 		os.Exit(1)
@@ -260,19 +260,19 @@ func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs
 }
 
 func moduleName(util *color.Color, module *configs.ModuleTemplate) {
-	err := interact.NewInteraction("Masukkan Nama Modul?").Resolve(&module.Name)
+	err := interact.NewInteraction("Input module name?").Resolve(&module.Name)
 	if err != nil {
 		util.Println(err.Error())
 		os.Exit(1)
 	}
 
 	if strings.HasSuffix(module.Name, "test") {
-		util.Println("Modul mengandung kata 'test'")
+		util.Println("Module 'test' is not allowed")
 		moduleName(util, module)
 	}
 
 	if module.Name == "" {
-		util.Println("Nama Modul tidak boleh kosong")
+		util.Println("Module name is required")
 		moduleName(util, module)
 	}
 }
