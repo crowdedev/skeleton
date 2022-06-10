@@ -4,6 +4,7 @@ tasks:
         cmds:
             - go run cmds/dic/main.go
             - go run cmds/module/main.go {{.CLI_ARGS}}
+            - go mod tidy
     serve:
         cmds:
             - go run cmds/dic/main.go
