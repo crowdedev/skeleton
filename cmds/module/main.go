@@ -8,6 +8,7 @@ import (
 	"os/exec"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/KejawenLab/bima/v2/configs"
 	"github.com/KejawenLab/bima/v2/parsers"
@@ -122,6 +123,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	json.Unmarshal(file, &modulesJson)
 	for _, v := range modulesJson {
 		if v.Name != moduleName {
+			v.Url = fmt.Sprintf("%s?v=%s", v.Url, time.Now().Format(time.RFC3339Nano))
 			registered = append(registered, v)
 		}
 	}
