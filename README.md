@@ -66,6 +66,8 @@ listeners:
 
 ```
 
+Now, you can rerun your service and try `/api/v1/todos?fields[]=task&values[]=xxx`
+
 Gorm filter defined in [gorm_filter.go](https://github.com/KejawenLab/bima/blob/main/listeners/paginations/gorm_filter.go), if you think the logic is not covering your needs, you can create your own filter by follow the `Listener` interface that decribed below
 
 ```go
