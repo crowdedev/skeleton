@@ -13,10 +13,11 @@ import (
 	"time"
 
 	"github.com/KejawenLab/bima/v2/configs"
+	"github.com/KejawenLab/bima/v2/generators"
 	"github.com/KejawenLab/bima/v2/parsers"
-	"github.com/KejawenLab/bima/v2/utils"
 	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/fatih/color"
+	"github.com/iancoleman/strcase"
 	"github.com/jinzhu/copier"
 	"github.com/joho/godotenv"
 	"github.com/vito/go-interact/interact"
@@ -96,13 +97,14 @@ func main() {
 func unregister(container *dic.Container, util *color.Color, module string) {
 	workDir, _ := os.Getwd()
 	pluralizer := container.GetBimaUtilPluralizer()
-	moduleName := utils.Camelcase(pluralizer.Singular(module))
-	modulePlural := utils.Underscore(pluralizer.Plural(moduleName))
+	moduleName := strcase.ToCamel(pluralizer.Singular(module))
+	modulePlural := strcase.ToDelimited(pluralizer.Plural(moduleName), '_')
+	moduleUnderscore := strcase.ToDelimited(module, '_')
 	list := parsers.ParseModule(workDir)
 
 	exist := false
 	for _, v := range list {
-		if v == fmt.Sprintf("module:%s", utils.Underscore(module)) {
+		if v == fmt.Sprintf("module:%s", moduleUnderscore) {
 			exist = true
 			break
 		}
@@ -120,7 +122,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 
 	jsonModules := fmt.Sprintf("%s/swaggers/modules.json", workDir)
 	file, _ := ioutil.ReadFile(jsonModules)
-	modulesJson := []configs.ModuleJson{}
+	modulesJson := []generators.ModuleJson{}
 	registered := modulesJson
 	json.Unmarshal(file, &modulesJson)
 	for _, v := range modulesJson {
@@ -147,7 +149,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	file, _ = ioutil.ReadFile(provider)
 	codeblock := string(file)
 
-	modRegex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*module:%s.*$", utils.Underscore(module)))
+	modRegex := regexp.MustCompile(fmt.Sprintf("(?m)[\r\n]+^.*module:%s.*$", moduleUnderscore))
 	modules = modRegex.ReplaceAllString(modules, "")
 	ioutil.WriteFile(yaml, []byte(modules), 0644)
 
@@ -158,11 +160,11 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	ioutil.WriteFile(provider, []byte(codeblock), 0644)
 
 	os.RemoveAll(fmt.Sprintf("%s/%s", workDir, modulePlural))
-	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, utils.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/protos/builds/%s_grpc.pb.go", workDir, utils.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, utils.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, utils.Underscore(module)))
-	os.Remove(fmt.Sprintf("%s/swaggers/%s.swagger.json", workDir, utils.Underscore(module)))
+	os.Remove(fmt.Sprintf("%s/protos/%s.proto", workDir, moduleUnderscore))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s_grpc.pb.go", workDir, moduleUnderscore))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.go", workDir, moduleUnderscore))
+	os.Remove(fmt.Sprintf("%s/protos/builds/%s.pb.gw.go", workDir, moduleUnderscore))
+	os.Remove(fmt.Sprintf("%s/swaggers/%s.swagger.json", workDir, moduleUnderscore))
 
 	util.Println("Module deleted")
 }
@@ -189,13 +191,13 @@ func register(container *dic.Container, util *color.Color) {
 			addColumn(util, field, mapType)
 
 			field.Name = strings.Replace(field.Name, " ", "", -1)
-			column := configs.FieldTemplate{}
+			column := generators.FieldTemplate{}
 
 			copier.Copy(&column, field)
 
 			column.Index = index
 			column.Name = strings.Title(column.Name)
-			column.NameUnderScore = utils.Underscore(column.Name)
+			column.NameUnderScore = strcase.ToDelimited(column.Name, '_')
 			module.Fields = append(module.Fields, &column)
 
 			field.Name = ""
@@ -216,7 +218,7 @@ func register(container *dic.Container, util *color.Color) {
 	util.Println(fmt.Sprintf("Module registered in %s/modules.yaml", workDir))
 }
 
-func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs.Type) {
+func addColumn(util *color.Color, field *generators.FieldTemplate, mapType *configs.Type) {
 	err := interact.NewInteraction("Input column name?").Resolve(&field.Name)
 	if err != nil {
 		util.Println(err.Error())
@@ -259,7 +261,7 @@ func addColumn(util *color.Color, field *configs.FieldTemplate, mapType *configs
 	}
 }
 
-func moduleName(util *color.Color, module *configs.ModuleTemplate) {
+func moduleName(util *color.Color, module *generators.ModuleTemplate) {
 	err := interact.NewInteraction("Input module name?").Resolve(&module.Name)
 	if err != nil {
 		util.Println(err.Error())
