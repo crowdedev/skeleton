@@ -14,6 +14,8 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 - [Taskfile](taskfile.dev)
 
+- [gRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway)
+
 - RDBMS or MongoDB for database storage
 
 - Elasticsearch (Optional)
