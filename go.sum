@@ -37,6 +37,8 @@ github.com/CAFxX/httpcompression v0.0.8 h1:UBWojERnpCS6X7whJkGGZeCC3ruZBRwkwkcnf
 github.com/CAFxX/httpcompression v0.0.8/go.mod h1:bVd1taHK1vYb5SWe9lwNDCqrfj2ka+C1Zx7JHzxuHnU=
 github.com/KejawenLab/bima/v2 v2.3.5 h1:mYCFsJbqiPOTZAOa5R1bNztSLU/KLpIJ3WNmBAjBKGY=
 github.com/KejawenLab/bima/v2 v2.3.5/go.mod h1:A+NcfVFlj+YIiWhrvjDP9bcsUDDsiU8UCEcxLzu8FX0=
+github.com/KejawenLab/bima/v2 v2.3.6 h1:/l7FpNXNfFpaoN4KNgfUd30uMNQfKnbesTCKLe6eENg=
+github.com/KejawenLab/bima/v2 v2.3.6/go.mod h1:A+NcfVFlj+YIiWhrvjDP9bcsUDDsiU8UCEcxLzu8FX0=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/ThreeDotsLabs/watermill v1.2.0-rc.6/go.mod h1:QLZSaklpSZ/7yv288LL2DFOgCEi86VYEmQvzmaMlHoA=

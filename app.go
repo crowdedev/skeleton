@@ -32,22 +32,22 @@ func Run() {
 
 	var listeners []configs.Listener
 	for _, c := range parsers.ParseListener(workDir) {
-		listeners = append(listeners, container.Get(c).(configs.Listener))
+		listeners = append(listeners, container.Get(fmt.Sprintf("bima:listener:%s", c)).(configs.Listener))
 	}
 
 	var middlewares []configs.Middleware
 	for _, c := range parsers.ParseMiddleware(workDir) {
-		middlewares = append(middlewares, container.Get(c).(configs.Middleware))
+		middlewares = append(middlewares, container.Get(fmt.Sprintf("bima:middleware:%s", c)).(configs.Middleware))
 	}
 
 	var extensions []logrus.Hook
 	for _, c := range parsers.ParseLogger(workDir) {
-		extensions = append(extensions, container.Get(c).(logrus.Hook))
+		extensions = append(extensions, container.Get(fmt.Sprintf("bima:logger:extension:%s", c)).(logrus.Hook))
 	}
 
 	var routes []configs.Route
 	for _, c := range parsers.ParseRoute(workDir) {
-		routes = append(routes, container.Get(c).(configs.Route))
+		routes = append(routes, container.Get(fmt.Sprintf("bima:route:%s", c)).(configs.Route))
 	}
 
 	if env.Debug {
