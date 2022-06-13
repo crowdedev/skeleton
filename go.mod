@@ -3,7 +3,7 @@ module github.com/KejawenLab/skeleton
 go 1.17
 
 require (
-	github.com/KejawenLab/bima/v2 v2.3.8
+	github.com/KejawenLab/bima/v2 v2.3.9
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gertd/go-pluralize v0.2.1
@@ -15,7 +15,6 @@ require (
 	github.com/sarulabs/di/v2 v2.4.2
 	github.com/sarulabs/dingo/v4 v4.2.0
 	github.com/sirupsen/logrus v1.8.1
-	github.com/vcraescu/go-paginator/v2 v2.0.0
 	github.com/vito/go-interact v1.0.1
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4
 	google.golang.org/grpc v1.47.0
@@ -62,6 +61,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/streadway/amqp v1.0.0 // indirect
 	github.com/stretchr/testify v1.7.2 // indirect
+	github.com/vcraescu/go-paginator/v2 v2.0.0 // indirect
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.1 // indirect

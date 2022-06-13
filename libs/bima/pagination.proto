@@ -15,8 +15,7 @@ message PaginationMetadata {
 
 message Pagination {
     int32 page = 1;
-    uint64 counter = 2;
-    int32 limit = 3;
-    repeated string fields = 4;
-    repeated string values = 5;
+    int32 limit = 2;
+    repeated string fields = 3;
+    repeated string values = 4;
 }
