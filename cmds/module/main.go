@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/KejawenLab/bima/v2/configs"
 	"github.com/KejawenLab/bima/v2/generators"
 	"github.com/KejawenLab/bima/v2/parsers"
+	"github.com/KejawenLab/bima/v2/utils"
 	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/iancoleman/strcase"
@@ -173,7 +173,7 @@ func register(container *dic.Container, util *color.Color) {
 	generator := container.GetBimaModuleGenerator()
 	module := container.GetBimaTemplateModule()
 	field := container.GetBimaTemplateField()
-	mapType := container.GetBimaConfigType()
+	mapType := utils.NewType()
 
 	util.Println("Welcome to Bima Skeleton Module Generator")
 	moduleName(util, module)
@@ -218,7 +218,7 @@ func register(container *dic.Container, util *color.Color) {
 	util.Println(fmt.Sprintf("Module registered in %s/modules.yaml", workDir))
 }
 
-func addColumn(util *color.Color, field *generators.FieldTemplate, mapType *configs.Type) {
+func addColumn(util *color.Color, field *generators.FieldTemplate, mapType utils.Type) {
 	err := interact.NewInteraction("Input column name?").Resolve(&field.Name)
 	if err != nil {
 		util.Println(err.Error())
@@ -251,8 +251,8 @@ func addColumn(util *color.Color, field *generators.FieldTemplate, mapType *conf
 		util.Println(err.Error())
 		os.Exit(1)
 	}
-	field.GolangType = mapType.Value(field.ProtobufType)
 
+	field.GolangType = mapType.Value(field.ProtobufType)
 	field.IsRequired = true
 	err = interact.NewInteraction("Is column required?").Resolve(&field.IsRequired)
 	if err != nil {
