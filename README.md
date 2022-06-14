@@ -60,11 +60,11 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ### Register Request Filter
 
-By default, you can not filter anything by query params. All of query params is ignored until you add filter by registering it in `configs/listeners.yaml`. Bima provide some filters depend on driver that you choose. For example, when you choose mysql, you can add in `configs/listeners.yaml` `bima:listener:filter:gorm` filter. Your listener file will be like below:
+By default, you can not filter anything by query params. All of query params is ignored until you add filter by registering it in `configs/listeners.yaml`. Bima provide some filters depend on driver that you choose. For example, when you choose mysql, you can add in `configs/listeners.yaml` `filter:gorm` filter. Your listener file will be like below:
 
 ```yaml
 listeners:
-    - bima:listener:filter:gorm
+    - filter:gorm
 
 ```
 
@@ -80,9 +80,13 @@ Listener interface {
 }
 ```
 
-and then you can registering it into dependency injection container in `<module>/dics/<module>.go`. We use [Dingo](https://github.com/sarulabs/dingo) as DI Container and may you can read the documentation before you registering your filter.
+and then you can registering it into Dependency Injection Container in `<module>/dics/<module>.go` with prefix name `bima:listener:`. We use [Dingo](https://github.com/sarulabs/dingo) as DI Container and may you can read the documentation before you registering your filter.
 
 
-After that, you can add your filter to `configs/listeners.yaml` as definition name in your DI Container.
+After that, you can add your filter to `configs/listeners.yaml` as definition name without prefix in your DI Container.
 
 ### Add New Route
+
+To add custom route, for easiest way is just copy from [`api_doc_redirect_route.go`](https://github.com/KejawenLab/bima/blob/main/routes/api_doc_redirect.go) and then modify the logic inside `Handle()` function, path and method. After that, you can add it into your DI Container with prefix `bima:route:` and then registering it into `configs/routes.yml` as definition name without prefix in your DI Container.
+
+### Create New Middleware
