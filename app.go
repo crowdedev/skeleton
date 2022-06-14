@@ -3,7 +3,6 @@ package skeleton
 import (
 	"fmt"
 	"os"
-	"time"
 
 	"github.com/KejawenLab/bima/v2/configs"
 	"github.com/KejawenLab/bima/v2/parsers"
@@ -19,11 +18,6 @@ func Run() {
 	container, _ := dic.NewContainer()
 	util := color.New(color.FgCyan, color.Bold)
 	env := container.GetBimaConfigEnv()
-
-	if env.Debug {
-		util.Println("✓  Engine Checking and Configuring...")
-		time.Sleep(500 * time.Millisecond)
-	}
 
 	var servers []configs.Server
 	for _, c := range parsers.ParseModule(workDir) {
@@ -50,21 +44,6 @@ func Run() {
 		routes = append(routes, container.Get(fmt.Sprintf("bima:route:%s", c)).(configs.Route))
 	}
 
-	if env.Debug {
-		util.Printf("✓ ")
-		fmt.Printf("Total pessanger %d\n", len(servers))
-		util.Println("⌛ Starting Engine...")
-		time.Sleep(100 * time.Millisecond)
-		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-		time.Sleep(100 * time.Millisecond)
-		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-		time.Sleep(100 * time.Millisecond)
-		util.Println("🔥🔥🔥🔥🔥🔥🔥🔥🔥")
-		time.Sleep(100 * time.Millisecond)
-		util.Println("🔥 Engine Ready...")
-		time.Sleep(1 * time.Second)
-	}
-
 	container.GetBimaRouterMux().Register(routes)
 	container.GetBimaLoggerExtension().Register(extensions)
 	container.GetBimaHandlerMiddleware().Register(middlewares)
@@ -72,10 +51,11 @@ func Run() {
 	container.GetBimaRouterGateway().Register(servers)
 
 	if env.Debug {
-		util.Println("🚀 Taking Off...")
-		time.Sleep(300 * time.Millisecond)
+		util.Printf("✓ ")
+		fmt.Printf("REST running on %d\n", env.HttpPort)
 
-		util.Println("🎧 🎧 🎧 Enjoy The Flight 🎧 🎧 🎧")
+		util.Printf("✓ ")
+		fmt.Println("Api Doc ready on /api/docs")
 	}
 
 	container.GetBimaApplication().Run(servers)

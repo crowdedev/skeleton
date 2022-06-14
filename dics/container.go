@@ -10,7 +10,6 @@ var Container = []dingo.Def{
 		Name:  "bima:handler:handler",
 		Build: (*handlers.Handler)(nil),
 		Params: dingo.Params{
-			"Context":    dingo.Service("bima:context:background"),
 			"Dispatcher": dingo.Service("bima:event:dispatcher"),
 			"Repository": dingo.Service("bima:service:repository:gorm"),
 			"Adapter":    dingo.Service("bima:pagination:adapter:gorm"),

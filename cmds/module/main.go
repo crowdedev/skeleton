@@ -17,6 +17,7 @@ import (
 	"github.com/KejawenLab/bima/v2/utils"
 	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/fatih/color"
+	"github.com/gertd/go-pluralize"
 	"github.com/iancoleman/strcase"
 	"github.com/jinzhu/copier"
 	"github.com/joho/godotenv"
@@ -96,7 +97,7 @@ func main() {
 
 func unregister(container *dic.Container, util *color.Color, module string) {
 	workDir, _ := os.Getwd()
-	pluralizer := container.GetBimaUtilPluralizer()
+	pluralizer := pluralize.NewClient()
 	moduleName := strcase.ToCamel(pluralizer.Singular(module))
 	modulePlural := strcase.ToDelimited(pluralizer.Plural(moduleName), '_')
 	moduleUnderscore := strcase.ToDelimited(module, '_')
