@@ -50,10 +50,9 @@ func Run() {
 	container.GetBimaEventDispatcher().Register(listeners)
 	container.GetBimaRouterGateway().Register(servers)
 
+	util.Printf("✓ ")
+	fmt.Printf("REST running on %d\n", env.HttpPort)
 	if env.Debug {
-		util.Printf("✓ ")
-		fmt.Printf("REST running on %d\n", env.HttpPort)
-
 		util.Printf("✓ ")
 		fmt.Println("Api Doc ready on /api/docs")
 	}
