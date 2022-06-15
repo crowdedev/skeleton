@@ -35,8 +35,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/CAFxX/httpcompression v0.0.8 h1:UBWojERnpCS6X7whJkGGZeCC3ruZBRwkwkcnfGfb0ko=
 github.com/CAFxX/httpcompression v0.0.8/go.mod h1:bVd1taHK1vYb5SWe9lwNDCqrfj2ka+C1Zx7JHzxuHnU=
-github.com/KejawenLab/bima/v2 v2.4.2 h1:uC+wZTUgrndTQmk2d93DLqfICGiYkYjgtxB+APiyIqA=
-github.com/KejawenLab/bima/v2 v2.4.2/go.mod h1:NyyHPx8lBgK5Fg9yIPYITuxWE72D7Cbo4RkpysWOFzg=
+github.com/KejawenLab/bima/v2 v2.5.0 h1:yKQ3yao1JMOVl2C/4e/j+0nAMieHbpn/u/0AeSGvpwc=
+github.com/KejawenLab/bima/v2 v2.5.0/go.mod h1:iO/8xshAqTB457N+lOeNdr05XRTL7s3iUobWwPRY9pY=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/ThreeDotsLabs/watermill v1.2.0-rc.6/go.mod h1:QLZSaklpSZ/7yv288LL2DFOgCEi86VYEmQvzmaMlHoA=
@@ -142,6 +142,8 @@ github.com/gobuffalo/packd v0.1.0/go.mod h1:M2Juc+hhDXf/PnmBANFCqx4DM3wRbgDvnVWe
 github.com/gobuffalo/packr/v2 v2.0.9/go.mod h1:emmyGweYTm6Kdper+iywB6YK5YzuKchGtJQZ0Odn4pQ=
 github.com/gobuffalo/packr/v2 v2.2.0/go.mod h1:CaAwI0GPIAv+5wKLtv8Afwl+Cm78K/I/VCm/3ptBN+0=
 github.com/gobuffalo/syncx v0.0.0-20190224160051-33c29581e754/go.mod h1:HhnNqWY95UYwwW3uSASeV7vtgYkT2t16hJgV3AEPUpw=
+github.com/goccy/go-json v0.9.7 h1:IcB+Aqpx/iMHu5Yooh7jEzJk1JZ7Pjtmys2ukPr7EeM=
+github.com/goccy/go-json v0.9.7/go.mod h1:6MelG93GURQebXPDq3khkgXZkazVtN9CRI+MGFi0w8I=
 github.com/gofrs/uuid v3.2.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
 github.com/gofrs/uuid v4.0.0+incompatible h1:1SD/1F5pU8p29ybwgQSwpQk+mwdRrXCYuPhW6m+TnJw=
 github.com/gofrs/uuid v4.0.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
