@@ -37,7 +37,7 @@
     <script src="./swagger-ui-standalone-preset.js" charset="UTF-8"> </script>
     <script>
     window.onload = function () {
-        $.getJSON("./modules.json", function(data) {
+        $.getJSON("./modules.json?v=" + (new Date().getTime()), function(data) {
             if (data.length === 0) {
                 data.push({name: "Health Check", url: "./apidocs.swagger.json"})
             }
