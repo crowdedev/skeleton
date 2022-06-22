@@ -11,7 +11,7 @@ import (
 func main() {
 	err := dingo.GenerateContainer((*dics.Provider)(nil), "generated")
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println("Error dumping container: ", err.Error())
 		os.Exit(1)
 	}
 }
