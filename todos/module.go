@@ -7,8 +7,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/KejawenLab/bima/v2"
-	"github.com/KejawenLab/bima/v2/configs"
+	"github.com/KejawenLab/bima/v3"
+	"github.com/KejawenLab/bima/v3/configs"
 	grpcs "github.com/KejawenLab/skeleton/protos/builds"
 	"github.com/KejawenLab/skeleton/todos/models"
 	"github.com/KejawenLab/skeleton/todos/validations"

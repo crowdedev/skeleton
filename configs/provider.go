@@ -2,10 +2,10 @@
 package dics
 
 import (
-    //@modules:import
-    todo "github.com/KejawenLab/skeleton/todos/dics"
-	core "github.com/KejawenLab/bima/v2/dics"
+	//@modules:import
+	core "github.com/KejawenLab/bima/v3/dics"
 	"github.com/KejawenLab/skeleton/dics"
+	todo "github.com/KejawenLab/skeleton/todos/dics"
 	"github.com/sarulabs/dingo/v4"
 )
 

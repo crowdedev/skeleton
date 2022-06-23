@@ -1,12 +1,11 @@
 package models
 
-import "github.com/KejawenLab/bima/v2"
+import "github.com/KejawenLab/bima/v3"
 
 type Todo struct {
 	*bima.GormModel
 
-    Task string
-
+	Task string
 }
 
 func (m *Todo) TableName() string {

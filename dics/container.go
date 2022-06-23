@@ -1,7 +1,7 @@
 package dics
 
 import (
-	"github.com/KejawenLab/bima/v2/handlers"
+	"github.com/KejawenLab/bima/v3/handlers"
 	"github.com/sarulabs/dingo/v4"
 )
 

@@ -1,12 +1,12 @@
 package todos
 
 import (
-    "context"
+	"context"
 
-	"github.com/KejawenLab/bima/v2"
-	"github.com/KejawenLab/skeleton/protos/builds"
+	"github.com/KejawenLab/bima/v3"
+	grpcs "github.com/KejawenLab/skeleton/protos/builds"
 	"github.com/KejawenLab/skeleton/todos/models"
-    "github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 )
 

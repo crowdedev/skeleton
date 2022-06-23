@@ -2,10 +2,8 @@ module github.com/KejawenLab/skeleton
 
 go 1.17
 
-replace github.com/KejawenLab/bima/v2 v2.5.3 => ../bima
-
 require (
-	github.com/KejawenLab/bima/v2 v2.5.3
+	github.com/KejawenLab/bima/v3 v3.0.2
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gertd/go-pluralize v0.2.1
