@@ -5,7 +5,6 @@ import (
 	//@modules:import
 	core "github.com/KejawenLab/bima/v3/dics"
 	"github.com/KejawenLab/skeleton/dics"
-	todo "github.com/KejawenLab/skeleton/todos/dics"
 	"github.com/sarulabs/dingo/v4"
 )
 
@@ -21,8 +20,6 @@ func (p *Provider) Load() error {
 	if err := p.AddDefSlice(dics.Container); err != nil {
 		return err
 	}
-
-    /*@module:todo*/if err := p.AddDefSlice(todo.Todo); err != nil {return err}
     //@modules:register
 
 	return nil
