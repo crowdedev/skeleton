@@ -1,0 +1,36 @@
+{
+    "debug": true,
+    "http_port": 7777,
+    "rpc_port": 1717,
+    "api_version": "v1",
+    "request_id_header": "X-Request-Id",
+    "cache_lifetime": 1020,
+    "service": {
+        "name": "Bima Skeleton"
+    },
+    "auth_header": {
+        "id": "User-Id",
+        "email": "User-Email",
+        "role": "User-Type",
+        "whitelist": "/api/docs|/health$",
+        "min_role": 2
+    },
+    "database": {
+        "driver": "mysql",
+        "host": "localhost",
+        "port": 3306,
+        "user": "root",
+        "password": "aden",
+        "name": "skeleton"
+    },
+    "elasticsearch": {
+        "host": "http://localhost",
+        "port": 9200
+    },
+    "queue": {
+        "host": "localhost",
+        "port": 5672,
+        "user": "guest",
+        "password": "guest"
+    }
+}

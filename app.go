@@ -1,11 +1,12 @@
 package skeleton
 
 import (
-	"encoding/json"
 	"fmt"
+	"log"
 	"net/url"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -21,12 +22,14 @@ import (
 	"github.com/KejawenLab/skeleton/generated/dic"
 	"github.com/fatih/color"
 	"github.com/gertd/go-pluralize"
+	"github.com/goccy/go-json"
 	"github.com/iancoleman/strcase"
 	"github.com/jinzhu/copier"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/vito/go-interact/interact"
 	"golang.org/x/mod/modfile"
+	"gopkg.in/yaml.v2"
 )
 
 type (
@@ -34,12 +37,17 @@ type (
 	Module      string
 )
 
-func (_ Application) Run() {
-	workDir, _ := os.Getwd()
-	godotenv.Load()
+func (_ Application) Run(config string) {
+	if config == "" {
+		config = ".env"
+	}
+
 	container, _ := dic.NewContainer()
+	env := container.GetBimaConfig()
+	loadEnv(env, config, filepath.Ext(config))
+
+	workDir, _ := os.Getwd()
 	util := color.New(color.FgCyan, color.Bold)
-	env := container.GetBimaConfigEnv()
 
 	var servers []configs.Server
 	for _, c := range parsers.ParseModule(workDir) {
@@ -139,6 +147,88 @@ func (m Module) remove(module string) {
 
 	util.Println("By:")
 	util.Println("ad3n")
+}
+
+func loadEnv(config *configs.Env, filePath string, ext string) {
+	switch ext {
+	case ".env":
+		godotenv.Load()
+		processDotEnv(config)
+	case ".yaml":
+		content, err := os.ReadFile(filePath)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+
+		err = yaml.Unmarshal(content, config)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	case ".json":
+		content, err := os.ReadFile(filePath)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+
+		err = json.Unmarshal(content, config)
+		if err != nil {
+			log.Fatalln(err.Error())
+		}
+	}
+}
+
+func processDotEnv(config *configs.Env) {
+	config.ApiVersion = os.Getenv("API_VERSION")
+	config.RequestIDHeader = os.Getenv("REQUEST_ID_HEADER")
+	config.Debug, _ = strconv.ParseBool(os.Getenv("APP_DEBUG"))
+	config.HttpPort, _ = strconv.Atoi(os.Getenv("APP_PORT"))
+	config.RpcPort, _ = strconv.Atoi(os.Getenv("GRPC_PORT"))
+
+	if config.RequestIDHeader == "" {
+		config.RequestIDHeader = "X-Request-Id"
+	}
+
+	sName := os.Getenv("APP_NAME")
+	config.Service = configs.Service{
+		Name:           sName,
+		ConnonicalName: strcase.ToDelimited(sName, '_'),
+	}
+
+	dbPort, _ := strconv.Atoi(os.Getenv("DB_PORT"))
+	config.Db = configs.Db{
+		Host:     os.Getenv("DB_HOST"),
+		Port:     dbPort,
+		User:     os.Getenv("DB_USER"),
+		Password: os.Getenv("DB_PASSWORD"),
+		Name:     os.Getenv("DB_NAME"),
+		Driver:   os.Getenv("DB_DRIVER"),
+	}
+
+	esPort, _ := strconv.Atoi(os.Getenv("ELASTICSEARCH_PORT"))
+	config.Elasticsearch = configs.Elasticsearch{
+		Host:  os.Getenv("ELASTICSEARCH_HOST"),
+		Port:  esPort,
+		Index: config.Db.Name,
+	}
+
+	amqpPort, _ := strconv.Atoi(os.Getenv("AMQP_PORT"))
+	config.Amqp = configs.Amqp{
+		Host:     os.Getenv("AMQP_HOST"),
+		Port:     amqpPort,
+		User:     os.Getenv("AMQP_USER"),
+		Password: os.Getenv("AMQP_PASSWORD"),
+	}
+
+	minRole, _ := strconv.Atoi(os.Getenv("AUTH_HEADER_MIN_ROLE"))
+	config.AuthHeader = configs.AuthHeader{
+		Id:        os.Getenv("AUTH_HEADER_ID"),
+		Email:     os.Getenv("AUTH_HEADER_EMAIL"),
+		Role:      os.Getenv("AUTH_HEADER_ROLE"),
+		Whitelist: os.Getenv("AUTH_HEADER_WHITELIST"),
+		MinRole:   minRole,
+	}
+
+	config.CacheLifetime, _ = strconv.Atoi(os.Getenv("CACHE_LIFETIME"))
 }
 
 func unregister(container *dic.Container, util *color.Color, module string) {

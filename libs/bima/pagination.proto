@@ -9,8 +9,7 @@ message PaginationMetadata {
     int32 previous = 2;
     int32 next = 3;
     int32 limit = 4;
-    int32 record = 5;
-    int32 total = 6;
+    int32 total = 5;
 }
 
 message Pagination {

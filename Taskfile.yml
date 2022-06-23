@@ -8,7 +8,7 @@ tasks:
     run:
         cmds:
             - go run cmd/main.go dump
-            - go run cmd/main.go run
+            - go run cmd/main.go run {{.CLI_ARGS}}
     clean:
         cmds:
             - go mod tidy

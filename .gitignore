@@ -1,4 +1,6 @@
 .env
+config.yaml
+config.json
 !generated/.gitignore
 generated/*
 swaggers/apidocs-swagger.json

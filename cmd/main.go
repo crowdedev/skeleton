@@ -28,7 +28,7 @@ func main() {
 			os.Exit(0)
 		}
 	case "run":
-		skeleton.Application(command).Run()
+		skeleton.Application(command).Run(option)
 	case "module":
 		skeleton.Module(option).Run(module)
 	}
