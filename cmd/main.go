@@ -8,6 +8,10 @@ import (
 
 func main() {
 	args := os.Args[1:]
+	if len(args) == 0 {
+		args = append(args, "run")
+	}
+
 	command := args[0]
 	option := ""
 	module := ""
