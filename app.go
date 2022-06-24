@@ -90,18 +90,24 @@ func (_ Application) Run(config string) {
 	container.GetBimaApplication().Run(servers)
 }
 
-func (m Module) Run(module string) {
+func (m Module) Run(module string, config string) {
+	if config == "" {
+		config = ".env"
+	}
+
+	container, _ := dic.NewContainer()
+	env := container.GetBimaConfig()
+	loadEnv(env, config, filepath.Ext(config))
+
 	switch m {
 	case "register":
-		m.register(module)
+		m.register(container, module)
 	case "remove":
-		m.remove(module)
+		m.remove(container, module)
 	}
 }
 
-func (m Module) register(module string) {
-	godotenv.Load()
-	container, _ := dic.NewContainer()
+func (m Module) register(container *dic.Container, module string) {
 	util := color.New(color.FgCyan, color.Bold)
 
 	register(container, util, module)
@@ -117,7 +123,7 @@ func (m Module) register(module string) {
 		os.Exit(1)
 	}
 
-	_, err = exec.Command("go", "run", "cmd/main.go", "dump").Output()
+	_, err = exec.Command("go", "run", "dumper/main.go").Output()
 	if err != nil {
 		util.Println("Error update DI Container")
 		os.Exit(1)
@@ -127,13 +133,11 @@ func (m Module) register(module string) {
 	util.Println("ad3n")
 }
 
-func (m Module) remove(module string) {
-	godotenv.Load()
-	container, _ := dic.NewContainer()
+func (m Module) remove(container *dic.Container, module string) {
 	util := color.New(color.FgCyan, color.Bold)
 	unregister(container, util, module)
 
-	_, err := exec.Command("go", "run", "cmd/main.go", "dump").Output()
+	_, err := exec.Command("go", "run", "dumper/main.go").Output()
 	if err != nil {
 		util.Println("Error update DI Container")
 		os.Exit(1)

@@ -1,9 +1,7 @@
 package main
 
 import (
-	"fmt"
 	"os"
-	"os/exec"
 
 	"github.com/KejawenLab/skeleton"
 )
@@ -21,15 +19,15 @@ func main() {
 	}
 
 	switch command {
-	case "dump":
-		_, err := exec.Command("go", "run", "dumper/main.go").Output()
-		if err != nil {
-			fmt.Println(err.Error())
-			os.Exit(0)
-		}
 	case "run":
 		skeleton.Application(command).Run(option)
 	case "module":
-		skeleton.Module(option).Run(module)
+		command = option
+		option = ""
+		if len(args) > 3 {
+			option = args[3]
+		}
+
+		skeleton.Module(command).Run(module, option)
 	}
 }

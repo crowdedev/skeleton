@@ -2,25 +2,25 @@ version: '3'
 tasks:
     module:
         cmds:
-            - go run cmd/main.go dump
+            - go run dumper/main.go
             - go run cmd/main.go module {{.CLI_ARGS}}
             - go mod tidy
     run:
         cmds:
-            - go run cmd/main.go dump
+            - go run dumper/main.go
             - go run cmd/main.go run {{.CLI_ARGS}}
     clean:
         cmds:
             - go mod tidy
-            - go run cmd/main.go dump
+            - go run dumper/main.go
     update:
         cmds:
             - go get -u
-            - go run cmd/main.go dump
+            - go run dumper/main.go
     dump:
         cmds:
-            - go run cmd/main.go dump
+            - go run dumper/main.go
     generate:
         cmds:
-            - go run cmd/main.go dump
+            - go run dumper/main.go
             - sh proto_gen.sh
