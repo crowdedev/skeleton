@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/KejawenLab/skeleton"
+	"github.com/KejawenLab/skeleton/v3"
 )
 
 func main() {

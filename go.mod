@@ -1,4 +1,4 @@
-module github.com/KejawenLab/skeleton
+module github.com/KejawenLab/skeleton/v3
 
 go 1.17
 

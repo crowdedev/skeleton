@@ -19,7 +19,7 @@ import (
 	"github.com/KejawenLab/bima/v3/parsers"
 	"github.com/KejawenLab/bima/v3/routes"
 	"github.com/KejawenLab/bima/v3/utils"
-	"github.com/KejawenLab/skeleton/generated/dic"
+	"github.com/KejawenLab/skeleton/v3/generated/dic"
 	"github.com/fatih/color"
 	"github.com/gertd/go-pluralize"
 	"github.com/goccy/go-json"
