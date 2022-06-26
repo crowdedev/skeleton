@@ -1,6 +1,7 @@
 package skeleton
 
 import (
+	"bytes"
 	"fmt"
 	"log"
 	"net/url"
@@ -49,29 +50,50 @@ func (_ Application) Run(config string) {
 	workDir, _ := os.Getwd()
 	util := color.New(color.FgCyan, color.Bold)
 
+	var cName bytes.Buffer
 	var servers []configs.Server
 	for _, c := range parsers.ParseModule(workDir) {
-		servers = append(servers, container.Get(fmt.Sprintf("%s:server", c)).(configs.Server))
+		cName.Reset()
+		cName.WriteString(c)
+		cName.WriteString(":server")
+
+		servers = append(servers, container.Get(cName.String()).(configs.Server))
 	}
 
 	var listeners []events.Listener
 	for _, c := range parsers.ParseListener(workDir) {
-		listeners = append(listeners, container.Get(fmt.Sprintf("bima:listener:%s", c)).(events.Listener))
+		cName.Reset()
+		cName.WriteString("bima:listener:")
+		cName.WriteString(c)
+
+		listeners = append(listeners, container.Get(cName.String()).(events.Listener))
 	}
 
 	var hooks []middlewares.Middleware
 	for _, c := range parsers.ParseMiddleware(workDir) {
-		hooks = append(hooks, container.Get(fmt.Sprintf("bima:middleware:%s", c)).(middlewares.Middleware))
+		cName.Reset()
+		cName.WriteString("bima:middleware:")
+		cName.WriteString(c)
+
+		hooks = append(hooks, container.Get(cName.String()).(middlewares.Middleware))
 	}
 
 	var extensions []logrus.Hook
 	for _, c := range parsers.ParseLogger(workDir) {
-		extensions = append(extensions, container.Get(fmt.Sprintf("bima:logger:extension:%s", c)).(logrus.Hook))
+		cName.Reset()
+		cName.WriteString("bima:logger:extension:")
+		cName.WriteString(c)
+
+		extensions = append(extensions, container.Get(cName.String()).(logrus.Hook))
 	}
 
 	var handlers []routes.Route
 	for _, c := range parsers.ParseRoute(workDir) {
-		handlers = append(handlers, container.Get(fmt.Sprintf("bima:route:%s", c)).(routes.Route))
+		cName.Reset()
+		cName.WriteString("bima:route:")
+		cName.WriteString(c)
+
+		handlers = append(handlers, container.Get(cName.String()).(routes.Route))
 	}
 
 	container.GetBimaRouterMux().Register(handlers)
