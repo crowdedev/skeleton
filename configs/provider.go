@@ -2,7 +2,7 @@
 package dics
 
 import (
-	//@modules:import
+    //@modules:import
 	core "github.com/KejawenLab/bima/v3/dics"
 	"github.com/KejawenLab/skeleton/v3/dics"
 	"github.com/sarulabs/dingo/v4"
