@@ -2,8 +2,6 @@ module github.com/KejawenLab/skeleton/v3
 
 go 1.17
 
-replace github.com/KejawenLab/bima/v3 v3.0.3 => ../bima
-
 require (
 	github.com/KejawenLab/bima/v3 v3.0.3
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
