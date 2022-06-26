@@ -44,13 +44,13 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ### Create New Module
 
-- Run `task module -- register`
+- Run `task module -- add <name>`
 
 - Follow the instructions 
 
 ![Module Register](assets/imgs/module-register.png)
 
-- Bima will generate `todos` folder as your module space, creating `protos/todo.proto`, register your module in `configs/modules.yaml` and register your Dependency Injection defined in `todos/dics/todo.go` to `provider.go`
+- Bima will generate `todos` folder as your module space, creating `protos/todo.proto`, register your module in `configs/modules.yaml` and register your Dependency Injection defined in `todos/dic.go` to `provider.go`
 
 ![Module Structure](assets/imgs/module-structure.png)
 
@@ -80,7 +80,7 @@ Listener interface {
 }
 ```
 
-and then you can registering it into Dependency Injection Container in `<module>/dics/<module>.go` with prefix name `bima:listener:`. We use [Dingo](https://github.com/sarulabs/dingo) as DI Container and may you can read the documentation before you registering your filter.
+and then you can registering it into Dependency Injection Container in `<module>/dic.go` with prefix name `bima:listener:`. We use [Dingo](https://github.com/sarulabs/dingo) as DI Container and may you can read the documentation before you registering your filter.
 
 
 After that, you can add your filter to `configs/listeners.yaml` as definition name without prefix in your DI Container.

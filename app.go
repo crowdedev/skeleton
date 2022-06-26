@@ -122,7 +122,7 @@ func (m Module) Run(module string, config string) {
 	loadEnv(env, config, filepath.Ext(config))
 
 	switch m {
-	case "register":
+	case "add":
 		m.register(container, module)
 	case "remove":
 		m.remove(container, module)
