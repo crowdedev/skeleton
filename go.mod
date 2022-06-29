@@ -25,6 +25,7 @@ require (
 
 require (
 	github.com/klauspost/compress v1.15.7 // indirect
+	github.com/stretchr/testify v1.8.0 // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/tools v0.1.11 // indirect
 	gorm.io/driver/mysql v1.3.4 // indirect
