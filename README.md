@@ -26,7 +26,7 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ### Basic Usage
 
-- Download using skeleton using git by running `git clone https://github.com/KejawenLab/skeleton/v3.git`
+- Download using skeleton using git by running `git clone https://github.com/KejawenLab/skeleton.git`
 
 - Download dependencies using `task update` command
 
