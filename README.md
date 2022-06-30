@@ -81,7 +81,7 @@ Then you need to register the `bima:listener:filter:gorm` to your `configs/liste
 
 ```yaml
 listeners:
-    - filter:gorm # `bima:listener:` is required by skeleton 
+    - filter:gorm # `bima:listener:` prefix is reserved by skeleton 
 ```
 
 Now, you can rerun using `task run` and try `/api/v1/todos?fields=task&values=xxx` and then the result like below
