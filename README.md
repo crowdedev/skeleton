@@ -8,7 +8,7 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ### Requirements
 
-- Go 1.17 or above
+- Go 1.16 or above
 
 - Git
 
@@ -16,11 +16,9 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 - [gRPC Gateway](https://github.com/grpc-ecosystem/grpc-gateway)
 
-- RDBMS or MongoDB for database storage
+- RDBMS (by default only supports `mysql` and `postgresql`) or MongoDB for database storage
 
 - Elasticsearch (Optional)
-
-- MongoDB (for Logging Extension - Optional)
 
 - RabbitMQ (Optional)
 
@@ -28,13 +26,13 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 - Download using skeleton using git by running `git clone https://github.com/KejawenLab/skeleton.git`
 
-- Download dependencies using `task update` command
+- Download dependencies using `task clean` command
 
-- Create database
+- Create `bima_skeleton` database
 
-- Copy `env.example` to `.env` and changes some value
+- Copy `env.example` to `.env` and changes `DB_DRIVER`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` values
 
-- Run using `task serve`
+- Run using `task run`
 
 ![Default Empty](assets/imgs/empty-run.png)
 
@@ -50,43 +48,43 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ![Module Register](assets/imgs/module-register.png)
 
-- Bima will generate `todos` folder as your module space, creating `protos/todo.proto`, register your module in `configs/modules.yaml` and register your Dependency Injection defined in `todos/dic.go` to `provider.go`
+- Bima will generate `todos` folder as your module space, creating `protos/todo.proto`, register your module in `configs/modules.yaml` and register your Dependency Injection defined in `dic.go` to `configs/provider.go`
 
 ![Module Structure](assets/imgs/module-structure.png)
 
-- Refresh your browser
+- Run `task run` and refresh your browser
+
+![Swagger Menu](assets/imgs/swagger-menu.png)
 
 ![Module Swagger](assets/imgs/module-swagger.png)
 
 ### Register Request Filter
 
-By default, you can not filter anything by query params. All of query params is ignored until you add filter by registering it in `configs/listeners.yaml`. Bima provide some filters depend on driver that you choose. For example, when you choose mysql, you can add in `configs/listeners.yaml` `filter:gorm` filter. Your listener file will be like below:
+Try to call `/api/v1/todos?fields=task&values=xxx` and do not effect like below 
 
-```yaml
-listeners:
-    - filter:gorm
 
-```
+![Before Filter](assets/imgs/before-filter.png)
 
-Now, you can rerun your service and try `/api/v1/todos?fields[]=task&values[]=xxx`
+Because by default skeleton doesn't provide filter. To apply request filter, you need to register your own filter or just use filter that provided by bima.
 
-Gorm filter defined in [gorm_filter.go](https://github.com/KejawenLab/bima/blob/main/listeners/paginations/gorm_filter.go), if you think the logic is not covering your needs, you can create your own filter by follow the `Listener` interface that decribed below
+First, i imagine you are use `mysql` or `postgresql` as driver, you need to add code below into your `todos/dic.go`
 
 ```go
-Listener interface {
-    Handle(event interface{}) interface{}
-    Listen() string
-    Priority() int
+// import "github.com/KejawenLab/bima/v3/listeners/paginations"
+{
+    Name:  "bima:listener:filter:gorm",
+    Build: (*paginations.GormFilter)(nil),
 }
 ```
 
-and then you can registering it into Dependency Injection Container in `<module>/dic.go` with prefix name `bima:listener:`. We use [Dingo](https://github.com/sarulabs/dingo) as DI Container and may you can read the documentation before you registering your filter.
+Then you need to register the `bima:listener:filter:gorm` to your `configs/listeners.yaml`
+
+```yaml
+listeners:
+    - filter:gorm # `bima:listener:` is required by skeleton 
+```
+
+Now, you can rerun using `task run` and try `/api/v1/todos?fields=task&values=xxx` and then the result like below
 
 
-After that, you can add your filter to `configs/listeners.yaml` as definition name without prefix in your DI Container.
-
-### Add New Route
-
-To add custom route, for easiest way is just copy from [`api_doc_redirect_route.go`](https://github.com/KejawenLab/bima/blob/main/routes/api_doc_redirect.go) and then modify the logic inside `Handle()` function, path and method. After that, you can add it into your DI Container with prefix `bima:route:` and then registering it into `configs/routes.yml` as definition name without prefix in your DI Container.
-
-### Create New Middleware
+![After Filter](assets/imgs/filter-applied.png)

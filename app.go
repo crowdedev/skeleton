@@ -2,6 +2,8 @@ package skeleton
 
 import (
 	"bytes"
+	"crypto/sha256"
+	"encoding/base64"
 	"fmt"
 	"log"
 	"net/url"
@@ -201,18 +203,26 @@ func loadEnv(config *configs.Env, filePath string, ext string) {
 			log.Fatalln(err.Error())
 		}
 	}
-}
 
-func processDotEnv(config *configs.Env) {
-	config.ApiVersion = os.Getenv("API_VERSION")
-	config.RequestIDHeader = os.Getenv("REQUEST_ID_HEADER")
-	config.Debug, _ = strconv.ParseBool(os.Getenv("APP_DEBUG"))
-	config.HttpPort, _ = strconv.Atoi(os.Getenv("APP_PORT"))
-	config.RpcPort, _ = strconv.Atoi(os.Getenv("GRPC_PORT"))
+	if config.Secret == "" {
+		hasher := sha256.New()
+		hasher.Write([]byte(time.Now().Format(time.RFC3339)))
+
+		config.Secret = base64.URLEncoding.EncodeToString(hasher.Sum(nil))
+	}
 
 	if config.RequestIDHeader == "" {
 		config.RequestIDHeader = "X-Request-Id"
 	}
+}
+
+func processDotEnv(config *configs.Env) {
+	config.ApiVersion = os.Getenv("API_VERSION")
+	config.Secret = os.Getenv("APP_SECRET")
+	config.RequestIDHeader = os.Getenv("REQUEST_ID_HEADER")
+	config.Debug, _ = strconv.ParseBool(os.Getenv("APP_DEBUG"))
+	config.HttpPort, _ = strconv.Atoi(os.Getenv("APP_PORT"))
+	config.RpcPort, _ = strconv.Atoi(os.Getenv("GRPC_PORT"))
 
 	sName := os.Getenv("APP_NAME")
 	config.Service = configs.Service{
