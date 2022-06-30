@@ -34,11 +34,11 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 - Run using `task run`
 
-![Default Empty](assets/imgs/empty-run.png)
+![Default Empty](assets/empty-run.png)
 
 - Open your browser and open `http://localhost:7777` or port assigned by you
 
-![Swagger](assets/imgs/empty-swagger.png)
+![Swagger](assets/empty-swagger.png)
 
 ### Create New Module
 
@@ -46,24 +46,24 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 - Follow the instructions 
 
-![Module Register](assets/imgs/module-register.png)
+![Module Register](assets/module-register.png)
 
 - Bima will generate `todos` folder as your module space, creating `protos/todo.proto`, register your module in `configs/modules.yaml` and register your Dependency Injection defined in `dic.go` to `configs/provider.go`
 
-![Module Structure](assets/imgs/module-structure.png)
+![Module Structure](assets/module-structure.png)
 
 - Run `task run` and refresh your browser
 
-![Swagger Menu](assets/imgs/swagger-menu.png)
+![Swagger Menu](assets/swagger-menu.png)
 
-![Module Swagger](assets/imgs/module-swagger.png)
+![Module Swagger](assets/module-swagger.png)
 
 ### Register Request Filter
 
 Try to call `/api/v1/todos?fields=task&values=xxx` and do not effect like below 
 
 
-![Before Filter](assets/imgs/before-filter.png)
+![Before Filter](assets/before-filter.png)
 
 Because by default skeleton doesn't provide filter. To apply request filter, you need to register your own filter or just use filter that provided by bima.
 
@@ -87,4 +87,89 @@ listeners:
 Now, you can rerun using `task run` and try `/api/v1/todos?fields=task&values=xxx` and then the result like below
 
 
-![After Filter](assets/imgs/filter-applied.png)
+![After Filter](assets/filter-applied.png)
+
+You can easy to create your own filter by implement `Listener` interface
+
+```go
+Listener interface {
+    Handle(event interface{}) interface{}
+    Listen() string
+    Priority() int
+}
+```
+
+The available events are below
+
+```go
+PaginationEvent   = Event("pagination")
+BeforeCreateEvent = Event("before_create")
+BeforeUpdateEvent = Event("before_update")
+BeforeDeleteEvent = Event("before_delete")
+AfterCreateEvent  = Event("after_create")
+AfterUpdateEvent  = Event("after_update")
+AfterDeleteEvent  = Event("after_delete")
+```
+
+You can refer default listeners in [listeners](listeners) for example
+
+### Your first middleware
+
+When you call `/api/v1/todos` you get response header like below
+
+![Response header](assets/default-response-header.png)
+
+For example, you want to add `X-Middleware` to your response header, first step, create file `middleware.go` in your `todos` folder and paste codes below
+
+```go
+package todos
+
+import (
+	"net/http"
+)
+
+type Middleware struct {
+}
+
+func (a *Middleware) Attach(_ *http.Request, response http.ResponseWriter) bool {
+	response.Header().Add("X-Middleware", "My first middleware")
+
+	return false
+}
+
+func (a *Middleware) Priority() int {
+	return 0
+}
+
+```
+
+And then, register your middleware into `todos/dic.go`
+
+```go
+{
+    Name:  "bima:middleware:todo",
+    Build: (*Middleware)(nil),
+}
+
+```
+
+Last, register your middleware to `configs/middlewares.yaml`
+
+```yaml
+middlewares:
+    - todo
+
+```
+
+Now, you can rerun using `task run` and try `/api/v1/todos` and then the result like below
+
+![Response header](assets/response-header-middleware.png)
+
+Very easy, right? You can create anything by implement `Middleware` interface
+
+```go
+Middleware interface {
+    Attach(request *http.Request, response http.ResponseWriter) bool
+    Priority() int
+}
+```
