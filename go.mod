@@ -3,11 +3,11 @@ module github.com/KejawenLab/skeleton/v3
 go 1.16
 
 require (
-	github.com/KejawenLab/bima/v3 v3.0.6
+	github.com/KejawenLab/bima/v3 v3.0.7
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gertd/go-pluralize v0.2.1
-	github.com/goccy/go-json v0.9.7
+	github.com/goccy/go-json v0.9.8
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.10.3
 	github.com/iancoleman/strcase v0.2.0
 	github.com/jinzhu/copier v0.3.5
@@ -24,10 +24,6 @@ require (
 )
 
 require (
-	github.com/klauspost/compress v1.15.7 // indirect
-	github.com/stretchr/testify v1.8.0 // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/tools v0.1.11 // indirect
-	gorm.io/driver/mysql v1.3.4 // indirect
-	gorm.io/driver/postgres v1.3.7 // indirect
 )

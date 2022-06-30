@@ -334,8 +334,8 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 
 func register(container *dic.Container, util *color.Color, name string) {
 	generator := container.GetBimaModuleGenerator()
-	module := container.GetBimaTemplateModule()
-	field := container.GetBimaTemplateField()
+	module := generators.ModuleTemplate{}
+	field := generators.FieldTemplate{}
 	mapType := utils.NewType()
 
 	util.Println("Welcome to Bima Skeleton Module Generator")
@@ -351,7 +351,7 @@ func register(container *dic.Container, util *color.Color, name string) {
 		}
 
 		if more {
-			addColumn(util, field, mapType)
+			addColumn(util, &field, mapType)
 
 			field.Name = strings.Replace(field.Name, " ", "", -1)
 			column := generators.FieldTemplate{}

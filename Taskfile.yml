@@ -5,6 +5,7 @@ tasks:
             - go run dumper/main.go
             - go run cmd/main.go module {{.CLI_ARGS}}
             - go mod tidy
+            - go run dumper/main.go
     run:
         cmds:
             - go run dumper/main.go
