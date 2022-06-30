@@ -3,7 +3,7 @@ module github.com/KejawenLab/skeleton/v3
 go 1.16
 
 require (
-	github.com/KejawenLab/bima/v3 v3.0.7
+	github.com/KejawenLab/bima/v3 v3.0.8
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gertd/go-pluralize v0.2.1
