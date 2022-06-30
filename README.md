@@ -165,7 +165,7 @@ Now, you can rerun using `task run` and try `/api/v1/todos` and then the result 
 
 ![Response header](assets/response-header-middleware.png)
 
-Very easy, right? You can create anything by implement `Middleware` interface
+Very easy, right? You can create anything by implement `Middleware` interface below
 
 ```go
 Middleware interface {
