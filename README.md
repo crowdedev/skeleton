@@ -48,7 +48,7 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ![Module Register](assets/module-register.png)
 
-- Bima will generate `todos` folder as your module space, creating `protos/todo.proto`, register your module in `configs/modules.yaml` and register your Dependency Injection defined in `dic.go` to `configs/provider.go`
+- Bima will generate `todos` folder as your module space, creating `protos/todo.proto`, register your module in `configs/modules.yaml` and register your Dependency Injection defined in `dic.go` into `configs/provider.go`
 
 ![Module Structure](assets/module-structure.png)
 
