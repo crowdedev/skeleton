@@ -316,7 +316,7 @@ For example, you want to add [Elasticsearch Hook](https://github.com/sohlich/elo
 }
 ```
 
-And then register your extension to `configs/loggers`
+And then register your extension to `configs/loggers.yaml`
 
 ```yaml
 loggers:
