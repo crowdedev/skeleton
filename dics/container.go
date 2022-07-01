@@ -28,7 +28,7 @@ var Container = []dingo.Def{
 		Params: dingo.Params{
 			"0": dingo.Service("bima:config"),
 			"1": dingo.Service("bima:event:dispatcher"),
-			"2": dingo.Service("bima:service:repository:gorm"),
+			"2": dingo.Service("bima:repository:gorm"),
 			"3": dingo.Service("bima:pagination:adapter:gorm"),
 		},
 	},

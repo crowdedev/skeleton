@@ -296,6 +296,36 @@ Rerun again and open `/api/docs` and your custom route is already there
 
 ![Route swagger](assets/route-swagger.png)
 
+### Use MongoDB
+
+By default, skeleton configured for RDBMS that defined in `dics/container.go` using `bima:repository:gorm`, you can just change to `bima:repository:mongo` when you want to change to MongoDB. Remember to add `MONGODB_HOST` and `MONGODB_PORT` in your `.env`
+
+### Add Logrus Hook
+
+For example, you want to add [Elasticsearch Hook](https://github.com/sohlich/elogrus), just add code below to `dics/container.go`
+
+```go
+{
+    Name: "bima:logger:extension:elasticsearch",
+    Build: func(client *elastic.Client) (*elogrus.ElasticHook, error) {
+        return elogrus.NewAsyncElasticHook(client, "localhost", logrus.DebugLevel, "mylog")
+    },
+    Params: dingo.Params{
+        "0": dingo.Service("bima:elasticsearch:client"),
+    },
+}
+```
+
+And then register your extension to `configs/loggers`
+
+```yaml
+loggers:
+    - elasticsearch
+
+```
+
+Don't forget to add `ELASTICSEARCH_HOST` and `ELASTICSEARCH_PORT` to your `.env`
+
 ### Remove module
 
 To remove module, just run `task module -- remove <name>`
