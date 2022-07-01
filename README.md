@@ -58,6 +58,8 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ![Module Swagger](assets/module-swagger.png)
 
+Now you can test your module directly from swagger.
+
 ### Register Request Filter
 
 Try to call `/api/v1/todos?fields=task&values=xxx` and do not effect like below 
@@ -293,3 +295,7 @@ By default, your custom route is not automatically added to swagger, you need to
 Rerun again and open `/api/docs` and your custom route is already there
 
 ![Route swagger](assets/route-swagger.png)
+
+### Remove module
+
+To remove module, just run `task module -- remove <name>`
