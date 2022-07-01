@@ -36,7 +36,7 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ![Default Empty](assets/empty-run.png)
 
-- Open your browser and open `http://localhost:7777` or port assigned by you
+- Open your browser and open `http://localhost:7777/api/docs` or port assigned by you
 
 ![Swagger](assets/empty-swagger.png)
 
