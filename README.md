@@ -233,7 +233,7 @@ routes:
 
 Rerun using `task run` and open `/api/v1/todos/hello/bima` and then the result like below
 
-![Response header](assets/add-route.png)
+![Add route](assets/add-route.png)
 
 Now, try to remove `todo` from `configs/middlewares.yaml` so your response header will be back like below
 
@@ -252,3 +252,44 @@ Rerun again and open `/api/v1/todos/hello/bima` and your middleware is there
 ![Response header](assets/middleware-route.png)
 
 But when you open `/api/v1/todos` or any page others, your middleware is not exists. Yes, your can also add middleware for specific route with easy.
+
+### Add new route to swagger
+
+By default, your custom route is not automatically added to swagger, you need to add manually. Open `todo.swagger.json` in `swaggers` folder using [Swagger Editor](https://editor.swagger.io) add this lines
+
+```json
+"/api/v1/todos/hello/{name}": {
+    "get": {
+    "operationId": "Todos_Hello_World",
+    "responses": {
+        "200": {
+        "description": "A successful response.",
+            "schema": {
+                "type": "string"
+            }
+        },
+        "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+                "$ref": "#/definitions/rpcStatus"
+            }
+        }
+    },
+    "parameters": [
+        {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+        }
+    ],
+    "tags": [
+            "Todos"
+        ]
+    }
+}
+```
+
+Rerun again and open `/api/docs` and your custom route is already there
+
+![Route swagger](assets/route-swagger.png)
