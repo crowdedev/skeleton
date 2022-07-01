@@ -111,7 +111,7 @@ AfterUpdateEvent  = Event("after_update")
 AfterDeleteEvent  = Event("after_delete")
 ```
 
-You can refer default listeners in [listeners](https://github.com/KejawenLab/bima/tree/main/listeners) for example
+You can refer default listeners in [`listeners`](https://github.com/KejawenLab/bima/tree/main/listeners) for example
 
 ### Your first middleware
 
