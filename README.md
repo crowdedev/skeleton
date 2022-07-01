@@ -77,7 +77,7 @@ First, i imagine you are use `mysql` or `postgresql` as driver, you need to add 
 }
 ```
 
-Then you need to register the `bima:listener:filter:gorm` to your `configs/listeners.yaml`
+We use [Dingo](https://github.com/sarulabs/dingo) to manage dependencies, you can refer to dedicated documentation to learn about Dependency Injectin using Dingo. Then you need to register the `bima:listener:filter:gorm` to your `configs/listeners.yaml`
 
 ```yaml
 listeners:
