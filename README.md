@@ -111,7 +111,7 @@ AfterUpdateEvent  = Event("after_update")
 AfterDeleteEvent  = Event("after_delete")
 ```
 
-You can refer default listeners in [listeners](listeners) for example
+You can refer default listeners in [listeners](https://github.com/KejawenLab/bima/tree/main/listeners) for example
 
 ### Your first middleware
 
@@ -173,3 +173,82 @@ Middleware interface {
     Priority() int
 }
 ```
+
+### Add new route
+
+For example, you want to add new page `/todos/hello/{name}` that response `Hello <name>` string, first add `route.go` to your `todos` folder
+
+```go
+package todos
+
+import (
+	"bytes"
+	"net/http"
+
+	"github.com/KejawenLab/bima/v3/middlewares"
+	"google.golang.org/grpc"
+)
+
+type HelloWorld struct {
+}
+
+func (a *HelloWorld) Path() string {
+	return "/todos/hello/{name}"
+}
+
+func (a *HelloWorld) Method() string {
+	return http.MethodGet
+}
+
+func (a *HelloWorld) SetClient(client *grpc.ClientConn) {}
+
+func (a *HelloWorld) Middlewares() []middlewares.Middleware {
+	return nil
+}
+
+func (a *HelloWorld) Handle(w http.ResponseWriter, r *http.Request, params map[string]string) {
+	w.Write([]byte("Hello " + params["name"]))
+}
+
+```
+
+And then, register your middleware into `todos/dic.go`
+
+```go
+{
+    Name:  "bima:route:hello",
+    Build: (*HelloWorld)(nil),
+}
+
+```
+
+Last, register your middleware to `configs/routes.yaml`
+
+
+```yaml
+routes:
+    - hello
+
+```
+
+Rerun using `task run` and open `/todos/hello` and then the result like below
+
+![Response header](assets/add-route.png)
+
+Now, try to remove `todo` from `configs/middlewares.yaml` so your response header will be back like below
+
+![Response header](assets/default-response-header.png)
+
+And then change your `route.go` to
+
+```go
+func (a *HelloWorld) Middlewares() []middlewares.Middleware {
+	return []middlewares.Middleware{&Middleware{}}
+}
+```
+
+Rerun again and open `/hello/world/bima` and your middleware is there
+
+![Response header](assets/middleware-route.png)
+
+But when you open `/api/v1/todos` or any page others, your middleware is not exists. Yes, your can also add middleware for specific your with easy.
