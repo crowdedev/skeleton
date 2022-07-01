@@ -176,7 +176,7 @@ Middleware interface {
 
 ### Add new route
 
-For example, you want to add new page `/todos/hello/{name}` that response `Hello <name>` string, first add `route.go` to your `todos` folder
+For example, you want to add new page `/api/v1/todos/hello/{name}` that response `Hello <name>` string, first add `route.go` to your `todos` folder
 
 ```go
 package todos
@@ -193,7 +193,7 @@ type HelloWorld struct {
 }
 
 func (a *HelloWorld) Path() string {
-	return "/todos/hello/{name}"
+	return "/api/v1/todos/hello/{name}"
 }
 
 func (a *HelloWorld) Method() string {
@@ -231,7 +231,7 @@ routes:
 
 ```
 
-Rerun using `task run` and open `/todos/hello` and then the result like below
+Rerun using `task run` and open `/api/v1/todos/hello/bima` and then the result like below
 
 ![Response header](assets/add-route.png)
 
@@ -247,7 +247,7 @@ func (a *HelloWorld) Middlewares() []middlewares.Middleware {
 }
 ```
 
-Rerun again and open `/hello/world/bima` and your middleware is there
+Rerun again and open `/api/v1/todos/hello/bima` and your middleware is there
 
 ![Response header](assets/middleware-route.png)
 

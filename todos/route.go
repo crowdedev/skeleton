@@ -11,7 +11,7 @@ type HelloWorld struct {
 }
 
 func (a *HelloWorld) Path() string {
-	return "/todos/hello/{name}"
+	return "/api/v1/todos/hello/{name}"
 }
 
 func (a *HelloWorld) Method() string {
