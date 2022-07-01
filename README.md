@@ -251,4 +251,4 @@ Rerun again and open `/api/v1/todos/hello/bima` and your middleware is there
 
 ![Response header](assets/middleware-route.png)
 
-But when you open `/api/v1/todos` or any page others, your middleware is not exists. Yes, your can also add middleware for specific your with easy.
+But when you open `/api/v1/todos` or any page others, your middleware is not exists. Yes, your can also add middleware for specific route with easy.
