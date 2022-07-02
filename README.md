@@ -329,3 +329,11 @@ Don't forget to add `ELASTICSEARCH_HOST` and `ELASTICSEARCH_PORT` to your `.env`
 ### Remove module
 
 To remove module, just run `task module -- remove <name>`
+
+### Tutorial
+
+- [x] [Jwt Login](docs/jwt.md)
+
+- [X] [Distributed Tracing (RequestID)](docs/requestid.md)
+
+- [ ] Sync data to elasticsearch

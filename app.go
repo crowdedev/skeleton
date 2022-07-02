@@ -255,15 +255,6 @@ func processDotEnv(config *configs.Env) {
 		Password: os.Getenv("AMQP_PASSWORD"),
 	}
 
-	minRole, _ := strconv.Atoi(os.Getenv("AUTH_HEADER_MIN_ROLE"))
-	config.AuthHeader = configs.AuthHeader{
-		Id:        os.Getenv("AUTH_HEADER_ID"),
-		Email:     os.Getenv("AUTH_HEADER_EMAIL"),
-		Role:      os.Getenv("AUTH_HEADER_ROLE"),
-		Whitelist: os.Getenv("AUTH_HEADER_WHITELIST"),
-		MinRole:   minRole,
-	}
-
 	config.CacheLifetime, _ = strconv.Atoi(os.Getenv("CACHE_LIFETIME"))
 }
 

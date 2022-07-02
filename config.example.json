@@ -9,13 +9,6 @@
     "service": {
         "name": "Bima Skeleton"
     },
-    "auth_header": {
-        "id": "User-Id",
-        "email": "User-Email",
-        "role": "User-Type",
-        "whitelist": "/api/docs|/health$",
-        "min_role": 2
-    },
     "database": {
         "driver": "mysql",
         "host": "localhost",
