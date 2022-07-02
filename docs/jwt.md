@@ -58,6 +58,8 @@ middlewares:
     - jwt
 ```
 
+You can access user using `configs.Env.User` or via `request.Header.Get("X-Bima-User")`
+
 ## Implement Refresh  JWT
 
 - Add refresh jwt route to `dics/container.go`
