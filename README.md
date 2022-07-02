@@ -69,7 +69,7 @@ Try to call `/api/v1/todos?fields=task&values=xxx` and do not effect like below
 
 Because by default skeleton doesn't provide filter. To apply request filter, you need to register your own filter or just use filter that provided by bima.
 
-First, i imagine you are use `mysql` or `postgresql` as driver, you need to add code below into your `todos/dic.go`
+First, i assume you are use `mysql` or `postgresql` as driver, you need to add code below into your `todos/dic.go`
 
 ```go
 // import "github.com/KejawenLab/bima/v3/listeners/paginations"
@@ -336,4 +336,6 @@ To remove module, just run `task module -- remove <name>`
 
 - [X] [Distributed Tracing (RequestID)](docs/requestid.md)
 
-- [ ] Sync data to elasticsearch
+- [ ] Sync data to Elasticsearch
+
+- [ ] Use Elasticsearch paginator
