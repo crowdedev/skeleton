@@ -35,10 +35,8 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/CAFxX/httpcompression v0.0.8 h1:UBWojERnpCS6X7whJkGGZeCC3ruZBRwkwkcnfGfb0ko=
 github.com/CAFxX/httpcompression v0.0.8/go.mod h1:bVd1taHK1vYb5SWe9lwNDCqrfj2ka+C1Zx7JHzxuHnU=
-github.com/KejawenLab/bima/v3 v3.2.1 h1:d3wz2GLEPf5MfkyD5/R3hZjksMlq5KQ48vpU+jhq3W8=
-github.com/KejawenLab/bima/v3 v3.2.1/go.mod h1:skeXrgOALT4j6+2ElbZ3gfG5BZF/O5CeMa2xoExQAZ0=
-github.com/KejawenLab/bima/v3 v3.2.2 h1:ku+QaPvh21orXtie/1Gu82wn7ZGZq9aIcp0qhxRCZwg=
-github.com/KejawenLab/bima/v3 v3.2.2/go.mod h1:skeXrgOALT4j6+2ElbZ3gfG5BZF/O5CeMa2xoExQAZ0=
+github.com/KejawenLab/bima/v3 v3.2.5 h1:2Vvjalky2178gKkdQBQFy/oduYxVp+S3wxqDDzxseF4=
+github.com/KejawenLab/bima/v3 v3.2.5/go.mod h1:skeXrgOALT4j6+2ElbZ3gfG5BZF/O5CeMa2xoExQAZ0=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/ThreeDotsLabs/watermill v1.2.0-rc.6/go.mod h1:QLZSaklpSZ/7yv288LL2DFOgCEi86VYEmQvzmaMlHoA=
