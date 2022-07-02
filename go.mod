@@ -2,8 +2,10 @@ module github.com/KejawenLab/skeleton/v3
 
 go 1.16
 
+replace github.com/KejawenLab/bima/v3 v3.2.6 => ../bima
+
 require (
-	github.com/KejawenLab/bima/v3 v3.2.5
+	github.com/KejawenLab/bima/v3 v3.2.6
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gertd/go-pluralize v0.2.1
@@ -28,5 +30,6 @@ require (
 	golang.org/x/sys v0.0.0-20220702020025-31831981b65f // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/tools v0.1.11 // indirect
-	google.golang.org/genproto v0.0.0-20220630174209-ad1d48641aa7 // indirect
+	google.golang.org/genproto v0.0.0-20220630174209-ad1d48641aa7
+	google.golang.org/grpc v1.47.0
 )

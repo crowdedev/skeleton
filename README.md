@@ -334,8 +334,10 @@ To remove module, just run `task module -- remove <name>`
 
 - [x] [Jwt Login](docs/jwt.md)
 
-- [X] [Distributed Tracing (RequestID)](docs/requestid.md)
+- [x] [Distributed Tracing (RequestID)](docs/requestid.md)
 
-- [ ] Sync data to Elasticsearch
+- [x] [Add Custom Action](docs/custom_action.md)
 
-- [ ] Use Elasticsearch paginator
+- [x] [Sync data to Elasticsearch](docs/sync_to_elasticsearch.md)
+
+- [x] Use Elasticsearch paginator
