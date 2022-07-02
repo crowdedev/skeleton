@@ -48,4 +48,20 @@
 }
 ```
 
+- Implement Elasticsearch filter
+
+```go
+{
+    Name:  "bima:listener:filter:elasticsearch",
+    Build: (*filters.ElasticsearchFilter)(nil),
+}
+```
+
+- Add to your `configs/listeners.yaml`
+
+```yaml
+listeners:
+    - filter:elasticsearch
+```
+
 - Rerun your service

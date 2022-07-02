@@ -60,8 +60,55 @@ ELASTICSEARCH_PORT=9200
 
 ## Sync Data to Elasticsearch using Listener
 
-#### Sync when create
+- Add to your `dics/container.go`
 
-#### Sync when update
+```go
+{
+    Name: "bima:listener:elasticsearch:create",
+    Build: func(env *configs.Env, client *elastic.Client) (*creates.Elasticsearch, error) {
+        return &creates.Elasticsearch{
+            Service:       env.Service.ConnonicalName,
+            Elasticsearch: client,
+        }, nil
+    },
+    Params: dingo.Params{
+        "0": dingo.Service("bima:config"),
+        "1": dingo.Service("bima:elasticsearch:client"),
+    },
+},
+{
+    Name: "bima:listener:elasticsearch:update",
+    Build: func(env *configs.Env, client *elastic.Client) (*updates.Elasticsearch, error) {
+        return &updates.Elasticsearch{
+            Service:       env.Service.ConnonicalName,
+            Elasticsearch: client,
+        }, nil
+    },
+    Params: dingo.Params{
+        "0": dingo.Service("bima:config"),
+        "1": dingo.Service("bima:elasticsearch:client"),
+    },
+},
+{
+    Name: "bima:listener:elasticsearch:delete",
+    Build: func(env *configs.Env, client *elastic.Client) (*deletes.Elasticsearch, error) {
+        return &deletes.Elasticsearch{
+            Service:       env.Service.ConnonicalName,
+            Elasticsearch: client,
+        }, nil
+    },
+    Params: dingo.Params{
+        "0": dingo.Service("bima:config"),
+        "1": dingo.Service("bima:elasticsearch:client"),
+    },
+},
+```
 
-#### Sync when delete
+- Add to your `configs/listeners.yaml`
+
+```yaml
+listeners:
+    - elasticsearch:create
+    - elasticsearch:update
+    - elasticsearch:delete
+```

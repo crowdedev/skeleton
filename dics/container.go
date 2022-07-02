@@ -7,7 +7,6 @@ import (
 	"github.com/KejawenLab/bima/v3/paginations"
 	"github.com/KejawenLab/bima/v3/paginations/adapter"
 	"github.com/KejawenLab/bima/v3/repositories"
-	"github.com/olivere/elastic/v7"
 	"github.com/sarulabs/dingo/v4"
 	"gorm.io/gorm"
 )
@@ -33,22 +32,6 @@ var Container = []dingo.Def{
 		},
 	},
 	{
-		Name: "bima:pagination:adapter:elasticsearch",
-		Build: func(env *configs.Env, client *elastic.Client, dispatcher *events.Dispatcher) (*adapter.ElasticsearchAdapter, error) {
-			return &adapter.ElasticsearchAdapter{
-				Debug:      env.Debug,
-				Service:    env.Service.ConnonicalName,
-				Client:     client,
-				Dispatcher: dispatcher,
-			}, nil
-		},
-		Params: dingo.Params{
-			"0": dingo.Service("bima:config"),
-			"1": dingo.Service("bima:elasticsearch:client"),
-			"2": dingo.Service("bima:event:dispatcher"),
-		},
-	},
-	{
 		Name: "bima:handler",
 		Build: func(
 			env *configs.Env,
@@ -67,7 +50,7 @@ var Container = []dingo.Def{
 			"0": dingo.Service("bima:config"),
 			"1": dingo.Service("bima:event:dispatcher"),
 			"2": dingo.Service("bima:repository:gorm"),
-			"3": dingo.Service("bima:pagination:adapter:elasticsearch"),
+			"3": dingo.Service("bima:pagination:adapter:gorm"),
 		},
 	},
 }
