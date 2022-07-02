@@ -298,7 +298,7 @@ Rerun again and open `/api/docs` and your custom route is already there
 
 ### Use MongoDB
 
-By default, skeleton configured for RDBMS that defined in `dics/container.go` using `bima:repository:gorm`, you can just change to `bima:repository:mongo` when you want to change to MongoDB. Remember to add `MONGODB_HOST` and `MONGODB_PORT` in your `.env`
+By default, skeleton configured for RDBMS that defined in `dics/container.go` using `bima:repository:gorm`, you can just change to `bima:repository:mongo` when you want to change to MongoDB.
 
 ### Add Logrus Hook
 
