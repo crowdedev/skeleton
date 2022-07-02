@@ -340,4 +340,4 @@ To remove module, just run `task module -- remove <name>`
 
 - [x] [Sync data to Elasticsearch](docs/sync_to_elasticsearch.md)
 
-- [x] Use Elasticsearch paginator
+- [x] [Use Elasticsearch paginator](docs/elasticsearch_paginator.md)
