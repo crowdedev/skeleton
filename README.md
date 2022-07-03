@@ -333,7 +333,7 @@ By default, skeleton configured for RDBMS that defined in `dics/container.go` us
 DB_DRIVER=mongo
 DB_HOST=localhost
 DB_PORT=27017
-DB_NAME=btpns_skeleton
+DB_NAME=bima_skeleton
 DB_USER=mongo
 DB_PASSWORD=s3cr3t
 ```
