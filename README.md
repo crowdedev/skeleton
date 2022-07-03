@@ -388,4 +388,6 @@ To remove module, just run `task module -- remove <name>`
 
 - [ ] [Create Your Own Pagination Adapter](docs/pagination_adapter.md)
 
-- [ ] [Using MongoDB as Storage Driver](docs/mongodb.md)
+- [ ] [Use MongoDB as Storage Driver](docs/mongodb.md)
+
+- [ ] [Use Kafka in Message Broker](docs/kafka.md)
