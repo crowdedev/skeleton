@@ -61,7 +61,7 @@ DB_PASSWORD=aden
 
 ### Create New Module
 
-- Add `API_VERSION` to `.env`
+- Add `API_VERSION=v1` to `.env`
 
 - Run `task module -- add <name>`
 
