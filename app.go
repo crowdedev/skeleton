@@ -57,52 +57,52 @@ func (_ Application) Run(config string) {
 
 	ext = parsers.ParseModule(workDir)
 	servers := make([]configs.Server, len(ext))
-	for _, c := range ext {
+	for k, c := range ext {
 		cName.Reset()
 		cName.WriteString(c)
 		cName.WriteString(":server")
 
-		servers = append(servers, container.Get(cName.String()).(configs.Server))
+		servers[k] = container.Get(cName.String()).(configs.Server)
 	}
 
 	ext = parsers.ParseListener(workDir)
 	listeners := make([]events.Listener, len(ext))
-	for _, c := range ext {
+	for k, c := range ext {
 		cName.Reset()
 		cName.WriteString("bima:listener:")
 		cName.WriteString(c)
 
-		listeners = append(listeners, container.Get(cName.String()).(events.Listener))
+		listeners[k] = container.Get(cName.String()).(events.Listener)
 	}
 
 	ext = parsers.ParseMiddleware(workDir)
 	hooks := make([]middlewares.Middleware, len(ext))
-	for _, c := range ext {
+	for k, c := range ext {
 		cName.Reset()
 		cName.WriteString("bima:middleware:")
 		cName.WriteString(c)
 
-		hooks = append(hooks, container.Get(cName.String()).(middlewares.Middleware))
+		hooks[k] = container.Get(cName.String()).(middlewares.Middleware)
 	}
 
 	ext = parsers.ParseLogger(workDir)
 	extensions := make([]logrus.Hook, len(ext))
-	for _, c := range ext {
+	for k, c := range ext {
 		cName.Reset()
 		cName.WriteString("bima:logger:extension:")
 		cName.WriteString(c)
 
-		extensions = append(extensions, container.Get(cName.String()).(logrus.Hook))
+		extensions[k] = container.Get(cName.String()).(logrus.Hook)
 	}
 
 	ext = parsers.ParseRoute(workDir)
 	handlers := make([]routes.Route, len(ext))
-	for _, c := range ext {
+	for k, c := range ext {
 		cName.Reset()
 		cName.WriteString("bima:route:")
 		cName.WriteString(c)
 
-		handlers = append(handlers, container.Get(cName.String()).(routes.Route))
+		handlers[k] = container.Get(cName.String()).(routes.Route)
 	}
 
 	container.GetBimaRouterMux().Register(handlers)
