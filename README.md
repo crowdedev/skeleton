@@ -50,7 +50,7 @@ I assume you use `mysql` as driver
 DB_DRIVER=mysql
 DB_HOST=localhost
 DB_PORT=3306
-DB_NAME=btpns_skeleton
+DB_NAME=bima_skeleton
 DB_USER=root
 DB_PASSWORD=aden
 ```
