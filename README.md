@@ -364,6 +364,10 @@ loggers:
 
 Don't forget to add `ELASTICSEARCH_HOST` and `ELASTICSEARCH_PORT` to your `.env`
 
+### Using Yaml or Json config
+
+To run application using yaml or json config, you can run using `task run -- <file>.<ext>`
+
 ### Remove module
 
 To remove module, just run `task module -- remove <name>`
@@ -385,8 +389,6 @@ To remove module, just run `task module -- remove <name>`
 - [x] [Convert Mux Middleware to Bima Middleware](docs/convert_middleware.md)
 
 - [x] [Create Your Own Database Driver](docs/driver.md)
-
-- [x] [Create Your Own Pagination Adapter](docs/pagination_adapter.md)
 
 - [ ] [Use MongoDB as Storage Driver](docs/mongodb.md)
 

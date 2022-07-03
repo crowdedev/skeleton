@@ -3,7 +3,6 @@ secret: s3cr3t
 http_port: 7777
 rpc_port: 1717
 api_version: v1
-request_id_header: X-Request-Id
 cache_lifetime: 1020
 service:
   name: Bima Skeleton

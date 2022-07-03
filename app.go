@@ -52,9 +52,12 @@ func (_ Application) Run(config string) {
 	workDir, _ := os.Getwd()
 	util := color.New(color.FgCyan, color.Bold)
 
+	var ext []string
 	var cName bytes.Buffer
-	var servers []configs.Server
-	for _, c := range parsers.ParseModule(workDir) {
+
+	ext = parsers.ParseModule(workDir)
+	servers := make([]configs.Server, len(ext))
+	for _, c := range ext {
 		cName.Reset()
 		cName.WriteString(c)
 		cName.WriteString(":server")
@@ -62,8 +65,9 @@ func (_ Application) Run(config string) {
 		servers = append(servers, container.Get(cName.String()).(configs.Server))
 	}
 
-	var listeners []events.Listener
-	for _, c := range parsers.ParseListener(workDir) {
+	ext = parsers.ParseListener(workDir)
+	listeners := make([]events.Listener, len(ext))
+	for _, c := range ext {
 		cName.Reset()
 		cName.WriteString("bima:listener:")
 		cName.WriteString(c)
@@ -71,8 +75,9 @@ func (_ Application) Run(config string) {
 		listeners = append(listeners, container.Get(cName.String()).(events.Listener))
 	}
 
-	var hooks []middlewares.Middleware
-	for _, c := range parsers.ParseMiddleware(workDir) {
+	ext = parsers.ParseMiddleware(workDir)
+	hooks := make([]middlewares.Middleware, len(ext))
+	for _, c := range ext {
 		cName.Reset()
 		cName.WriteString("bima:middleware:")
 		cName.WriteString(c)
@@ -80,8 +85,9 @@ func (_ Application) Run(config string) {
 		hooks = append(hooks, container.Get(cName.String()).(middlewares.Middleware))
 	}
 
-	var extensions []logrus.Hook
-	for _, c := range parsers.ParseLogger(workDir) {
+	ext = parsers.ParseLogger(workDir)
+	extensions := make([]logrus.Hook, len(ext))
+	for _, c := range ext {
 		cName.Reset()
 		cName.WriteString("bima:logger:extension:")
 		cName.WriteString(c)
@@ -89,8 +95,9 @@ func (_ Application) Run(config string) {
 		extensions = append(extensions, container.Get(cName.String()).(logrus.Hook))
 	}
 
-	var handlers []routes.Route
-	for _, c := range parsers.ParseRoute(workDir) {
+	ext = parsers.ParseRoute(workDir)
+	handlers := make([]routes.Route, len(ext))
+	for _, c := range ext {
 		cName.Reset()
 		cName.WriteString("bima:route:")
 		cName.WriteString(c)
