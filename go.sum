@@ -35,8 +35,6 @@ github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
 github.com/CAFxX/httpcompression v0.0.8 h1:UBWojERnpCS6X7whJkGGZeCC3ruZBRwkwkcnfGfb0ko=
 github.com/CAFxX/httpcompression v0.0.8/go.mod h1:bVd1taHK1vYb5SWe9lwNDCqrfj2ka+C1Zx7JHzxuHnU=
-github.com/KejawenLab/bima/v3 v3.2.8 h1:WzVx7a61opzGNE9YoOSGTkIP8PFqkzIV8B0xJ5OciAY=
-github.com/KejawenLab/bima/v3 v3.2.8/go.mod h1:skeXrgOALT4j6+2ElbZ3gfG5BZF/O5CeMa2xoExQAZ0=
 github.com/KejawenLab/bima/v3 v3.2.9 h1:G1nWMOSicJ7/+kvDlg46HdPEWuBjk5XQjjpFniXCMF4=
 github.com/KejawenLab/bima/v3 v3.2.9/go.mod h1:skeXrgOALT4j6+2ElbZ3gfG5BZF/O5CeMa2xoExQAZ0=
 github.com/Masterminds/semver/v3 v3.1.1 h1:hLg3sBzpNErnxhQtUy/mmLR2I9foDujNK030IGemrRc=

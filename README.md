@@ -382,11 +382,11 @@ To remove module, just run `task module -- remove <name>`
 
 - [x] [Use Pub/Sub to publish and consume message](docs/pub_sub.md)
 
-- [ ] [Convert Mux Middleware to Bima Middleware](docs/convert_middleware.md)
+- [x] [Convert Mux Middleware to Bima Middleware](docs/convert_middleware.md)
 
-- [ ] [Create Your Own Database Driver](docs/driver.md)
+- [x] [Create Your Own Database Driver](docs/driver.md)
 
-- [ ] [Create Your Own Pagination Adapter](docs/pagination_adapter.md)
+- [x] [Create Your Own Pagination Adapter](docs/pagination_adapter.md)
 
 - [ ] [Use MongoDB as Storage Driver](docs/mongodb.md)
 
