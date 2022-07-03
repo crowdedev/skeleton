@@ -28,9 +28,7 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 - Download dependencies using `task clean` command
 
-- Create `bima_skeleton` database
-
-- Copy `env.example` to `.env` and changes `DB_DRIVER`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` values
+- Copy `env.example` to `.env`
 
 - Run using `task run`
 
@@ -40,7 +38,30 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 
 ![Swagger](assets/empty-swagger.png)
 
+## Connect to Database
+
+I assume you use `mysql` as driver
+
+- Create `bima_skeleton` database
+
+- Add `DB_DRIVER`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` to `.env`
+
+```bash
+DB_DRIVER=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=btpns_skeleton
+DB_USER=root
+DB_PASSWORD=aden
+```
+
+- Rerun your service using `task run` and you got new message `Database configured using mysql driver` like below
+
+![Databases](assets/database-configured.png)
+
 ### Create New Module
+
+- Add `API_VERSION` to `.env`
 
 - Run `task module -- add <name>`
 
@@ -59,6 +80,14 @@ Check the [video](https://www.youtube.com/watch?v=zZPpDizZGIM)
 ![Module Swagger](assets/module-swagger.png)
 
 Now you can test your module directly from swagger.
+
+### Cache Get By ID Result
+
+By default, get by ID (single) result is cached by Bima and invalidate using `PUT` or `DELETE` when ID matches. By default, cache lifetime is `0` (no cache), you can easly adjust by adding `CACHE_LIFETIME` to your `.env`
+
+```bash
+CACHE_LIFETIME=1020
+```
 
 ### Register Request Filter
 
@@ -298,7 +327,16 @@ Rerun again and open `/api/docs` and your custom route is already there
 
 ### Use MongoDB
 
-By default, skeleton configured for RDBMS that defined in `dics/container.go` using `bima:repository:gorm`, you can just change to `bima:repository:mongo` when you want to change to MongoDB.
+By default, skeleton configured for RDBMS that defined in `dics/container.go` using `bima:repository:gorm`, you can just change to `bima:repository:mongo` when you want to change to MongoDB. You need to change `DB_DRIVER`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` values depend on your setting
+
+```bash
+DB_DRIVER=mongo
+DB_HOST=localhost
+DB_PORT=27017
+DB_NAME=btpns_skeleton
+DB_USER=mongo
+DB_PASSWORD=s3cr3t
+```
 
 ### Add Logrus Hook
 
@@ -341,3 +379,9 @@ To remove module, just run `task module -- remove <name>`
 - [x] [Sync data to Elasticsearch](docs/sync_to_elasticsearch.md)
 
 - [x] [Use Elasticsearch paginator](docs/elasticsearch_paginator.md)
+
+- [x] [Use Pub/Sub to publish and consume message](docs/pub_sub.md)
+
+- [ ] [Convert Mux Middleware to Bima Middleware](docs/convert_middleware.md)
+
+- [ ] [Create Your Own Database Driver](docs/driver.md)

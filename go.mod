@@ -3,7 +3,7 @@ module github.com/KejawenLab/skeleton/v3
 go 1.16
 
 require (
-	github.com/KejawenLab/bima/v3 v3.2.7
+	github.com/KejawenLab/bima/v3 v3.2.8
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gertd/go-pluralize v0.2.1
@@ -20,7 +20,7 @@ require (
 	golang.org/x/mod v0.6.0-dev.0.20220419223038-86c51ed26bb4
 	google.golang.org/protobuf v1.28.0
 	gopkg.in/yaml.v2 v2.4.0
-	gorm.io/gorm v1.23.7
+	gorm.io/gorm v1.23.7 // indirect
 )
 
 require (

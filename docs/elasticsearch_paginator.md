@@ -1,5 +1,7 @@
 # Use Elasticseearch Paginator
 
+- Make sure `ELASTICSEARCH_HOST`, `ELASTICSEARCH_PORT` is defined in `.env`
+
 - Add Elasticsearch adapter to `dics/container.go`
 
 ```go

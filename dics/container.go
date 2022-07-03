@@ -8,27 +8,27 @@ import (
 	"github.com/KejawenLab/bima/v3/paginations/adapter"
 	"github.com/KejawenLab/bima/v3/repositories"
 	"github.com/sarulabs/dingo/v4"
-	"gorm.io/gorm"
 )
 
 var Container = []dingo.Def{
 	{
+		Name:  "bima:repository:gorm",
+		Build: (*repositories.GormRepository)(nil),
+	},
+	{
 		Name: "bima:pagination:adapter:gorm",
 		Build: func(
 			env *configs.Env,
-			db *gorm.DB,
 			dispatcher *events.Dispatcher,
 		) (*adapter.GormAdapter, error) {
 			return &adapter.GormAdapter{
 				Debug:      env.Debug,
-				Database:   db,
 				Dispatcher: dispatcher,
 			}, nil
 		},
 		Params: dingo.Params{
 			"0": dingo.Service("bima:config"),
-			"1": dingo.Service("bima:database"),
-			"2": dingo.Service("bima:event:dispatcher"),
+			"1": dingo.Service("bima:event:dispatcher"),
 		},
 	},
 	{

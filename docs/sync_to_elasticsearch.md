@@ -2,7 +2,7 @@
 
 ## Populate Data to Elasticsearch
 
-Bima support elasticsearch out the box and make it easier, i promise to you
+- Make sure `ELASTICSEARCH_HOST`, `ELASTICSEARCH_PORT` is defined in `.env`
 
 - You must use `mysql` or `postgresql` as driver
 
