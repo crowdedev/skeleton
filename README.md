@@ -376,6 +376,8 @@ To remove module, just run `task module -- remove <name>`
 
 - [x] [Jwt Login](docs/jwt.md)
 
+- [x] [Basic Auth](docs/basic.md)
+
 - [x] [Distributed Tracing (RequestID)](docs/requestid.md)
 
 - [x] [Add Custom Action](docs/custom_action.md)
@@ -393,3 +395,11 @@ To remove module, just run `task module -- remove <name>`
 - [ ] [Use MongoDB as Storage Driver](docs/mongodb.md)
 
 - [ ] [Use Kafka in Message Broker](docs/kafka.md)
+
+### Middlewares
+
+- [x] [Basic Auth](https://github.com/KejawenLab/bima/blob/main/middlewares/basic_auth.go)
+
+- [x] [Jwt Atuh](https://github.com/KejawenLab/bima/blob/main/middlewares/jwt.go)
+
+- [x] [RequestID](https://github.com/KejawenLab/bima/blob/main/middlewares/requestid.go)

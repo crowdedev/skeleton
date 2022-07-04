@@ -19,5 +19,5 @@ middlewares:
     - requestid
 ```
 
-RequestID added to your response header
+RequestID added to response header
 
