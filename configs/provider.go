@@ -3,7 +3,6 @@ package dics
 
 import (
     //@modules:import
-    todo "github.com/KejawenLab/skeleton/v3/todos"
 	core "github.com/KejawenLab/bima/v4/dics"
 	"github.com/KejawenLab/skeleton/v3/dics"
 	"github.com/sarulabs/dingo/v4"
@@ -27,8 +26,6 @@ func (p *Engine) Load() error {
 	if err := p.AddDefSlice(dics.Container); err != nil {
 		return err
 	}
-
-    /*@module:todo*/if err := p.AddDefSlice(todo.Dic); err != nil {return err}
     //@modules:register
 
 	return nil

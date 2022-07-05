@@ -131,10 +131,7 @@ func (_ Application) Run(config string) {
 	}
 
 	application := container.GetBimaApplication()
-	if len(servers) > 0 {
-		loadInterface(container, application, *env)
-	}
-
+	loadInterface(container, application, *env)
 	application.Run(servers)
 }
 

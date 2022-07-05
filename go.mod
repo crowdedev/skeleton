@@ -26,8 +26,6 @@ require (
 	github.com/pierrec/lz4/v4 v4.1.15 // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/tools v0.1.11 // indirect
-	google.golang.org/genproto v0.0.0-20220630174209-ad1d48641aa7
 	google.golang.org/grpc v1.47.0
 	gorm.io/driver/postgres v1.3.8 // indirect
-	gorm.io/gorm v1.23.7
 )

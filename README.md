@@ -397,6 +397,8 @@ To remove module, just run `task module -- remove <name>`
 
 - [ ] [Use Kafka in Message Broker](docs/kafka.md)
 
+- [ ] [Use Google Cloud in Message Broker](docs/google_cloud.md)
+
 ### Middlewares
 
 - [x] [Basic Auth](https://github.com/KejawenLab/bima/blob/main/middlewares/basic_auth.go)
