@@ -1,14 +1,86 @@
 # Implement Pub/Sub
 
-## Config
+- Add RabbitMQ config to `dics/container.go`
 
-Add `AMQP_HOST`, `AMQP_PORT`, `AMQP_USER` and `AMQP_PASSWORD` to `.env`
+```go
+{
+    Name:  "bima:messenger:config",
+    Scope: bima.Application,
+    Build: func(dsn string) (amqp.Config, error) {
+        return amqp.NewDurableQueueConfig(dsn), nil
+    },
+    Params: dingo.Params{
+        "0": "amqp://guest:guest@localhost:5672",
+    },
+},
+{
+    Name:  "bima:publisher",
+    Scope: bima.Application,
+    Build: func(env *configs.Env, config amqp.Config) (*amqp.Publisher, error) {
+        publisher, err := amqp.NewPublisher(config, watermill.NewStdLogger(env.Debug, env.Debug))
+        if err != nil {
+            return nil, nil
+        }
 
-```bash
-AMQP_HOST=localhost
-AMQP_PORT=5672
-AMQP_USER=guest
-AMQP_PASSWORD=guest
+        return publisher, nil
+    },
+    Params: dingo.Params{
+        "0": dingo.Service("bima:config"),
+        "1": dingo.Service("bima:messenger:config"),
+    },
+},
+{
+    Name:  "bima:consumer",
+    Scope: bima.Application,
+    Build: func(env *configs.Env, config amqp.Config) (*amqp.Subscriber, error) {
+        consumer, err := amqp.NewSubscriber(config, watermill.NewStdLogger(env.Debug, env.Debug))
+        if err != nil {
+            return nil, nil
+        }
+
+        return consumer, nil
+    },
+    Params: dingo.Params{
+        "0": dingo.Service("bima:config"),
+        "1": dingo.Service("bima:messenger:config"),
+    },
+},
+{
+    Name:  "bima:messenger",
+    Scope: bima.Application,
+    Build: func(
+        env *configs.Env,
+        publisher *amqp.Publisher,
+        consumer *amqp.Subscriber,
+    ) (*messengers.Messenger, error) {
+        if consumer == nil || publisher == nil {
+            return nil, nil
+        }
+
+        color.New(color.FgCyan, color.Bold).Print("✓ ")
+        fmt.Println("Pub/Sub configured")
+
+        return messengers.New(env.Debug, publisher, consumer), nil
+    },
+    Params: dingo.Params{
+        "0": dingo.Service("bima:config"),
+        "1": dingo.Service("bima:publisher"),
+        "2": dingo.Service("bima:consumer"),
+    },
+},
+```
+
+- Register consumer server to `dics/container.go`, the name must `bima:interface:consumer`
+
+```go
+{
+    Name:  "bima:interface:consumer",
+    Scope: bima.Application,
+    Build: (*interfaces.Queue)(nil),
+    Params: dingo.Params{
+        "Messenger": dingo.Service("bima:messenger"),
+    },
+},
 ```
 
 ## Consumer

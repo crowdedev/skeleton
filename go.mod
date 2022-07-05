@@ -23,14 +23,7 @@ require (
 )
 
 require (
-	cloud.google.com/go v0.103.0 // indirect
-	cloud.google.com/go/pubsub v1.23.1 // indirect
-	github.com/Shopify/sarama v1.34.1 // indirect
-	github.com/eapache/go-resiliency v1.3.0 // indirect
-	github.com/hashicorp/go-uuid v1.0.3 // indirect
 	github.com/pierrec/lz4/v4 v4.1.15 // indirect
-	go.opentelemetry.io/contrib/instrumentation/github.com/Shopify/sarama/otelsarama v0.32.0 // indirect
-	golang.org/x/oauth2 v0.0.0-20220630143837-2104d58473e0 // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/tools v0.1.11 // indirect
 	google.golang.org/genproto v0.0.0-20220630174209-ad1d48641aa7

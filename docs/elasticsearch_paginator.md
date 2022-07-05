@@ -1,10 +1,34 @@
 # Use Elasticseearch Paginator
 
-- Make sure `ELASTICSEARCH_HOST`, `ELASTICSEARCH_PORT` is defined in `.env`
+For elasticsearch, we use `https://github.com/olivere/elastic` as library
 
-- Add Elasticsearch adapter to `dics/container.go`
+- Add Elasticsearch config to `dics/container.go`
 
 ```go
+{
+    Name:  "bima:elasticsearch:client",
+    Scope: bima.Application,
+    Build: func(dsn string) (*elastic.Client, error) {
+        client, err := elastic.NewClient(
+            elastic.SetURL(dsn),
+            elastic.SetSniff(false),
+            elastic.SetHealthcheck(false),
+            elastic.SetGzip(true),
+        )
+
+        if err != nil {
+            return nil, nil
+        }
+
+        color.New(color.FgCyan, color.Bold).Print("✓ ")
+        fmt.Println("Elasticsearch configured")
+
+        return client, nil
+    },
+    Params: dingo.Params{
+        "0": "localhost:9200",
+    },
+},
 {
     Name: "bima:pagination:adapter:elasticsearch",
     Scope: bima.Application,

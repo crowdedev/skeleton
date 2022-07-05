@@ -1,8 +1,47 @@
 # Sync to Elasticsearch
 
+# Register server
+
+- Register elasticsearch server `dics/container.go`, the name must `bima:interface:elasticsearch`
+
+```go
+{
+    Name:  "bima:elasticsearch:client",
+    Scope: bima.Application,
+    Build: func(dsn string) (*elastic.Client, error) {
+        client, err := elastic.NewClient(
+            elastic.SetURL(dsn),
+            elastic.SetSniff(false),
+            elastic.SetHealthcheck(false),
+            elastic.SetGzip(true),
+        )
+
+        if err != nil {
+            return nil, nil
+        }
+
+        color.New(color.FgCyan, color.Bold).Print("✓ ")
+        fmt.Println("Elasticsearch configured")
+
+        return client, nil
+    },
+    Params: dingo.Params{
+        "0": "localhost:9200",
+    },
+},
+{
+    Name:  "bima:interface:elasticsearch",
+    Scope: bima.Application,
+    Build: (*interfaces.Elasticsearch)(nil),
+    Params: dingo.Params{
+        "Client": dingo.Service("bima:elasticsearch:client"),
+    },
+},
+```
+
 ## Populate Data to Elasticsearch
 
-- Make sure `ELASTICSEARCH_HOST`, `ELASTICSEARCH_PORT` is defined in `.env`
+For elasticsearch, we use `https://github.com/olivere/elastic` as library
 
 - You must use `mysql` or `postgresql` as driver
 
@@ -46,13 +85,6 @@ func (s *Server) Sync(client *elastic.Client) {
 }
 ```
 
-- Configure your elasticsearch using `ELASTICSEARCH_HOST` and `ELASTICSEARCH_PORT`
-
-```
-ELASTICSEARCH_HOST=http://localhost
-ELASTICSEARCH_PORT=9200
-```
-
 - Rerun your service
 
 
@@ -60,7 +92,7 @@ ELASTICSEARCH_PORT=9200
 
 ## Sync Data to Elasticsearch using Listener
 
-- Add to your `dics/container.go`
+- Add listeners to your `dics/container.go`
 
 ```go
 {
