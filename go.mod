@@ -2,8 +2,6 @@ module github.com/KejawenLab/skeleton/v3
 
 go 1.16
 
-replace github.com/KejawenLab/bima/v4 v4.0.0 => ../bima
-
 require (
 	github.com/KejawenLab/bima/v4 v4.0.0
 	github.com/fatih/color v1.13.0
