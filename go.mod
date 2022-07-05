@@ -3,7 +3,7 @@ module github.com/KejawenLab/skeleton/v3
 go 1.16
 
 require (
-	github.com/KejawenLab/bima/v3 v3.2.11
+	github.com/KejawenLab/bima/v3 v3.2.12
 	github.com/ThreeDotsLabs/watermill-amqp v1.1.4
 	github.com/fatih/color v1.13.0
 	github.com/gertd/go-pluralize v0.2.1
@@ -23,7 +23,6 @@ require (
 )
 
 require (
-	golang.org/x/sys v0.0.0-20220704084225-05e143d24a9e // indirect
 	golang.org/x/term v0.0.0-20220526004731-065cf7ba2467 // indirect
 	golang.org/x/tools v0.1.11 // indirect
 	gorm.io/driver/postgres v1.3.8 // indirect

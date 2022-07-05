@@ -402,3 +402,7 @@ To remove module, just run `task module -- remove <name>`
 - [x] [Jwt Atuh](https://github.com/KejawenLab/bima/blob/main/middlewares/jwt.go)
 
 - [x] [RequestID](https://github.com/KejawenLab/bima/blob/main/middlewares/requestid.go)
+
+- [x] [CORS](https://github.com/KejawenLab/bima/blob/main/middlewares/cors.go)
+
+- [x] [Rate Limiter](docs/convert_middleware.md)
