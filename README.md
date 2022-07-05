@@ -393,7 +393,7 @@ To remove module, just run `task module -- remove <name>`
 
 - [x] [Create Your Own Database Driver](docs/driver.md)
 
-- [ ] [Use MongoDB as Storage Driver](docs/mongodb.md)
+- [x] [Use MongoDB as Storage Driver](docs/mongodb.md)
 
 - [ ] [Use Kafka in Message Broker](docs/kafka.md)
 
