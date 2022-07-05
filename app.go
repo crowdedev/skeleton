@@ -2,6 +2,7 @@ package skeleton
 
 import (
 	"bytes"
+	"context"
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
@@ -15,14 +16,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/KejawenLab/bima/v3"
-	"github.com/KejawenLab/bima/v3/configs"
-	"github.com/KejawenLab/bima/v3/events"
-	"github.com/KejawenLab/bima/v3/generators"
-	"github.com/KejawenLab/bima/v3/middlewares"
-	"github.com/KejawenLab/bima/v3/parsers"
-	"github.com/KejawenLab/bima/v3/routes"
-	"github.com/KejawenLab/bima/v3/utils"
+	"github.com/KejawenLab/bima/v4"
+	"github.com/KejawenLab/bima/v4/configs"
+	"github.com/KejawenLab/bima/v4/events"
+	"github.com/KejawenLab/bima/v4/generators"
+	"github.com/KejawenLab/bima/v4/interfaces"
+	"github.com/KejawenLab/bima/v4/middlewares"
+	"github.com/KejawenLab/bima/v4/parsers"
+	"github.com/KejawenLab/bima/v4/routes"
+	"github.com/KejawenLab/bima/v4/utils"
 	"github.com/KejawenLab/skeleton/v3/generated/engine"
 	"github.com/KejawenLab/skeleton/v3/generated/generator"
 	"github.com/fatih/color"
@@ -34,6 +36,10 @@ import (
 	"github.com/sirupsen/logrus"
 	"github.com/vito/go-interact/interact"
 	"golang.org/x/mod/modfile"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/encoding/gzip"
+	"google.golang.org/grpc/grpclog"
 	"gopkg.in/yaml.v2"
 )
 
@@ -124,7 +130,12 @@ func (_ Application) Run(config string) {
 		fmt.Println("Api Doc ready on /api/docs")
 	}
 
-	container.GetBimaApplication().Run(servers)
+	application := container.GetBimaApplication()
+	if len(servers) > 0 {
+		loadInterface(container, application, *env)
+	}
+
+	application.Run(servers)
 }
 
 func (m Module) Run(module string, config string) {
@@ -152,7 +163,7 @@ func (m Module) register(module string, apiVersion string, driver string) {
 	container, err := generator.NewContainer(bima.Generator)
 	if err != nil {
 		panic(err)
-	}   
+	}
 
 	generator := container.GetBimaModuleGenerator()
 	util := color.New(color.FgCyan, color.Bold)
@@ -265,22 +276,53 @@ func processDotEnv(config *configs.Env) {
 		Driver:   os.Getenv("DB_DRIVER"),
 	}
 
-	esPort, _ := strconv.Atoi(os.Getenv("ELASTICSEARCH_PORT"))
-	config.Elasticsearch = configs.Elasticsearch{
-		Host:  os.Getenv("ELASTICSEARCH_HOST"),
-		Port:  esPort,
-		Index: config.Db.Name,
-	}
-
-	amqpPort, _ := strconv.Atoi(os.Getenv("AMQP_PORT"))
-	config.Amqp = configs.Amqp{
-		Host:     os.Getenv("AMQP_HOST"),
-		Port:     amqpPort,
-		User:     os.Getenv("AMQP_USER"),
-		Password: os.Getenv("AMQP_PASSWORD"),
-	}
-
 	config.CacheLifetime, _ = strconv.Atoi(os.Getenv("CACHE_LIFETIME"))
+}
+
+func loadInterface(engine *engine.Container, application *interfaces.Factory, config configs.Env) {
+	definition, err := engine.SafeGet("bima:interface:rest")
+	rest, ok := definition.(*interfaces.Rest)
+	if ok && err == nil {
+		application.Add(rest)
+	}
+
+	if config.Db.Driver != "" {
+		ctx := context.Background()
+		options := []grpc.DialOption{
+			grpc.WithTransportCredentials(insecure.NewCredentials()),
+			grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)),
+		}
+
+		var gRpcAddress strings.Builder
+		gRpcAddress.WriteString("0.0.0.0:")
+		gRpcAddress.WriteString(strconv.Itoa(config.RpcPort))
+
+		gRpcClient, err := grpc.DialContext(ctx, gRpcAddress.String(), options...)
+		if err != nil {
+			log.Fatalf("Server is not ready. %v", err)
+		}
+
+		go func() {
+			<-ctx.Done()
+			if cerr := gRpcClient.Close(); cerr != nil {
+				grpclog.Infof("Error closing connection to %s: %v", gRpcAddress, cerr)
+			}
+		}()
+
+		rest.GRpcClient = gRpcClient
+		application.Add(&interfaces.Database{})
+		application.Add(&interfaces.GRpc{GRpcPort: config.RpcPort, Debug: config.Debug})
+	}
+
+	definition, err = engine.SafeGet("bima:interface:elasticsearch")
+	if app, ok := definition.(*interfaces.Elasticsearch); ok && err == nil {
+		application.Add(app)
+	}
+
+	definition, err = engine.SafeGet("bima:interface:consumer")
+	if app, ok := definition.(*interfaces.Consumer); ok && err == nil {
+		application.Add(app)
+	}
 }
 
 func unregister(util *color.Color, module string) {

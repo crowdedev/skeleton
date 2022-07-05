@@ -101,7 +101,7 @@ Because by default skeleton doesn't provide filter. To apply request filter, you
 First, i assume you are use `mysql` or `postgresql` as driver, you need to add code below into your `todos/dic.go`
 
 ```go
-// import "github.com/KejawenLab/bima/v3/listeners/paginations"
+// import "github.com/KejawenLab/bima/v4/listeners/paginations"
 {
     Name:  "bima:listener:filter:gorm",
     Scope: bima.Application,
@@ -216,7 +216,7 @@ import (
 	"bytes"
 	"net/http"
 
-	"github.com/KejawenLab/bima/v3/middlewares"
+	"github.com/KejawenLab/bima/v4/middlewares"
 	"google.golang.org/grpc"
 )
 

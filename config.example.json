@@ -15,15 +15,5 @@
         "user": "root",
         "password": "aden",
         "name": "skeleton"
-    },
-    "elasticsearch": {
-        "host": "http://localhost",
-        "port": 9200
-    },
-    "queue": {
-        "host": "localhost",
-        "port": 5672,
-        "user": "guest",
-        "password": "guest"
     }
 }

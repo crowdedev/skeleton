@@ -1,13 +1,13 @@
 package dics
 
 import (
-	"github.com/KejawenLab/bima/v3"
-	"github.com/KejawenLab/bima/v3/configs"
-	"github.com/KejawenLab/bima/v3/events"
-	"github.com/KejawenLab/bima/v3/handlers"
-	"github.com/KejawenLab/bima/v3/paginations"
-	"github.com/KejawenLab/bima/v3/paginations/adapter"
-	"github.com/KejawenLab/bima/v3/repositories"
+	"github.com/KejawenLab/bima/v4"
+	"github.com/KejawenLab/bima/v4/configs"
+	"github.com/KejawenLab/bima/v4/events"
+	"github.com/KejawenLab/bima/v4/handlers"
+	"github.com/KejawenLab/bima/v4/paginations"
+	"github.com/KejawenLab/bima/v4/paginations/adapters"
+	"github.com/KejawenLab/bima/v4/repositories"
 	"github.com/sarulabs/dingo/v4"
 )
 
@@ -23,8 +23,8 @@ var Container = []dingo.Def{
 		Build: func(
 			env *configs.Env,
 			dispatcher *events.Dispatcher,
-		) (*adapter.GormAdapter, error) {
-			return &adapter.GormAdapter{
+		) (*adapters.GormAdapter, error) {
+			return &adapters.GormAdapter{
 				Debug:      env.Debug,
 				Dispatcher: dispatcher,
 			}, nil
