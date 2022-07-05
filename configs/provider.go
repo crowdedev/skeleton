@@ -8,12 +8,18 @@ import (
 	"github.com/sarulabs/dingo/v4"
 )
 
-type Provider struct {
-	dingo.BaseProvider
-}
+type (
+	Engine struct {
+		dingo.BaseProvider
+	}
 
-func (p *Provider) Load() error {
-	if err := p.AddDefSlice(core.Container); err != nil {
+	Generator struct {
+		dingo.BaseProvider
+	}
+)
+
+func (p *Engine) Load() error {
+	if err := p.AddDefSlice(core.Application); err != nil {
 		return err
 	}
 
@@ -21,6 +27,14 @@ func (p *Provider) Load() error {
 		return err
 	}
     //@modules:register
+
+	return nil
+}
+
+func (p *Generator) Load() error {
+	if err := p.AddDefSlice(core.Generator); err != nil {
+		return err
+	}
 
 	return nil
 }

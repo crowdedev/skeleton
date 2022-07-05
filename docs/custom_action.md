@@ -5,13 +5,11 @@ This tutorial will explain how to add custom action (service) to your gRPC (prot
 - Add new service
 
 ```proto
-....
 rpc Done (Todo) returns (TodoResponse) {
     option (google.api.http) = {
         post: "/api/v1/todos/{id}/done"
     };
 }
-....
 ```
 
 We add new `Done` service with `/api/v1/todos/{id}/done` as path and use `POST` HTTP method

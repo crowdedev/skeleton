@@ -31,8 +31,9 @@ func (_ Sqlite) Connect(_ string, _ int, _ string, _ string, dbname string, _ bo
 ```go
 {
     Name:  "bima:driver:sqlite",
+    Scope: bima.Application,
     Build: (*drivers.Sqlite)(nil),
-}
+},
 ```
 
 - Use `bima:driver:sqlite` directly as dependency

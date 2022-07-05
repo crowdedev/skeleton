@@ -46,13 +46,14 @@ and then change `dic.go` and add `bima:messenger` as params
 ```go
 {
     Name:  "module:todo",
+    Scope: bima.Application,
     Build: (*Module)(nil),
     Params: dingo.Params{
         "Model":     dingo.Service("module:todo:model"),
         "Module":    dingo.Service("bima:module"),
         "Messenger": dingo.Service("bima:messenger"),
     },
-}
+},
 ```
 
 now you can publish message using `m.Messenger.Publish()` function

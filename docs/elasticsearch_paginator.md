@@ -7,6 +7,7 @@
 ```go
 {
     Name: "bima:pagination:adapter:elasticsearch",
+    Scope: bima.Application,
     Build: func(env *configs.Env, client *elastic.Client, dispatcher *events.Dispatcher) (*adapter.ElasticsearchAdapter, error) {
         return &adapter.ElasticsearchAdapter{
             Debug:      env.Debug,
@@ -20,7 +21,7 @@
         "1": dingo.Service("bima:elasticsearch:client"),
         "2": dingo.Service("bima:event:dispatcher"),
     },
-}
+},
 ```
 
 - Change adaptor to Elasticsearch
@@ -28,6 +29,7 @@
 ```go
 {
     Name: "bima:handler",
+    Scope: bima.Application,
     Build: func(
         env *configs.Env,
         dispatcher *events.Dispatcher,
@@ -47,7 +49,7 @@
         "2": dingo.Service("bima:repository:gorm"),
         "3": dingo.Service("bima:pagination:adapter:elasticsearch"),
     },
-}
+},
 ```
 
 - Implement Elasticsearch filter
@@ -55,8 +57,9 @@
 ```go
 {
     Name:  "bima:listener:filter:elasticsearch",
+    Scope: bima.Application,
     Build: (*filters.ElasticsearchFilter)(nil),
-}
+},
 ```
 
 - Add to your `configs/listeners.yaml`

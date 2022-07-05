@@ -65,6 +65,7 @@ ELASTICSEARCH_PORT=9200
 ```go
 {
     Name: "bima:listener:elasticsearch:create",
+    Scope: bima.Application,
     Build: func(env *configs.Env, client *elastic.Client) (*creates.Elasticsearch, error) {
         return &creates.Elasticsearch{
             Service:       env.Service.ConnonicalName,
@@ -78,6 +79,7 @@ ELASTICSEARCH_PORT=9200
 },
 {
     Name: "bima:listener:elasticsearch:update",
+    Scope: bima.Application,
     Build: func(env *configs.Env, client *elastic.Client) (*updates.Elasticsearch, error) {
         return &updates.Elasticsearch{
             Service:       env.Service.ConnonicalName,
@@ -91,6 +93,7 @@ ELASTICSEARCH_PORT=9200
 },
 {
     Name: "bima:listener:elasticsearch:delete",
+    Scope: bima.Application,
     Build: func(env *configs.Env, client *elastic.Client) (*deletes.Elasticsearch, error) {
         return &deletes.Elasticsearch{
             Service:       env.Service.ConnonicalName,

@@ -15,6 +15,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/KejawenLab/bima/v3"
 	"github.com/KejawenLab/bima/v3/configs"
 	"github.com/KejawenLab/bima/v3/events"
 	"github.com/KejawenLab/bima/v3/generators"
@@ -22,7 +23,8 @@ import (
 	"github.com/KejawenLab/bima/v3/parsers"
 	"github.com/KejawenLab/bima/v3/routes"
 	"github.com/KejawenLab/bima/v3/utils"
-	"github.com/KejawenLab/skeleton/v3/generated/dic"
+	"github.com/KejawenLab/skeleton/v3/generated/engine"
+	"github.com/KejawenLab/skeleton/v3/generated/generator"
 	"github.com/fatih/color"
 	"github.com/gertd/go-pluralize"
 	"github.com/goccy/go-json"
@@ -45,7 +47,11 @@ func (_ Application) Run(config string) {
 		config = ".env"
 	}
 
-	container, _ := dic.NewContainer()
+	container, err := engine.NewContainer(bima.Application)
+	if err != nil {
+		panic(err)
+	}
+
 	env := container.GetBimaConfig()
 	loadEnv(env, config, filepath.Ext(config))
 
@@ -126,23 +132,35 @@ func (m Module) Run(module string, config string) {
 		config = ".env"
 	}
 
-	container, _ := dic.NewContainer()
+	container, err := engine.NewContainer(bima.Application)
+	if err != nil {
+		panic(err)
+	}
+
 	env := container.GetBimaConfig()
 	loadEnv(env, config, filepath.Ext(config))
 
 	switch m {
 	case "add":
-		m.register(container, module)
+		m.register(module, env.ApiVersion, env.Db.Driver)
 	case "remove":
-		m.remove(container, module)
+		m.remove(module)
 	}
 }
 
-func (m Module) register(container *dic.Container, module string) {
+func (m Module) register(module string, apiVersion string, driver string) {
+	container, err := generator.NewContainer(bima.Generator)
+	if err != nil {
+		panic(err)
+	}   
+
+	generator := container.GetBimaModuleGenerator()
 	util := color.New(color.FgCyan, color.Bold)
 
-	register(container, util, module)
-	_, err := exec.Command("sh", "proto_gen.sh").Output()
+	generator.ApiVersion = apiVersion
+	generator.Driver = driver
+	register(generator, util, module)
+	_, err = exec.Command("sh", "proto_gen.sh").Output()
 	if err != nil {
 		util.Println("Error generate code from proto files")
 		os.Exit(1)
@@ -164,9 +182,9 @@ func (m Module) register(container *dic.Container, module string) {
 	util.Println("ad3n")
 }
 
-func (m Module) remove(container *dic.Container, module string) {
+func (m Module) remove(module string) {
 	util := color.New(color.FgCyan, color.Bold)
-	unregister(container, util, module)
+	unregister(util, module)
 
 	_, err := exec.Command("go", "run", "dumper/main.go").Output()
 	if err != nil {
@@ -265,7 +283,7 @@ func processDotEnv(config *configs.Env) {
 	config.CacheLifetime, _ = strconv.Atoi(os.Getenv("CACHE_LIFETIME"))
 }
 
-func unregister(container *dic.Container, util *color.Color, module string) {
+func unregister(util *color.Color, module string) {
 	workDir, _ := os.Getwd()
 	pluralizer := pluralize.NewClient()
 	moduleName := strcase.ToCamel(pluralizer.Singular(module))
@@ -340,8 +358,7 @@ func unregister(container *dic.Container, util *color.Color, module string) {
 	util.Println("Module deleted")
 }
 
-func register(container *dic.Container, util *color.Color, name string) {
-	generator := container.GetBimaModuleGenerator()
+func register(generator *generators.Factory, util *color.Color, name string) {
 	module := generators.ModuleTemplate{}
 	field := generators.FieldTemplate{}
 	mapType := utils.NewType()

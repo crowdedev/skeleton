@@ -121,8 +121,9 @@ func (r *RateLimit) Priority() int {
 ```go
 {
     Name:  "bima:middleware:rate-limiter",
+    Scope: bima.Application,
     Build: (*middlewares.RateLimit)(nil),
-}
+},
 ```
 
 - Add to `configs/middlewares.yaml`
@@ -164,11 +165,12 @@ func (r *RateLimit) Attach(request *http.Request, response http.ResponseWriter) 
 ```go
 {
     Name:  "bima:middleware:rate-limiter",
+    Scope: bima.Application,
     Build: (*middlewares.RateLimit)(nil),
     Params: dingo.Params{
         "Max": float64(1),
     },
-}
+},
 ```
 
 ![Rate limiter](../assets/rate-limit-header.png)

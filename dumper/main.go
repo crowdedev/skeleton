@@ -9,7 +9,13 @@ import (
 )
 
 func main() {
-	err := dingo.GenerateContainer((*dics.Provider)(nil), "generated")
+	err := dingo.GenerateContainerWithCustomPkgName((*dics.Engine)(nil), "generated", "engine")
+	if err != nil {
+		fmt.Println("Error dumping container: ", err.Error())
+		os.Exit(1)
+	}
+
+	err = dingo.GenerateContainerWithCustomPkgName((*dics.Generator)(nil), "generated", "generator")
 	if err != nil {
 		fmt.Println("Error dumping container: ", err.Error())
 		os.Exit(1)

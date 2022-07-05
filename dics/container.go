@@ -1,6 +1,7 @@
 package dics
 
 import (
+	"github.com/KejawenLab/bima/v3"
 	"github.com/KejawenLab/bima/v3/configs"
 	"github.com/KejawenLab/bima/v3/events"
 	"github.com/KejawenLab/bima/v3/handlers"
@@ -13,10 +14,12 @@ import (
 var Container = []dingo.Def{
 	{
 		Name:  "bima:repository:gorm",
+		Scope: bima.Application,
 		Build: (*repositories.GormRepository)(nil),
 	},
 	{
-		Name: "bima:pagination:adapter:gorm",
+		Name:  "bima:pagination:adapter:gorm",
+		Scope: bima.Application,
 		Build: func(
 			env *configs.Env,
 			dispatcher *events.Dispatcher,
@@ -32,7 +35,8 @@ var Container = []dingo.Def{
 		},
 	},
 	{
-		Name: "bima:handler",
+		Name:  "bima:handler",
+		Scope: bima.Application,
 		Build: func(
 			env *configs.Env,
 			dispatcher *events.Dispatcher,

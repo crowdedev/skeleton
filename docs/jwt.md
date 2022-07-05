@@ -7,6 +7,7 @@
 ```go
 {
     Name: "bima:route:jwt:login",
+    Scope: bima.Application,
     Build: func(env *configs.Env) (*routes.JwtLogin, error) {
         return routes.DefaultJwtLogin("/api/v1/login", env.Secret, jwt.SigningMethodHS512.Name, true, routes.FindUserByUsernameAndPassword(func(username, password string) jwt.MapClaims {
             return jwt.MapClaims{
@@ -36,6 +37,7 @@ routes:
 ```go
 {
     Name: "bima:middleware:jwt",
+    Scope: bima.Application,
     Build: func(env *configs.Env) (*middlewares.Jwt, error) {
         return &middlewares.Jwt{
             Debug:         env.Debug,
@@ -67,6 +69,7 @@ You can access user using `configs.Env.User` or via `request.Header.Get("X-Bima-
 ```go
 {
     Name: "bima:route:jwt:refresh",
+    Scope: bima.Application,
     Build: func(env *configs.Env) (*routes.JwtRefresh, error) {
         return &routes.JwtRefresh{
             PathUrl:       "/api/v1/token-refresh",
@@ -78,7 +81,7 @@ You can access user using `configs.Env.User` or via `request.Header.Get("X-Bima-
     Params: dingo.Params{
         "0": dingo.Service("bima:config"),
     },
-}
+},
 ```
 
 - Add to `configs/routes.yaml`

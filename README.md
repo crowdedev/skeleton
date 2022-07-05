@@ -104,8 +104,9 @@ First, i assume you are use `mysql` or `postgresql` as driver, you need to add c
 // import "github.com/KejawenLab/bima/v3/listeners/paginations"
 {
     Name:  "bima:listener:filter:gorm",
+    Scope: bima.Application,
     Build: (*paginations.GormFilter)(nil),
-}
+},
 ```
 
 We use [Dingo](https://github.com/sarulabs/dingo) to manage dependencies, you can refer to dedicated documentation to learn about Dependency Injectin using Dingo. Then you need to register the `bima:listener:filter:gorm` to your `configs/listeners.yaml`
@@ -179,9 +180,9 @@ And then, register your middleware into `todos/dic.go`
 ```go
 {
     Name:  "bima:middleware:todo",
+    Scope: bima.Application,
     Build: (*Middleware)(nil),
-}
-
+},
 ```
 
 Last, register your middleware to `configs/middlewares.yaml`
@@ -189,7 +190,6 @@ Last, register your middleware to `configs/middlewares.yaml`
 ```yaml
 middlewares:
     - todo
-
 ```
 
 Now, you can rerun using `task run` and try `/api/v1/todos` and then the result like below
@@ -248,9 +248,9 @@ And then, register your middleware into `todos/dic.go`
 ```go
 {
     Name:  "bima:route:hello",
+    Scope: bima.Application,
     Build: (*HelloWorld)(nil),
-}
-
+},
 ```
 
 Last, register your middleware to `configs/routes.yaml`
@@ -259,7 +259,6 @@ Last, register your middleware to `configs/routes.yaml`
 ```yaml
 routes:
     - hello
-
 ```
 
 Rerun using `task run` and open `/api/v1/todos/hello/bima` and then the result like below
@@ -345,13 +344,14 @@ For example, you want to add [Elasticsearch Hook](https://github.com/sohlich/elo
 ```go
 {
     Name: "bima:logger:extension:elasticsearch",
+    Scope: bima.Application,
     Build: func(client *elastic.Client) (*elogrus.ElasticHook, error) {
         return elogrus.NewAsyncElasticHook(client, "localhost", logrus.DebugLevel, "mylog")
     },
     Params: dingo.Params{
         "0": dingo.Service("bima:elasticsearch:client"),
     },
-}
+},
 ```
 
 And then register your extension to `configs/loggers.yaml`
@@ -359,7 +359,6 @@ And then register your extension to `configs/loggers.yaml`
 ```yaml
 loggers:
     - elasticsearch
-
 ```
 
 Don't forget to add `ELASTICSEARCH_HOST` and `ELASTICSEARCH_PORT` to your `.env`
