@@ -379,6 +379,8 @@ To remove module, just run `task module -- remove <name>`
 
 - [x] [Distributed Tracing (RequestID)](docs/requestid.md)
 
+- [x] [Enable CORS](docs/cors.md)
+
 - [x] [Add Custom Action](docs/custom_action.md)
 
 - [x] [Sync data to Elasticsearch](docs/sync_to_elasticsearch.md)
