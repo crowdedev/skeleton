@@ -387,7 +387,7 @@ To remove module, just run `task module -- remove <name>`
 
 - [x] [Use Elasticsearch paginator](docs/elasticsearch_paginator.md)
 
-- [x] [Use Pub/Sub to publish and consume message](docs/pub_sub.md)
+- [x] [Use Pub/Sub to publish and consume message (AMQP)](docs/pub_sub.md)
 
 - [x] [Convert Mux Middleware to Bima Middleware](docs/convert_middleware.md)
 
@@ -395,9 +395,7 @@ To remove module, just run `task module -- remove <name>`
 
 - [x] [Use MongoDB as Storage Driver](docs/mongodb.md)
 
-- [ ] [Use Kafka in Message Broker](docs/kafka.md)
-
-- [ ] [Use Google Cloud in Message Broker](docs/google_cloud.md)
+- [x] [Use Kafka in Message Broker](docs/kafka.md)
 
 ### Middlewares
 

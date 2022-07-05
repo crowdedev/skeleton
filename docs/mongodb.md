@@ -1,5 +1,7 @@
 # Use MongoDB as Storage
 
+## Basic Usage
+
 - Create MongoDB Database with `bima_skeleton` as name
 
 - Add `DB_DRIVER`, `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, and `DB_PASSWORD` to `.env`
@@ -66,4 +68,13 @@ DB_PASSWORD=aden
         "3": dingo.Service("bima:pagination:adapter:mongo"),
     },
 },
+```
+
+## Using Raplica Set or MongoDB Service
+
+To use replica set, just put full dsn in `DB_HOST`
+
+```bash
+DB_DRIVER=mongo
+DB_HOST=mongodb+srv://user:password@region.mongodb.net
 ```

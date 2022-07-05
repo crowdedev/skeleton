@@ -1,23 +1,16 @@
-# Implement AMQP RabbitMQ
+# Use Kafka as Message Broker
 
-- Add RabbitMQ config to `dics/container.go`
+- Add Kafka config to `dics/container.go`
 
 ```go
 {
-    Name:  "bima:amqp:config",
+    Name:  "bima:kafka:publisher",
     Scope: bima.Application,
-    Build: func(dsn string) (amqp.Config, error) {
-        return amqp.NewDurableQueueConfig(dsn), nil
-    },
-    Params: dingo.Params{
-        "0": "amqp://guest:guest@localhost:5672",
-    },
-},
-{
-    Name:  "bima:amqp:publisher",
-    Scope: bima.Application,
-    Build: func(env *configs.Env, config amqp.Config) (*amqp.Publisher, error) {
-        publisher, err := amqp.NewPublisher(config, watermill.NewStdLogger(env.Debug, env.Debug))
+    Build: func(env *configs.Env, hosts []string) (*kafka.Publisher, error) {
+        publisher, err := kafka.NewPublisher(kafka.PublisherConfig{
+            Brokers:   hosts,
+            Marshaler: kafka.DefaultMarshaler{},
+        }, watermill.NewStdLogger(env.Debug, env.Debug))
         if err != nil {
             return nil, nil
         }
@@ -26,14 +19,21 @@
     },
     Params: dingo.Params{
         "0": dingo.Service("bima:config"),
-        "1": dingo.Service("bima:amqp:config"),
+        "1": []string{"kafka:9092"},
     },
 },
 {
-    Name:  "bima:amqp:consumer",
+    Name:  "bima:kafka:consumer",
     Scope: bima.Application,
-    Build: func(env *configs.Env, config amqp.Config) (*amqp.Subscriber, error) {
-        consumer, err := amqp.NewSubscriber(config, watermill.NewStdLogger(env.Debug, env.Debug))
+    Build: func(env *configs.Env, hosts []string, consumerGroup string) (*kafka.Subscriber, error) {
+        saramaSubscriberConfig := kafka.DefaultSaramaSubscriberConfig()
+	    saramaSubscriberConfig.Consumer.Offsets.Initial = sarama.OffsetOldest
+        consumer, err := kafka.NewSubscriber(kafka.SubscriberConfig{
+            Brokers:               hosts,
+            Unmarshaler:           kafka.DefaultMarshaler{},
+            OverwriteSaramaConfig: saramaSubscriberConfig,
+            ConsumerGroup:         consumerGroup,
+        }, watermill.NewStdLogger(env.Debug, env.Debug))
         if err != nil {
             return nil, nil
         }
@@ -42,18 +42,19 @@
     },
     Params: dingo.Params{
         "0": dingo.Service("bima:config"),
-        "1": dingo.Service("bima:amqp:config"),
+        "1": []string{"kafka:9092"},
+        "2": "consumer_group"
     },
 },
 {
-    Name:  "bima:amqp:broker",
+    Name:  "bima:kafka:broker",
     Scope: bima.Application,
-    Build: func(publisher *amqp.Publisher, consumer *amqp.Subscriber) (messengers.Broker, error) {
-        return brokers.NewAmqp(publisher, consumer), nil
+    Build: func(publisher *kafka.Publisher, consumer *kafka.Subscriber) (messengers.Broker, error) {
+        return brokers.NewKafka(publisher, consumer), nil
     },
     Params: dingo.Params{
-        "0": dingo.Service("bima:amqp:publisher"),
-        "1": dingo.Service("bima:amqp:consumer"),
+        "0": dingo.Service("bima:kafka:publisher"),
+        "1": dingo.Service("bima:kafka:consumer"),
     },
 },
 {
@@ -74,7 +75,7 @@
     },
     Params: dingo.Params{
         "0": dingo.Service("bima:config"),
-        "1": dingo.Service("bima:amqp:broker"),
+        "1": dingo.Service("bima:kafka:broker"),
     },
 },
 ```
